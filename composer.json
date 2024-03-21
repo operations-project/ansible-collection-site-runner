@@ -18,12 +18,14 @@
         "http-interop/http-factory-guzzle": "^1.0"
     },
     "scripts": {
-        "dev:ansible:install": [
-            "ansible-galaxy install -r roles.yml -p roles --force"
+        "dev:build": [
+            "docker-compose exec ash ansible-playbook /usr/share/ash/playbook.yml"
         ],
         "dev:start": [
-            "docker-compose up -d --build",
-            "docker-compose exec ash ansible-playbook /usr/share/ash/playbook.yml"
+            "docker-compose up -d --build && docker-compose exec ash ansible-playbook /usr/share/ash/playbook.yml"
+        ],
+        "dev:ansible:install": [
+            "ansible-galaxy install -r roles.yml -p roles --force"
         ]
     },
     "config": {
