@@ -18,6 +18,6 @@ security_sudoers_passwordless: "{{ ash_admin_users }}"
 ash_github_runners:
   - repo_url: https://github.com/jonpugh/ash-ops
     runner_token: AAAZ7ND5U5YBRA6D5PFS5TTF7R6RY
-    runner_name: {{ inventory_hostname }}
+    runner_name: "{{ inventory_hostname }}"
     runner_labels: local,ash
     user: platform
