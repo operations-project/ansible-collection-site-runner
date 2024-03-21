@@ -49,7 +49,7 @@ jobs:
           echo "ash_github_runners:
           - repo_url: ${{ github.server_url	}}/${{ github.repository }}
             runner_token: ${{ secrets.RUNNER_TOKEN }}
-            runner_name:  ${{ env.ASH_NAME }}
+            runner_name:  ash.${{ env.ASH_NAME }}.github.actions
             runner_labels: ci,ash
             user: platform
           " > vars.ci.yml
