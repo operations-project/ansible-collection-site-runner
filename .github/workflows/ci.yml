@@ -41,5 +41,16 @@ jobs:
         run: |
           docker-compose --version
 
+      - name: Set variables
+        copy:
+          dest: vars.ci.yml
+          content: |
+            ash_github_runners:
+            - repo_url: {{ github.repositoryUrl }}
+              runner_token: {{ secrets.RUNNER_TOKEN }}
+              runner_name:  "ash.pr${{ github.event.number }}"
+              runner_labels: ci,ash
+              user: platform
+
       - name: Build Platform
         run: composer dev:start -- --extra-vars=@/usr/share/ash/vars.ci.yml
