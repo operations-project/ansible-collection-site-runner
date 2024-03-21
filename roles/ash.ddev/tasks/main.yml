@@ -10,8 +10,8 @@
   become: true
   become_user: "{{ ash_platform_user }}"
 
-- name: ddev status
-  command: ddev status
+- name: ddev
+  command: ddev
   args:
     chdir:  "{{ ash_platform_home }}"
   become: true
