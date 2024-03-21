@@ -29,13 +29,17 @@ jobs:
       - uses: actions/checkout@v3
         with:
           show-progress: false
+
       - uses: php-actions/composer@v6
+
       - name: Install docker-compose
         uses: KengoTODA/actions-setup-docker-compose@v1
         with:
           version: '2.24.0'
+
       - name: Information
         run: |
           docker-compose --version
+
       - name: Build Platform
-        run: composer dev:start
+        run: composer dev:start -- --extra-vars=@/usr/share/ash/vars.ci.yml
