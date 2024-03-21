@@ -17,14 +17,6 @@ jobs:
     env:
       PHP_EXTENSIONS: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter
 
-    strategy:
-      matrix:
-        include:
-          - name: pr${{ github.event.number }}
-            token: "${{ secrets.RUNNER_TOKEN }}"
-            repo_url: "${{ github.repositoryUrl }}"
-            environment: test
-
     steps:
       - uses: actions/checkout@v3
         with:
@@ -44,10 +36,10 @@ jobs:
       - name: Set variables
         run: |
           echo "ash_github_runners:
-          - repo_url: ${{ matrix.repo_url }}
-            runner_token: ${{ matrix.token }}
-            runner_name:  "ash.${{ matrix.name }}"
-            runner_labels: ci,ash,${{ matrix.environment }}"
+          - repo_url: ${{ github.repositoryUrl }}
+            runner_token: ${{ secrets.RUNNER_TOKEN }}
+            runner_name:  pr${{ github.event.number }}
+            runner_labels: ci,ash
             user: platform
           " > vars.ci.yml
           cat vars.ci.yml
