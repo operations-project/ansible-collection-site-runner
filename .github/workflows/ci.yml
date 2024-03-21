@@ -46,7 +46,7 @@ jobs:
       - name: Set variables
         run: |
           echo "ash_github_runners:
-          - repo_url: ${{ github.repositoryUrl }}
+          - repo_url: ${{ github.server_url	}}/${{ github.repository }}
             runner_token: ${{ secrets.RUNNER_TOKEN }}
             runner_name:  ${{ env.ASH_NAME }}
             runner_labels: ci,ash
