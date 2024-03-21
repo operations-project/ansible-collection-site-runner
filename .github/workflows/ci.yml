@@ -19,10 +19,11 @@ jobs:
 
     strategy:
       matrix:
-        - name: pr${{ github.event.number }}
-          token: ${{ secrets.RUNNER_TOKEN }}
-          repo_url: ${{ github.repositoryUrl }}
-          environment: test
+        include:
+          - name: pr${{ github.event.number }}
+            token: ${{ secrets.RUNNER_TOKEN }}
+            repo_url: ${{ github.repositoryUrl }}
+            environment: test
 
     steps:
       - uses: actions/checkout@v3
