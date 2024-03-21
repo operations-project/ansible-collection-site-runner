@@ -19,11 +19,10 @@ jobs:
 
     strategy:
       matrix:
-        os:
-          - ubuntu-latest
-
-        php-version:
-          - "8.1"
+        - name: pr${{ github.event.number }}
+          token: ${{ secrets.RUNNER_TOKEN }}
+          repo_url: ${{ github.repositoryUrl }}
+          environment: test
 
     steps:
       - uses: actions/checkout@v3
@@ -44,10 +43,10 @@ jobs:
       - name: Set variables
         run: |
           echo "ash_github_runners:
-          - repo_url: {{ github.repositoryUrl }}
-            runner_token: {{ secrets.RUNNER_TOKEN }}
-            runner_name:  "ash.pr${{ github.event.number }}"
-            runner_labels: ci,ash
+          - repo_url: ${{ matrix.repo_url }}
+            runner_token: ${{ matrix.token }}
+            runner_name:  "ash.${{ matrix.name }}"
+            runner_labels: ci,ash,${{ matrix.environment }}"
             user: platform
           " > vars.ci.yml
           cat vars.ci.yml
