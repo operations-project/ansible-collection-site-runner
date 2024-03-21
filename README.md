@@ -1,156 +1,126 @@
-# Starter
+# AshOps
 
-A starter PHP project with many services and features pre-configured.
+Install stuff for creating an automation platform for websites using the Ash Cli and GitOps tools like GitHub Workflows and BitBucket Pipelines.
 
 [![License](https://img.shields.io/badge/license-MIT-408677.svg)](LICENSE)
 
-## Features
+<!--
+There are two choices for LICENSE badges:
 
-The things this project provides or does includes:
+1. License using shields.io (above): Can contain any text you want, and has no prerequisites, but must be manually updated if you change the license.
+2. License using poser.pugx.org (below): shows the license that Packagist.org read from your composer.json file. Must register with Packagist to use Poser.
 
-<table>
-  <tr>
-    <td><a href="#github-project">Creates GitHub project</a></td>
-    <td><a href="#readme-template">README with customization instructions</a></td>
-  </tr>
+[![License](https://poser.pugx.org/jonpugh/ash-ops/license)](https://github.com/jonpugh/ash-ops//master/LICENSE)
+-->
 
-  <tr>
-    <td><a href="#optimized-composerjson">Optimized composer.json</a></td>
-    <td><a href="#github-contributing-and-issue-templates">GitHub contributing and issue templates</a></td>
-  </tr>
-    
-  <tr>
-    <td><a href="#commandline-tool">Commandline tool with phar builder</a></td>
-    <td><a href="#data-driven-unit-test-examples">Data-driven unit test examples</a></td>
-  </tr>
-  
-  <tr>
-    <td><a href="#coveralls-code-coverage">Links to Coveralls code coverage setup</a></td>
-    <td><a href="#test-matrix-for-php-80---81">Test matrix for PHP 8.0 - 8.1</a></td>
-  </tr>
-  
-  <tr>
-    <td><a href="#packagist-code-distribution">Links to Packagist setup</a></td>
-    <td><a href="#psr-2-checks-and-php-linting">PSR-2 checks and PHP linting</a></td>
-  </tr>
-      
-  <tr>
-    <td><a href="#phar-selfupdate-command">Phar self:update command</a></td>
-    <td><a href="#configuration-files">Configuration files</a></td>
-  </tr>
+More coming soon.
 
-</table>
+## Documentation
 
-For more details, see the section [Explanation of Features](#explanation-of-features), below.
+### Architecture Plan
 
-## Usage
+I am about to build this:
 
-To get started, export your [GitHub personal access token](https://help.github.com/articles/creating-an-access-token-for-command-line-use/) and then create a new project.
-```
-$ export GITHUB_TOKEN='...'
-$ composer create-project g1a/starter my-new-project
-```
-The new project will be owned by the currently-authenticated user. If you would like to create a new project in an organization instead, then set the `GITHUB_ORG` environment variable.
-```
-$ export GITHUB_ORG='my-github-username-or-org'
-```
-The new project will work only with php 8.0 and later. If you need to use an earlier version of php (as far back as php 7.1), then instead run:
-```
-$ composer create-project g1a/starter my-new-project:^2
-```
+1. Ash Ops Repo. (This repository)
+    - Installed to `/usr/share/ash`, owned by `control`.
+    - Ansible Playbook.
+    - Composer Dependencies like `jonpugh/ash`
+    - Installs Users, PHP, Composer, Docker, GitHub Runner, and Ash Cli.
+    - Can be replaced with a custom version to allow control over server config.
+    - Control User GitHub runner updates this repo and kicks off playbook when new commits are pushed.
+2. Task Runners
+    - App repo runners run as a service under `platform` user.
+    - Responsible for responding to git pushes, cloning code into environments, and starting services.
+    - Runner Documentation
+        - [GitHub](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners)
+        - [BitBucket](https://support.atlassian.com/bitbucket-cloud/docs/runners/) @TODO
+        - [GitLab](https://docs.gitlab.com/runner/) @TODO
+5. Users
+    - Control user (`control`) has `sudo NOPASSWD` permissions to allow automation.
+    - Platform user (`platform`) has `docker` permissions only, plus SSH access to clone repositories and access remote servers.
+    - Admin users will all ssh in with their own usernames, and `sudo su` to `platform` or `control` as needed.
+2. Ash CLI
+    - Available at `/usr/share/ash/bin/ash`
+    - Runs under `platform` user.
+    - Site inventory.
+3. App repo.
+   - Website code.
+   - Runner config.
+4. Service CLI
+    - The thing that launches services for a site.
+    - Right now, it's DDEV.
+    - Runners clone the code, then run the service CLI commands as defined in runner config files.
 
-Once the new project is created, automated scripts will customize it and set up a number of serivces. See the section [Description of Features](#description-of-features) below for more information. Once the scripts have finished running, you may customize your README file and start coding!
 
-### Access Token Generation
+### Links
 
-Generating and exporting a personal access token for the services below is recommended, as doing this will allow the post-create-project scripts to configure and enable these services automatically.
+- [GitHub issue templates](https://github.com/jonpugh/ash-ops/issues/templates/edit)
+- [GitHub pull request template](/.github/pull_request_template.md)
+- [Contributing guide](/CONTRIBUTING) (Decide about your code of conduct)
 
-| Export                         | Token Generation URL       
-| ------------------------------ | -------------------------- 
-| exoirt GITHUB_TOKEN='...'      | [Generate GitHub token](https://github.com/settings/tokens)
+TBD
 
-### Manual Service Configuration
+## Getting Started
 
-If the personal access token for these services is not set up, then the service may be manually configured later. In addition, this project is also configured for use with Packagist, this service only needs to be manually authorized through their web interface to enable them for projects created with this template.
+This repo contains everything needed to set up an automated hosting platform.
 
-Follow the links in the table below to configure the services you would like to use.
+### Prerequisites
 
-| Feature                   | Manual Setup URL
-| ------------------------- | ----------------
-| Collaborative repository  | [Create GitHub project](https://github.com/new)
-| Package manager           | [Register with Packagist](https://packagist.org/packages/submit)
+1. git
+2. ansible
 
-## Explanation of Features ###
+Once the repo is cloned, ansible will set up the rest.
 
-### GitHub project ###
+### Installing
 
-After the `composer create-project` command runs to create your new project from the templates provided, a GitHub project will automatically be created, and your code will automatically be pushed up.
+1. Clone.
 
-In order for this to work, you must define a `GITHUB_TOKEN` environment variable as described in the [usage](#usage) section.
+        git clone git@github.com:jonpugh/ash-ops.git /usr/share/ash/ops
 
-### README template ###
+2. Configure GitHub Runner.
 
-Your new project will be set up with the outline for a project README, complete with status badges, ready to be customized. Follow the instructions provided in your new project to complete the customization steps.
+    1. Go to your repo, "Settings" > "Actions" > "Runners" > "New Runner".
+    2. Copy the token into the ansible variable `ash_ops_github_runner_token`.
+    3. Copy the github repo URL into the ansible variable `ash_ops_github_runner_repo`.
 
-### GitHub Actions Testing ###
+3. Configure.
 
-GitHub actions will automatically run your unit tests every time a commit is pushed up to GitHub.
+  Set ansible variables in `/etc/ansible/hosts`:
 
-### Packagist code distribution ###
+        ash_ops_users:
+            -  YourGitHubUser
 
-[Packagist](https://packagist.org/) is the main repository for Composer projects. The customization instructions for your project includes a link you may follow to register your project in this repository.
+4. Install.
 
-### Data-driven unit test examples ###
+        ansible-playbook /usr/share/ash/playbook.install.yml
 
-Your new project comes with a trivial `Example` class with tests that demonstrate the phpunit [@dataProvider](https://github.com/g1a/starter/blob/master/tests/ExampleTest.php#L29) feature.
+## Built With
 
-### Test matrix for PHP 8.0 - 8.1 ###
+List significant dependencies that developers of this project will interact with.
 
-The included test suite demonstrates testing on multiple platforms and PHP versions.
-
-### PSR-2 checks and PHP linting ###
-
-In addition to providing unit tests with phpunit, your new project will also automatically contain style checks for PSR-2 coding convnetions, and will lint your code for syntax errors and other problems.
-
-These features may be accessed via `composer cs` and `composer lint` commands, respectively. A [.editorconfig](/.editorconfig) file is provided pre-configured to maintain PSR-2 coventions in editors that support this feature.
-
-### GitHub contributing and issue templates ###
-
-GitHub has a feature that allows projects to define [pull request and issue templates](https://help.github.com/articles/about-issue-and-pull-request-templates/) which will be presented to users when a new issue or pull request is opened. Also, a [contributing document](https://help.github.com/articles/setting-guidelines-for-repository-contributors/) can be provided to explain project conventions to new users.
-
-Starter versions for all of these files are automatically added to your new project, and may be customized as needed. By default, the [CONTRIBUTING.md](CONTRIBUTING.md) file is added to the project root for better visiblity, but you may move it to the [.github](.github) directory if you prefer.
-
-### Commandline tool ###
-
-Your project will be set up to build a commandline tool, and also includes commands to package it as a phar using the [humbug/box](https://github.com/humbug/box) project. If your project is a library, you might still wish to include a commandline tool to provide ad-hoc usage to your library functions, either for testing purposes, or perhaps to directly edit any data stores managed by your library. The commandline tool dependencies are declared in the `require-dev` section, so they will not be pulled in when your project is included as the dependency of some other project.
-
-If you do not want the commandline tool, simply delete the directories `src/Cli` and `tests/ExampleCommandsTest.php`, and also remove the `phar:*` commands in your composer.json file, and the files `example` and `box.json.dist`.
-
-### Optimized composer.json ###
-
-The `composer.json` file included in the project pre-configures a few settings for convenience:
-
-- `optimize-autoloader`: Creates larger autoload files that find classes more quickly
-- `sort-packages`: Keeps the list of packages in alphabetic order
-- `platform:php`: Ensures that Composer will only select packages that are compatible with the stated minimum PHP version.
-
-### Optimized Composer dist releases ###
-
-Your project's [.gitattributes](/.gitattributes) file comes pre-configured to exclude unnecessary files in Composer `dist` releases.
-
-### Configuration files ###
-
-Your project will automatically read in a configuration file in yaml format that you may use for providing command option default values and storing other user-overridable settings. See [consolidation/config](https://github.com/consolidation/config) for more information.
+* [Composer](https://getcomposer.org/) - Dependency Management
+* [Robo](https://robo.li/) - PHP Task Runner
+* [Symfony](https://symfony.com/) - PHP Framework
 
 ## Contributing
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on the process for submitting pull requests to us.
 
+## Versioning
+
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [releases](https://github.com/jonpugh/ash-ops/releases) page.
+
+## Authors
+
+* **Jon Pugh** - created project from template.
+
+See also the list of [contributors](https://github.com/jonpugh/ash-ops/contributors) who participated in this project.
+
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
 ## Acknowledgments
 
-- This project makes heavy use of configuration techniques and code from [Drush](https://drush.org), [Robo PHP](https://robo.li) and other [Consolidation projects](https://github.com/consolidation).
-- The [KnpLabs github-api](https://github.com/KnpLabs/php-github-api) and [guzzle](http://docs.guzzlephp.org/en/stable/) made the API calls done by this project very easy.
+* @g1a for all that you do.
+* aegir, lando, docksal, ddev, etc
