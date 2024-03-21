@@ -15,6 +15,7 @@
     shell: /bin/bash
     system: true
     generate_ssh_key: true
+    groups: docker
 
 - name: Create Platform home directory
   file:
@@ -33,6 +34,7 @@
   user:
     name: "{{ ash_control_user }}"
     group: "{{ ash_control_user }}"
+    groups: docker
     home: "{{ ash_control_home }}"
     uid: "{{ ash_control_user_uid | default(omit) }}"
     shell: /bin/bash

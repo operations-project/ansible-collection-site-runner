@@ -6,7 +6,7 @@
 
   roles:
     - role: ash.users
-      tags: system
+      tags: ash
 
     - role: geerlingguy.security
       tags: system
