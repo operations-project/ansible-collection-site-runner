@@ -10,8 +10,8 @@
   become: true
   become_user: "{{ ash_platform_user }}"
 
-- name: ddev
-  command: ddev
+- name: Confirm ddev install
+  command: /usr/local/bin/ddev version
   args:
     chdir:  "{{ ash_platform_home }}"
   become: true
