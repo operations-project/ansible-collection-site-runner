@@ -1,0 +1,14 @@
+
+---
+- hosts: all
+  become: true
+  roles:
+    - role: geerlingguy.security
+    - role: geerlingguy.github-users
+    - role: geerlingguy.php
+    - role: geerlingguy.composer
+    - role: geerlingguy.docker
+
+  vars:
+    php_packages_extra:
+      - php-json
