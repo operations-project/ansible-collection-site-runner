@@ -45,6 +45,7 @@ jobs:
 
       - name: Set variables
         run: |
+          echo "DOCKER_HOSTNAME=ash.${{ env.ASH_NAME }}.local.computer" > .env
           echo "ash_github_runners:
           - repo_url: ${{ github.server_url	}}/${{ github.repository }}
             runner_token: ${{ secrets.RUNNER_TOKEN }}

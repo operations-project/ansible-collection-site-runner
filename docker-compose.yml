@@ -4,7 +4,7 @@
 services:
   ash:
     image: geerlingguy/docker-${MOLECULE_DISTRO:-rockylinux8}-ansible:latest
-    hostname: ash.local.computer
+    hostname: ${DOCKER_HOSTNAME:-ash.local.computer}
     cgroup: host
     cgroup_parent: docker.slice
     privileged: true
