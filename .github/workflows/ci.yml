@@ -26,14 +26,7 @@ jobs:
           - "8.1"
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Run Playbook
-        uses: arillso/action.playbook@master
-        with:
-          playbook: playbook.yml
-          inventory: hosts.example
-        env:
-          ANSIBLE_HOST_KEY_CHECKING: 'false'
-          ANSIBLE_DEPRECATION_WARNINGS: 'false'
+      - uses: actions/checkout@v3
+      - uses: php-actions/composer@v6
+      - name: Build Platform
+        run: composer start
