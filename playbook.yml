@@ -5,6 +5,9 @@
   become: true
 
   roles:
+    - role: ash.users
+      tags: system
+
     - role: geerlingguy.security
       tags: system
       vars:
@@ -17,9 +20,6 @@
   vars_files: playbook.vars.yml
 
   roles:
-    - role: ash.users
-      tags: ash
-
     - role: geerlingguy.php
       tags: system
       vars:
@@ -32,11 +32,5 @@
     - role: geerlingguy.docker
       tags: system
 
-  tasks:
-    # See https://ddev.readthedocs.io/en/latest/users/install/ddev-installation/#linux
-    - name: Install DDEV
+    - role: ash.ddev
       tags: ash
-      become: true
-      become_user: "{{ ash_control_user }}"
-      shell: "curl -fsSL https://ddev.com/install.sh > install.sh"
-

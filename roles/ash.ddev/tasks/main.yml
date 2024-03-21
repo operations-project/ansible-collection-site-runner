@@ -1,0 +1,10 @@
+---
+- name: Install ddev
+  shell: "curl -fsSL https://ddev.com/install.sh | bash"
+  become: true
+  become_user: "{{ ash_control_user }}"
+
+- name: ddev status
+  command: ddev status
+  become: true
+  become_user: "{{ ash_platform_user }}"
