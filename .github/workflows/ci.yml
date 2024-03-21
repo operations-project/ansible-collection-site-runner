@@ -21,8 +21,8 @@ jobs:
       matrix:
         include:
           - name: pr${{ github.event.number }}
-            token: ${{ secrets.RUNNER_TOKEN }}
-            repo_url: ${{ github.repositoryUrl }}
+            token: "${{ secrets.RUNNER_TOKEN }}"
+            repo_url: "${{ github.repositoryUrl }}"
             environment: test
 
     steps:
