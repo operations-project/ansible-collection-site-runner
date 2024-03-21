@@ -23,7 +23,11 @@ I am about to build this:
 
 1. Ash Ops Repo. (This repository)
     - Installed to `/usr/share/ash`, owned by `control`.
-    - Ansible Playbook.
+    - Ansible Playbook:
+      - `geerlingguy.security`
+      - `geerlingguy.github-users`
+      - `geerlingguy.composer`
+      - `geerlingguy.docker`
     - Composer Dependencies like `jonpugh/ash`
     - Installs Users, PHP, Composer, Docker, GitHub Runner, and Ash Cli.
     - Can be replaced with a custom version to allow control over server config.

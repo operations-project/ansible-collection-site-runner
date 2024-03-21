@@ -18,6 +18,9 @@
         "http-interop/http-factory-guzzle": "^1.0"
     },
     "scripts": {
+        "ansible:install": [
+            "ansible-galaxy install -r roles.yml -p roles --force"
+        ]
     },
     "config": {
         "optimize-autoloader": true,

@@ -1,0 +1,19 @@
+# For testing and development.
+
+---
+version: '3'
+services:
+  ash:
+    image: geerlingguy/docker-${MOLECULE_DISTRO:-rockylinux8}-ansible:latest
+    hostname: ash.local.computer
+# No Ports. Other containers provide the server.
+#    ports:
+#      - "80:80"
+#      - "443:443"
+    privileged: true
+    volumes:
+      - ./:/usr/share/ash
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+      - /etc/passwd:/etc/passwd
+    environment:
+      - ASH_OPS=yes
