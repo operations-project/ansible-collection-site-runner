@@ -21,6 +21,9 @@
         "dev:build": [
             "docker-compose exec ash ansible-playbook /usr/share/ash/playbook.yml"
         ],
+        "dev:shell": [
+            "docker-compose exec ash bash"
+        ],
         "dev:start": [
             "docker-compose up -d --build && docker-compose exec ash ansible-playbook /usr/share/ash/playbook.yml"
         ],
