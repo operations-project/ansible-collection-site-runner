@@ -77,22 +77,27 @@ Once the repo is cloned, ansible will set up the rest.
 
 ### Installing
 
+0. Install Ansible.
+
 1. Clone.
 
-        git clone git@github.com:jonpugh/ash-ops.git /usr/share/ash/ops
+        git clone git@github.com:jonpugh/ash-ops.git /usr/share/ash
 
-2. Configure GitHub Runner.
+2. Get a GitHub Runner token.
 
     1. Go to your repo, "Settings" > "Actions" > "Runners" > "New Runner".
-    2. Copy the token into the ansible variable `ash_ops_github_runner_token`.
-    3. Copy the github repo URL into the ansible variable `ash_ops_github_runner_repo`.
+    2. Copy the token for use later.
 
 3. Configure.
 
-  Set ansible variables in `/etc/ansible/hosts`:
+    Copy ansible inventory files in `./ansible` to `/etc/ansible`, then update the values.
 
-        ash_ops_users:
-            -  YourGitHubUser
+        cd /usr/share/ash
+        cp -rf ansible/* /etc/ansible
+
+    In `/etc/ansible/hosts`, put your server's hostname.
+
+    In `/etc/ansible/group_vars/ash_host.yml`, add the github users you wish to grant access, and set repo_url and the token.
 
 4. Install.
 
