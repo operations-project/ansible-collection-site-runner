@@ -11,7 +11,7 @@ services:
     volumes:
       - ./:/usr/share/ash
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
-      - ./docker-vars.yml:/etc/ansible/host_vars/ash.local.computer
+      - ./ansible:/etc/ansible
     environment:
       - ASH_OPS=yes
     build: ./

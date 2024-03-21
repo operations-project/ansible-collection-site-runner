@@ -1,14 +1,42 @@
 
 ---
-- hosts: all
+- hosts: ash_managed
+  vars_files: playbook.vars.yml
   become: true
+
   roles:
     - role: geerlingguy.security
-    - role: geerlingguy.github-users
-    - role: geerlingguy.php
-    - role: geerlingguy.composer
-    - role: geerlingguy.docker
+      tags: system
+      vars:
+        security_sudoers_passwordless: "{{ ['control'] + ash_admin_users }}"
 
-  vars:
-    php_packages_extra:
-      - php-json
+    - role: geerlingguy.github-users
+      tags: system
+
+- hosts: ash_host
+  vars_files: playbook.vars.yml
+
+  roles:
+    - role: ash.users
+      tags: ash
+
+    - role: geerlingguy.php
+      tags: system
+      vars:
+        php_packages_extra:
+          - php-json
+
+    - role: geerlingguy.composer
+      tags: system
+
+    - role: geerlingguy.docker
+      tags: system
+
+  tasks:
+    # See https://ddev.readthedocs.io/en/latest/users/install/ddev-installation/#linux
+    - name: Install DDEV
+      tags: ash
+      become: true
+      become_user: "{{ ash_control_user }}"
+      shell: "curl -fsSL https://ddev.com/install.sh > install.sh"
+
