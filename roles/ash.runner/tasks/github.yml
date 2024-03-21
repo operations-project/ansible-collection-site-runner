@@ -4,16 +4,18 @@
 - name: Install GitHub Runner
   shell:
     cmd: "{{ item }}"
+    creates: "{{ ash_github_runner_path }}"
   with_items:
     - mkdir {{ ash_github_runner_path }} -p
     - curl -o {{ ash_github_runner_path }}/actions-runner-linux-x64-2.314.1.tar.gz -L https://github.com/actions/runner/releases/download/v2.314.1/actions-runner-linux-x64-2.314.1.tar.gz
     - cd {{ ash_github_runner_path }} && tar xzf {{ ash_github_runner_path }}/actions-runner-linux-x64-2.314.1.tar.gz
     - cd {{ ash_github_runner_path }} && ./bin/installdependencies.sh
     - chown {{ ash_platform_user }}:{{ ash_platform_user }} {{ ash_github_runner_path }} -R
+    - cd {{ ash_github_runner_path }} && ./bin/installdependencies.sh
 
 - name: Configure GitHub Runner
-  command:
-    cmd: ./config.sh --url {{ item.repo_url }} --token {{ item.runner_token }}
+  shell:
+    cmd: "./config.sh remove --token {{ item.runner_token }} && ./config.sh --url {{ item.repo_url }} --token {{ item.runner_token }} --name {{ item.runner_name }} --labels {{ item.runner_labels }}"
     chdir: "{{ ash_github_runner_path }}"
   become: true
   become_user: "{{ item.user }}"
