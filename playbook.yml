@@ -5,9 +5,6 @@
   become: true
 
   roles:
-    - role: ash.users
-      tags: ash
-
     - role: geerlingguy.security
       tags: system
       vars:
@@ -31,6 +28,9 @@
 
     - role: geerlingguy.docker
       tags: system
+
+    - role: ash.users
+      tags: ash
 
     - role: ash.ddev
       tags: ash, ddev
