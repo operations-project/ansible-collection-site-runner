@@ -1,0 +1,3 @@
+# Copy to your /etc/ansible/hosts and change to your server's hostname.
+[local]
+localhost ansible_connection=local
