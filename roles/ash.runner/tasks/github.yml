@@ -1,0 +1,6 @@
+---
+
+# See
+
+- name: Install GitHub Runner
+  shell: curl -s -L https://example.com/archive.tar.gz | tar xvz - -C /usr/share/github-runner
