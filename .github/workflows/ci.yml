@@ -30,5 +30,8 @@ jobs:
         with:
           show-progress: false
       - uses: php-actions/composer@v6
+      - name: Information
+        run: |
+          docker-compose --version
       - name: Build Platform
         run: composer dev:start
