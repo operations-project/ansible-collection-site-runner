@@ -33,12 +33,22 @@ jobs:
         run: |
           docker-compose --version
 
+      # github.ref_name is the branch name on branch builds.
+      # On PRs ref_name is `PR#/merge`.
+      - name: Set runner name
+        if: github.event_name != 'pull_request'
+        run: echo "ASH_NAME=${{ github.ref_name }}" >> "$GITHUB_ENV"
+
+      - name: Set runner name
+        if: github.event_name == 'pull_request'
+        run: echo "ASH_NAME=pr${{ github.event.number }}" >> "$GITHUB_ENV"
+
       - name: Set variables
         run: |
           echo "ash_github_runners:
           - repo_url: ${{ github.repositoryUrl }}
             runner_token: ${{ secrets.RUNNER_TOKEN }}
-            runner_name:  pr${{ github.event.number }}
+            runner_name:  ${{ env.ASH_NAME }}
             runner_labels: ci,ash
             user: platform
           " > vars.ci.yml
