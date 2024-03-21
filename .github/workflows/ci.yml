@@ -43,14 +43,14 @@ jobs:
 
       - name: Set variables
         run: |
-          echo "
-          ash_github_runners:
+          echo "ash_github_runners:
           - repo_url: {{ github.repositoryUrl }}
             runner_token: {{ secrets.RUNNER_TOKEN }}
             runner_name:  "ash.pr${{ github.event.number }}"
             runner_labels: ci,ash
             user: platform
           " > vars.ci.yml
+          cat vars.ci.yml
 
       - name: Build Platform
         run: composer dev:start -- --extra-vars=@/usr/share/ash/vars.ci.yml
