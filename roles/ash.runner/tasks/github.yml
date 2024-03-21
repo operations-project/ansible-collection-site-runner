@@ -15,7 +15,7 @@
 
 - name: Configure GitHub Runner
   shell:
-    cmd: "cd {{ ash_github_runner_path }} && ./config.sh remove --token {{ item.runner_token }} && ./config.sh --url {{ item.repo_url }} --token {{ item.runner_token }} --name {{ item.runner_name }} --labels {{ item.runner_labels }}"
+    cmd: "cd {{ ash_github_runner_path }} && ./config.sh remove --token {{ item.runner_token }} && ./config.sh --unattended --url {{ item.repo_url }} --token {{ item.runner_token }} --name {{ item.runner_name }} --labels {{ item.runner_labels }}"
     chdir: "{{ ash_github_runner_path }}"
   become: true
   become_user: "{{ item.user }}"
