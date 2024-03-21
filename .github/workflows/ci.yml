@@ -27,6 +27,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          show-progress: false
       - uses: php-actions/composer@v6
       - name: Build Platform
         run: composer dev:start
