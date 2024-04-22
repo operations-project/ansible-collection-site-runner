@@ -4,7 +4,6 @@
 - name: Install GitHub Runner
   shell:
     cmd: "{{ item }}"
-    creates: "{{ ash_github_runner_path }}"
   with_items:
     - mkdir {{ ash_github_runner_path }} -p
     - curl -o {{ ash_github_runner_path }}/actions-runner-linux-x64-2.314.1.tar.gz -L https://github.com/actions/runner/releases/download/v2.314.1/actions-runner-linux-x64-2.314.1.tar.gz
@@ -14,26 +13,18 @@
     - cd {{ ash_github_runner_path }} && ./bin/installdependencies.sh
     - ls -la {{ ash_github_runner_path }}
 
-- name: Detect Service
-  stat:
-    path: "{{ ash_github_runner_path }}/.runner"
-  register: runner_configured
-
-- name: Uninstall runner and service.
-  shell:
-    cmd: "cd {{ ash_github_runner_path }} && ./svc.sh stop && ./svc.sh uninstall"
-  ignore_errors: true
-  with_items: "{{ ash_github_runners }}"
-
 - name: Configure GitHub Runner
   shell:
     cmd: "cd {{ ash_github_runner_path }} && ./config.sh remove --token {{ item.runner_token }} && ./config.sh --replace --unattended --url {{ item.repo_url }} --token {{ item.runner_token }} --name {{ item.runner_name }} --labels {{ item.runner_labels }}"
-    creates: "{{ ash_github_runner_path }}/.runner"
+    chdir: "{{ ash_github_runner_path }}"
   become: true
   become_user: "{{ item.user }}"
   with_items: "{{ ash_github_runners }}"
 
-- name: Install GitHub Service
-  shell:
-    chdir: "{{ ash_github_runner_path }}"
-    cmd: "./svc.sh install {{ ash_platform_user }} && ./svc.sh start"
+#- name: Add GitHub Runner Service
+#  shell:
+#    cmd: "cd {{ ash_github_runner_path }} && ./config.sh remove --token {{ item.runner_token }} && ./config.sh --unattended --url {{ item.repo_url }} --token {{ item.runner_token }} --name {{ item.runner_name }} --labels {{ item.runner_labels }}"
+#    chdir: "{{ ash_github_runner_path }}"
+#  become: true
+#  become_user: "{{ item.user }}"
+#  with_items: "{{ ash_github_runners }}"
