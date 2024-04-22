@@ -61,4 +61,4 @@ jobs:
           cat ansible/host_vars/${{ env.ASH_ENVIRONMENT_NAME }}.yml
 
       - name: Build Platform
-        run: composer dev:startk
+        run: composer dev:start
