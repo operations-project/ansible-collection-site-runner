@@ -71,4 +71,4 @@ jobs:
         run: |
           docker-compose exec -u platform ash whoami
           docker-compose exec -u platform ash hostname
-          ddev
+          docker-compose exec -u platform ash ddev
