@@ -66,3 +66,8 @@ jobs:
 
       - name: Build Platform
         run: composer dev:start
+
+      - name: Test Platform
+        run: |
+          docker-compose exec -u platform ash whoami
+          docker-compose exec -u platform ash hostname
