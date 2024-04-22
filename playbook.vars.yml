@@ -1,3 +1,4 @@
+ash_admin_users: []
 
 ash_control_user: control
 ash_control_home: /var/control
