@@ -50,7 +50,7 @@ jobs:
 
       - name: Set variables
         run: |
-          echo -e '[local]\n${{ env.ASH_ENVIRONMENT_NAME }} ansible_connection=local' > /etc/ansible/hosts
+          echo -e '[local]\n${{ env.ASH_ENVIRONMENT_NAME }} ansible_connection=local' > ./ansible/hosts
           echo "DOCKER_HOSTNAME=${{ env.ASH_ENVIRONMENT_NAME }}" > .env
           echo "# CI variables set!
           ash_admin_users:
@@ -61,8 +61,8 @@ jobs:
             runner_name:  ${{ env.ASH_ENVIRONMENT_NAME }}
             runner_labels: ci
             user: platform
-          " > ansible/host_vars/${{ env.ASH_ENVIRONMENT_NAME }}.yml
-          cat ansible/host_vars/${{ env.ASH_ENVIRONMENT_NAME }}.yml
+          " > ./ansible/host_vars/${{ env.ASH_ENVIRONMENT_NAME }}.yml
+          cat ./ansible/host_vars/${{ env.ASH_ENVIRONMENT_NAME }}.yml
 
       - name: Build Platform
         run: composer dev:start
