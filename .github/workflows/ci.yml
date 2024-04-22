@@ -50,7 +50,7 @@ jobs:
 
       - name: Set variables
         run: |
-          echo -e '[local]\n${{ env.ASH_ENVIRONMENT_NAME }} ansible_connection=local' > ./ansible/hosts
+          echo -e '[ash_host]\n${{ env.ASH_ENVIRONMENT_NAME }} ansible_connection=local' > ./ansible/hosts
           echo "DOCKER_HOSTNAME=${{ env.ASH_ENVIRONMENT_NAME }}" > .env
           echo "# CI variables set!
           ash_admin_users:
