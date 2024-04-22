@@ -53,7 +53,6 @@ jobs:
           echo -e '[local]\n${{ env.ASH_ENVIRONMENT_NAME }} ansible_connection=local' > /etc/ansible/hosts
           echo "DOCKER_HOSTNAME=${{ env.ASH_ENVIRONMENT_NAME }}" > .env
           echo "# CI variables set!
-          ansible_host: ${{ env.ASH_ENVIRONMENT_NAME }}
           ash_github_runners:
           - repo_url: ${{ github.server_url	}}/${{ github.repository }}
             runner_token: ${{ secrets.RUNNER_TOKEN }}
