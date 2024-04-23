@@ -11,7 +11,7 @@ There are two choices for LICENSE badges:
 1. License using shields.io (above): Can contain any text you want, and has no prerequisites, but must be manually updated if you change the license.
 2. License using poser.pugx.org (below): shows the license that Packagist.org read from your composer.json file. Must register with Packagist to use Poser.
 
-[![License](https://poser.pugx.org/jonpugh/ash-ops/license)](https://github.com/jonpugh/ash-ops//master/LICENSE)
+[![License](https://poser.pugx.org/operations-platform/platform)](https://github.com/operations-platform/platform//main/LICENSE)
 -->
 
 ## Documentation
