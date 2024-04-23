@@ -60,7 +60,7 @@ This is a very young project still in the proof of concept phase. More informati
 
 ### Links
 
-- [GitHub issue templates](https://github.com/jonpugh/ash-ops/issues/templates/edit)
+- [GitHub issue templates](https://github.com/operations-platform/platform/issues/templates/edit)
 - [GitHub pull request template](/.github/pull_request_template.md)
 - [Contributing guide](/CONTRIBUTING) (Decide about your code of conduct)
 
@@ -94,7 +94,7 @@ Once the repo is cloned, ansible will set up the rest.
 
     Copy ansible inventory files in `./ansible` to `/etc/ansible`, then update the values.
 
-        cd /usr/share/ash
+        cd /usr/share/operations
         cp -rf ansible/* /etc/ansible
 
     In `/etc/ansible/hosts`, put your server's hostname.
@@ -103,7 +103,7 @@ Once the repo is cloned, ansible will set up the rest.
 
 4. Install.
 
-        ansible-playbook /usr/share/ash/playbook.install.yml
+        ansible-playbook /usr/share/operations/playbook.yml
 
 ## Built With
 
@@ -120,13 +120,13 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on the process for su
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [releases](https://github.com/jonpugh/ash-ops/releases) page.
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [releases](https://github.com/operations-platform/platform/releases) page.
 
 ## Authors
 
 * **Jon Pugh** - created project from template.
 
-See also the list of [contributors](https://github.com/jonpugh/ash-ops/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/operations-platform/platform/contributors) who participated in this project.
 
 ## License
 

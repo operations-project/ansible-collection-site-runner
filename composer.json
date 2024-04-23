@@ -19,13 +19,13 @@
     },
     "scripts": {
         "dev:build": [
-            "docker-compose exec operations ansible-playbook /usr/share/ash/playbook.yml"
+            "docker-compose exec operations ansible-playbook /usr/share/operations/playbook.yml"
         ],
         "dev:shell": [
             "docker-compose exec operations bash"
         ],
         "dev:start": [
-            "docker-compose up -d --build && docker-compose exec operations ansible-playbook /usr/share/ash/playbook.yml"
+            "docker-compose up -d --build && docker-compose exec operations ansible-playbook /usr/share/operations/playbook.yml"
         ],
         "dev:destroy": [
             "docker-compose kill && docker-compose rm -fv"

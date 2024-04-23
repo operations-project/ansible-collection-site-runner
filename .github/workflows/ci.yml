@@ -40,13 +40,13 @@ jobs:
         if: github.event_name != 'pull_request'
         run: |
           echo "OPERATIONS_NAME=${{ github.ref_name }}" >> "$GITHUB_ENV"
-          echo "OPERATIONS_ENVIRONMENT_NAME=ash.${{ github.ref_name }}.local.computer" >> "$GITHUB_ENV"
+          echo "OPERATIONS_ENVIRONMENT_NAME=operations.${{ github.ref_name }}.local.computer" >> "$GITHUB_ENV"
 
       - name: Set runner name
         if: github.event_name == 'pull_request'
         run: |
           echo "OPERATIONS_NAME=pr${{ github.event.number }}" >> "$GITHUB_ENV"
-          echo "OPERATIONS_ENVIRONMENT_NAME=ash.pr${{ github.event.number }}.local.computer" >> "$GITHUB_ENV"
+          echo "OPERATIONS_ENVIRONMENT_NAME=operations.pr${{ github.event.number }}.local.computer" >> "$GITHUB_ENV"
 
       - name: Set variables
         run: |
@@ -69,6 +69,6 @@ jobs:
 
       - name: Test Platform
         run: |
-          docker-compose exec -u platform ash whoami
-          docker-compose exec -u platform ash hostname
-          docker-compose exec -u platform ash ddev
+          docker-compose exec -u platform operations whoami
+          docker-compose exec -u platform operations hostname
+          docker-compose exec -u platform operations ddev
