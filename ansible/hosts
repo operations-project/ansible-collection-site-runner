@@ -4,5 +4,7 @@
 # replace "localhost" with the FQDN of this server.
 # (optional. This just puts it in the ansible output, which is nice.)
 #
-
+# Install the desired hosting engine by adding it to the right group, as defined in "hosts" in playbook.yml "Configure Hosting: DDEV".
+#
+[operations_host_ddev]
 localhost ansible_connection=local

@@ -1,6 +1,7 @@
 
 ---
-- hosts: all
+- name: Configure Server
+  hosts: all
   vars_files: playbook.vars.yml
   become: true
 
@@ -13,7 +14,8 @@
     - role: geerlingguy.github-users
       tags: system
 
-- hosts: operations_host
+- name: "Configure Hosting: DDEV"
+  hosts: operations_host_ddev
   vars_files: playbook.vars.yml
 
   roles:
