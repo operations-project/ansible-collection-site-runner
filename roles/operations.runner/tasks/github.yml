@@ -1,0 +1,30 @@
+---
+
+# See Your repo > Settings > Actions > Runner > New Runner
+- name: Install GitHub Runner
+  shell:
+    cmd: "{{ item }}"
+  with_items:
+    - mkdir {{ operations_github_runner_path }} -p
+    - curl -o {{ operations_github_runner_path }}/actions-runner-linux-x64-2.314.1.tar.gz -L https://github.com/actions/runner/releases/download/v2.314.1/actions-runner-linux-x64-2.314.1.tar.gz
+    - cd {{ operations_github_runner_path }} && tar xzf {{ operations_github_runner_path }}/actions-runner-linux-x64-2.314.1.tar.gz
+    - cd {{ operations_github_runner_path }} && ./bin/installdependencies.sh
+    - chown {{ operations_platform_user }}:{{ operations_platform_user }} {{ operations_github_runner_path }} -R
+    - cd {{ operations_github_runner_path }} && ./bin/installdependencies.sh
+    - ls -la {{ operations_github_runner_path }}
+
+- name: Configure GitHub Runner
+  shell:
+    cmd: "cd {{ operations_github_runner_path }} && ./config.sh remove --token {{ item.runner_token }} && ./config.sh --replace --unattended --url {{ item.repo_url }} --token {{ item.runner_token }} --name {{ item.runner_name }} --labels {{ item.runner_labels }}"
+    chdir: "{{ operations_github_runner_path }}"
+  become: true
+  become_user: "{{ item.user }}"
+  with_items: "{{ operations_github_runners }}"
+
+#- name: Add GitHub Runner Service
+#  shell:
+#    cmd: "cd {{ operations_github_runner_path }} && ./config.sh remove --token {{ item.runner_token }} && ./config.sh --unattended --url {{ item.repo_url }} --token {{ item.runner_token }} --name {{ item.runner_name }} --labels {{ item.runner_labels }}"
+#    chdir: "{{ operations_github_runner_path }}"
+#  become: true
+#  become_user: "{{ item.user }}"
+#  with_items: "{{ operations_github_runners }}"

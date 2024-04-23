@@ -1,0 +1,49 @@
+---
+
+- name: Create Platform group
+  group:
+    name: "{{ operations_platform_user }}"
+    state: present
+    gid: "{{ operations_platform_user_gid | default(omit) }}"
+
+- name: Create Platform user
+  user:
+    name: "{{ operations_platform_user }}"
+    group: "{{ operations_platform_user }}"
+    home: "{{ operations_platform_home }}"
+    uid: "{{ operations_platform_user_uid | default(omit) }}"
+    shell: /bin/bash
+    system: true
+    generate_ssh_key: true
+    groups: docker
+
+- name: Create Platform home directory
+  file:
+    state: directory
+    path: "{{ operations_platform_home }}"
+    group: "{{ operations_platform_user }}"
+    owner: "{{ operations_platform_user }}"
+
+- name: Create Control group
+  group:
+    name: "{{ operations_control_user }}"
+    state: present
+    gid: "{{ operations_control_user_gid | default(omit) }}"
+
+- name: Create Control user
+  user:
+    name: "{{ operations_control_user }}"
+    group: "{{ operations_control_user }}"
+    groups: docker
+    home: "{{ operations_control_home }}"
+    uid: "{{ operations_control_user_uid | default(omit) }}"
+    shell: /bin/bash
+    system: true
+    generate_ssh_key: true
+
+- name: Create Control home directory
+  file:
+    state: directory
+    path: "{{ operations_control_home }}"
+    group: "{{ operations_control_user }}"
+    owner: "{{ operations_control_user }}"

@@ -99,7 +99,7 @@ Once the repo is cloned, ansible will set up the rest.
 
     In `/etc/ansible/hosts`, put your server's hostname.
 
-    In `/etc/ansible/group_vars/ash_host.yml`, add the github users you wish to grant access, and set repo_url and the token.
+    In `/etc/ansible/group_vars/operations_host.yml`, add the github users you wish to grant access, and set repo_url and the token.
 
 4. Install.
 
