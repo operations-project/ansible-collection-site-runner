@@ -1,6 +1,7 @@
-# AshOps
+# Operations Platform
+## Self-hosted web app automation.
 
-Install stuff for creating an automation platform for websites using the Ash Cli and GitOps tools like GitHub Workflows and BitBucket Pipelines.
+Installation scripts for creating an automation platform for websites using GitOps tools like GitHub Workflows and BitBucket Pipelines.
 
 [![License](https://img.shields.io/badge/license-MIT-408677.svg)](LICENSE)
 
@@ -13,48 +14,49 @@ There are two choices for LICENSE badges:
 [![License](https://poser.pugx.org/jonpugh/ash-ops/license)](https://github.com/jonpugh/ash-ops//master/LICENSE)
 -->
 
-More coming soon.
-
 ## Documentation
 
-### Architecture Plan
+This is a very young project still in the proof of concept phase. More information will be added when possible.
 
-I am about to build this:
+### Architecture
 
-1. Ash Ops Repo. (This repository)
-    - Installed to `/usr/share/ash`, owned by `control`.
+1. **Operations Platform** (This repository)
+    - An Ansible Collection. Set of roles and configuration for bootstrapping a server to run sites.
+    - Installed to `/usr/share/operations`.
     - Ansible Playbook:
       - `geerlingguy.security`
       - `geerlingguy.github-users`
       - `geerlingguy.composer`
       - `geerlingguy.docker`
-    - Composer Dependencies like `jonpugh/ash`
-    - Installs Users, PHP, Composer, Docker, GitHub Runner, and Ash Cli.
-    - Can be replaced with a custom version to allow control over server config.
-    - Control User GitHub runner updates this repo and kicks off playbook when new commits are pushed.
-2. Task Runners
-    - App repo runners run as a service under `platform` user.
-    - Responsible for responding to git pushes, cloning code into environments, and starting services.
+    - Installs system users, Docker, Composer, GitHub Runner, & DDEV. (More engines TBD)
+    - @TODO: Self-updating: Control User GitHub runner updates this repo and kicks off playbook when new commits are pushed for changing server config.
+    - **Users:**
+      - Special users are created to manage the server.
+      - Control user (`control`) is for server updates. It has `sudo NOPASSWD` permissions to allow self-configuration. If using multiple servers, this user will have SSH access to those servers in order to configure them remotely.
+      - Platform user (`platform`) is used for all app code. All apps are cloned into the home directory, `/var/platform`. The `platform` user has SSH access to clone repositories and access remote servers. The `platform` user runs the commands needed to launch sites, such as `ddev`.
+      - System Administrators can be set by adding their GitHub username to the ansible variable `operations_admin_users`. Each user will be granted server access via the SSH keys uploaded to GitHub.com, and `sudo NOPASSWD` permissions to allow manual maintenance of the server.
+    - **Service Engines**
+      - Operations platform relies on other tools for launching sites.
+      - "Service Engines" will make it simple to plug in any desired tooling to start, stop, destroy, and restore/sync sites by simply wrapping the tool's commands.
+      - DDEV is used as the first service engine as a proof of concept.
+      - More will be added whenever time allows.
+
+2. **Git Runners**
+    - This role installs and configures private Git Runners.
+    - All needed operations are run through the Git host's "Workflows" or "Pipelines" system, including deployments, cron jobs, backups, etc.
+    - Runners listen for events like git pushes or issue creation and then take the actions defined by the git-ops configuration files, without webhooks. This allows privately hosted servers to run sites without forcing users to grant access to the internet.
+    - All tasks are logged in the web interfaces of the git hosts. No other task runner (such as jenkins) is needed.
     - Runner Documentation
         - [GitHub](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners)
         - [BitBucket](https://support.atlassian.com/bitbucket-cloud/docs/runners/) @TODO
         - [GitLab](https://docs.gitlab.com/runner/) @TODO
-5. Users
-    - Control user (`control`) has `sudo NOPASSWD` permissions to allow automation.
-    - Platform user (`platform`) has `docker` permissions only, plus SSH access to clone repositories and access remote servers.
-    - Admin users will all ssh in with their own usernames, and `sudo su` to `platform` or `control` as needed.
-2. Ash CLI
-    - Available at `/usr/share/ash/bin/ash`
-    - Runs under `platform` user.
-    - Site inventory.
-3. App repo.
-   - Website code.
-   - Runner config.
-4. Service CLI
-    - The thing that launches services for a site.
-    - Right now, it's DDEV.
-    - Runners clone the code, then run the service CLI commands as defined in runner config files.
-
+3. **Git Runner config**
+    - Each project must contain workflow/pipeline configuration files specifically for that git host that works with the private runners.
+    - Example config files are located in the (Templates)[./templates] folder (Coming soon).
+4. **Operations Dashboard / Site Manager**
+   - With this system, the git host is the only interface that is needed.
+   - The [Site Manager module](https://www.drupal.org/project/site_manager) can be used to create an "Operations Dashboard" for keeping track of all the created sites in a CMS-like experience.
+   - [Site.module](https://www.drupal.org/project/site) can be deployed to hosted sites and configured to post updates back to the Operations Dashboard.
 
 ### Links
 
@@ -77,11 +79,11 @@ Once the repo is cloned, ansible will set up the rest.
 
 ### Installing
 
-0. Install Ansible.
+0. Install Ansible & git.
 
 1. Clone.
 
-        git clone git@github.com:jonpugh/ash-ops.git /usr/share/ash
+        git clone git@github.com:operations-platform/platform.git /usr/share/operations
 
 2. Get a GitHub Runner token.
 
@@ -110,6 +112,7 @@ List significant dependencies that developers of this project will interact with
 * [Composer](https://getcomposer.org/) - Dependency Management
 * [Robo](https://robo.li/) - PHP Task Runner
 * [Symfony](https://symfony.com/) - PHP Framework
+* [Ansible](https://ansible.com) - System Configuration Platform
 
 ## Contributing
 
