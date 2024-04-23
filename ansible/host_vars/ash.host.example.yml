@@ -1,5 +1,8 @@
+#
+# Use a host_vars file to save server-specific variables.
+# Copy this file to one named after the server FQDN.
 
-# Set a list of github usernames to:
+# Add users. For each 'ash_admin_users':
 # - Create a system user with sudo privileges.
 # - Add all of the users's Github SSH keys to authorized_keys.
 #
@@ -8,16 +11,11 @@
 ash_admin_users:
   - jonpugh
 
-
-# Pass the list of users to geerlingguy.security and geerlingguy.github.
-security_ssh_allowed_users: "{{ ash_admin_users }}"
-github_users: "{{ ash_admin_users }}"
-security_sudoers_passwordless: "{{ ash_admin_users }}"
-
+#
 # Replace with your repo information. Get the runner token under Settings > Actions > Runners > New Runner
 ash_github_runners:
   - repo_url: https://github.com/jonpugh/ash-ops
-    runner_token: AAAZ7ND5U5YBRA6D5PFS5TTF7R6RY
+    runner_token: CopyFromAddRunnerPage
     runner_name: "{{ inventory_hostname }}"
     runner_labels: local,ash
     user: platform

@@ -1,6 +1,6 @@
 
 ---
-- hosts: ash_managed
+- hosts: all
   vars_files: playbook.vars.yml
   become: true
 

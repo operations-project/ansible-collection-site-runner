@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+
       PHP_EXTENSIONS: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter
 
     steps:
@@ -37,23 +38,37 @@ jobs:
       # On PRs ref_name is `PR#/merge`.
       - name: Set runner name
         if: github.event_name != 'pull_request'
-        run: echo "ASH_NAME=${{ github.ref_name }}" >> "$GITHUB_ENV"
+        run: |
+          echo "ASH_NAME=${{ github.ref_name }}" >> "$GITHUB_ENV"
+          echo "ASH_ENVIRONMENT_NAME=ash.${{ github.ref_name }}.local.computer" >> "$GITHUB_ENV"
 
       - name: Set runner name
         if: github.event_name == 'pull_request'
-        run: echo "ASH_NAME=pr${{ github.event.number }}" >> "$GITHUB_ENV"
+        run: |
+          echo "ASH_NAME=pr${{ github.event.number }}" >> "$GITHUB_ENV"
+          echo "ASH_ENVIRONMENT_NAME=ash.pr${{ github.event.number }}.local.computer" >> "$GITHUB_ENV"
 
       - name: Set variables
         run: |
-          echo "DOCKER_HOSTNAME=ash.${{ env.ASH_NAME }}.local.computer" > .env
-          echo "ash_github_runners:
+          echo -e '[ash_host]\n${{ env.ASH_ENVIRONMENT_NAME }} ansible_connection=local' > ./ansible/hosts
+          echo "DOCKER_HOSTNAME=${{ env.ASH_ENVIRONMENT_NAME }}" > .env
+          echo "# CI variables set!
+          ash_admin_users:
+          - jonpugh
+          ash_github_runners:
           - repo_url: ${{ github.server_url	}}/${{ github.repository }}
             runner_token: ${{ secrets.RUNNER_TOKEN }}
-            runner_name:  ash.${{ env.ASH_NAME }}.github.actions
-            runner_labels: ci,ash
+            runner_name:  ${{ env.ASH_ENVIRONMENT_NAME }}
+            runner_labels: ci
             user: platform
-          " > vars.ci.yml
-          cat vars.ci.yml
+          " > ./ansible/host_vars/${{ env.ASH_ENVIRONMENT_NAME }}.yml
+          cat ./ansible/host_vars/${{ env.ASH_ENVIRONMENT_NAME }}.yml
 
       - name: Build Platform
-        run: composer dev:start -- --extra-vars=@/usr/share/ash/vars.ci.yml
+        run: composer dev:start
+
+      - name: Test Platform
+        run: |
+          docker-compose exec -u platform ash whoami
+          docker-compose exec -u platform ash hostname
+          docker-compose exec -u platform ash ddev

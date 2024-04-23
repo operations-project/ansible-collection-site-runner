@@ -1,10 +1,8 @@
 #
 # Place in /etc/ansible/hosts
 # This defines your local system.
-# replace "ash.local.computer" with the FQDN of this server.
+# replace "localhost" with the FQDN of this server.
+# (optional. This just puts it in the ansible output, which is nice.)
 #
-[ash_host]
-ash.local.computer ansible_connection=local
 
-[ash_managed:children]
-ash_host
+localhost ansible_connection=local
