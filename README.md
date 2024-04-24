@@ -137,6 +137,7 @@ Once the repo is cloned, ansible will set up the rest.
 
         cd /usr/share/operations
         cp -rf ansible/* /etc/ansible
+        cp /etc/ansible/hosts.default /etc/ansible/host_vars/$SERVER_HOSTNAME.yml
         cp /etc/ansible/host_vars/operations.host.example.yml /etc/ansible/host_vars/$SERVER_HOSTNAME.yml
 
     Edit `/etc/ansible/hosts`, replace `localhost` with your `$SERVER_HOSTNAME`.
