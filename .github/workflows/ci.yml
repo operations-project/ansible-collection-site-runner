@@ -48,6 +48,11 @@ jobs:
           echo "OPERATIONS_NAME=pr${{ github.event.number }}" >> "$GITHUB_ENV"
           echo "OPERATIONS_ENVIRONMENT_NAME=operations.pr${{ github.event.number }}.local.computer" >> "$GITHUB_ENV"
 
+      - name: Set ansible inventory hostname
+        run: |
+          echo "[operations_host_ddev]
+          ${{ env.OPERATIONS_ENVIRONMENT_NAME }} ansible_connection=local" > ./ansible/hosts
+
       - name: Set variables
         run: |
           echo "DOCKER_HOSTNAME=${{ env.OPERATIONS_ENVIRONMENT_NAME }}" > .env
