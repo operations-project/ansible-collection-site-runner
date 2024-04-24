@@ -10,7 +10,7 @@ There are two choices for LICENSE badges:
 1. License using shields.io (above): Can contain any text you want, and has no prerequisites, but must be manually updated if you change the license.
 2. License using poser.pugx.org (below): shows the license that Packagist.org read from your composer.json file. Must register with Packagist to use Poser.
 
-[![License](https://poser.pugx.org/operations-platform/git-runners)](https://github.com/operations-platform/git-runners//main/LICENSE)
+[![License](https://poser.pugx.org/operations-platform/site-server)](https://github.com/operations-platform/site-server//main/LICENSE)
 -->
 
 This code sets up a server for launching and testing websites using GitOps tools like GitHub Actions and hosting tools like DDEV.
@@ -101,7 +101,7 @@ This is a very young project still in the proof of concept phase. More informati
 
 ### Links
 
-- [GitHub issue templates](https://github.com/operations-platform/git-runners/issues/templates/edit)
+- [GitHub issue templates](https://github.com/operations-platform/site-server/issues/templates/edit)
 - [GitHub pull request template](/.github/pull_request_template.md)
 - [Contributing guide](/CONTRIBUTING) (Decide about your code of conduct)
 
@@ -124,7 +124,7 @@ Once the repo is cloned, ansible will set up the rest.
 
 1. Clone.
 
-        git clone git@github.com:operations-platform/git-runners.git /usr/share/operations
+        git clone git@github.com:operations-platform/site-server.git /usr/share/operations
 
 2. Get a GitHub Runner token.
 
@@ -137,10 +137,11 @@ Once the repo is cloned, ansible will set up the rest.
 
         cd /usr/share/operations
         cp -rf ansible/* /etc/ansible
+        cp /etc/ansible/host_vars/operations.host.example.yml /etc/ansible/host_vars/$SERVER_HOSTNAME.yml
 
-    In `/etc/ansible/hosts`, put your server's hostname.
+    Edit `/etc/ansible/hosts`, replace `localhost` with your `$SERVER_HOSTNAME`.
 
-    In `/etc/ansible/group_vars/operations_host.yml`, add the github users you wish to grant access, and set repo_url and the token.
+    Edit `/etc/ansible/host_vars/$SERVER_HOSTNAME.yml` to your own project settings.
 
 4. Install.
 
@@ -161,13 +162,13 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on the process for su
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [releases](https://github.com/operations-platform/git-runners/releases) page.
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [releases](https://github.com/operations-platform/site-server/releases) page.
 
 ## Authors
 
 * **Jon Pugh** - created project from template.
 
-See also the list of [contributors](https://github.com/operations-platform/git-runners/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/operations-platform/site-server/contributors) who participated in this project.
 
 ## License
 
