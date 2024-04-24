@@ -18,6 +18,7 @@
 
 - name: "Configure Hosting: DDEV"
   hosts: operations_host_ddev
+  become: true
 
   roles:
     - role: geerlingguy.php
