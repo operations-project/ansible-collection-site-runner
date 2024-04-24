@@ -1,6 +1,6 @@
-# Operations Hosting Platform
-## Simple self-hosted web app automation.
+# Operations Platform Host
 
+## Simple self-hosted web app automation.
 
 [![License](https://img.shields.io/badge/license-MIT-408677.svg)](LICENSE)
 
@@ -15,9 +15,9 @@ There are two choices for LICENSE badges:
 
 This code sets up a server for launching websites using GitOps tools like GitHub Actions and hosting tools like DDEV.
 
-The goal is to quickly launch running environments on any server for automated and manual testing.
+The goal is to quickly launch running environments on any server for automated and manual testing, integrated directly with GitOps APIs.
 
-It uses GitHub Actions and Workflows with self-hosted runners, providing persistent, accessible environments that can be automatically and manually tested.
+It uses GitHub Actions and Workflows with self-hosted runners, providing persistent, accessible environments and logs, fully integrated with GitHub Deployments & Checks APIs for optimal developer experience.
 
 ### What this does
 
