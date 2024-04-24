@@ -14,16 +14,10 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    env:
-
-      PHP_EXTENSIONS: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter
-
     steps:
       - uses: actions/checkout@v3
         with:
           show-progress: false
-
-      - uses: php-actions/composer@v6
 
       - name: Install docker-compose
         uses: KengoTODA/actions-setup-docker-compose@v1
@@ -39,36 +33,43 @@ jobs:
       - name: Set runner name
         if: github.event_name != 'pull_request'
         run: |
-          echo "ASH_NAME=${{ github.ref_name }}" >> "$GITHUB_ENV"
-          echo "ASH_ENVIRONMENT_NAME=ash.${{ github.ref_name }}.local.computer" >> "$GITHUB_ENV"
+          echo "OPERATIONS_NAME=${{ github.ref_name }}" >> "$GITHUB_ENV"
+          echo "OPERATIONS_ENVIRONMENT_NAME=operations.${{ github.ref_name }}.local.computer" >> "$GITHUB_ENV"
 
       - name: Set runner name
         if: github.event_name == 'pull_request'
         run: |
-          echo "ASH_NAME=pr${{ github.event.number }}" >> "$GITHUB_ENV"
-          echo "ASH_ENVIRONMENT_NAME=ash.pr${{ github.event.number }}.local.computer" >> "$GITHUB_ENV"
+          echo "OPERATIONS_NAME=pr${{ github.event.number }}" >> "$GITHUB_ENV"
+          echo "OPERATIONS_ENVIRONMENT_NAME=operations.pr${{ github.event.number }}.local.computer" >> "$GITHUB_ENV"
+
+      - name: Set ansible inventory hostname
+        run: |
+          echo "[operations_host_ddev]
+          ${{ env.OPERATIONS_ENVIRONMENT_NAME }} ansible_connection=local" > ./ansible/hosts
 
       - name: Set variables
         run: |
-          echo -e '[ash_host]\n${{ env.ASH_ENVIRONMENT_NAME }} ansible_connection=local' > ./ansible/hosts
-          echo "DOCKER_HOSTNAME=${{ env.ASH_ENVIRONMENT_NAME }}" > .env
+          echo "DOCKER_HOSTNAME=${{ env.OPERATIONS_ENVIRONMENT_NAME }}" > .env
           echo "# CI variables set!
-          ash_admin_users:
+          operations_github_api_token: ${{ secrets.OPERATIONS_GITHUB_API_TOKEN }}
+          operations_admin_users:
           - jonpugh
-          ash_github_runners:
-          - repo_url: ${{ github.server_url	}}/${{ github.repository }}
-            runner_token: ${{ secrets.RUNNER_TOKEN }}
-            runner_name:  ${{ env.ASH_ENVIRONMENT_NAME }}
+          operations_github_runners:
+          - repo_name: ${{ github.repository }}
+            runner_name:  ${{ env.OPERATIONS_ENVIRONMENT_NAME }}
             runner_labels: ci
             user: platform
-          " > ./ansible/host_vars/${{ env.ASH_ENVIRONMENT_NAME }}.yml
-          cat ./ansible/host_vars/${{ env.ASH_ENVIRONMENT_NAME }}.yml
+          " > ./ansible/host_vars/${{ env.OPERATIONS_ENVIRONMENT_NAME }}.yml
+          cat ./ansible/host_vars/${{ env.OPERATIONS_ENVIRONMENT_NAME }}.yml
+
+      - name: Install task CLI
+        run: ./scripts/install-task.sh
 
       - name: Build Platform
-        run: composer dev:start
+        run: bin/task start
 
       - name: Test Platform
         run: |
-          docker-compose exec -u platform ash whoami
-          docker-compose exec -u platform ash hostname
-          docker-compose exec -u platform ash ddev
+          docker-compose exec -u platform operations whoami
+          docker-compose exec -u platform operations hostname
+          docker-compose exec -u platform operations ddev

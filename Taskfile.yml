@@ -1,0 +1,25 @@
+#
+# See  https://taskfile.dev/installation/
+#
+# To install to ./bin/task:
+#   sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d
+#
+version: '3'
+
+tasks:
+  start:
+    cmds:
+      - docker-compose up -d --build
+      - task: install
+
+  install:
+    cmds:
+      - docker-compose exec operations ansible-playbook /usr/share/operations/playbook.yml
+
+  destroy:
+    cmds:
+      - docker-compose kill && docker-compose rm -fv
+
+  shell:
+    cmds:
+      - docker-compose exec operations bash

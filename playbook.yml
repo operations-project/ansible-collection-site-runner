@@ -1,6 +1,7 @@
 
 ---
-- hosts: all
+- name: Configure Server
+  hosts: all
   vars_files: playbook.vars.yml
   become: true
 
@@ -8,12 +9,13 @@
     - role: geerlingguy.security
       tags: system
       vars:
-        security_sudoers_passwordless: "{{ ['control'] + ash_admin_users }}"
+        security_sudoers_passwordless: "{{ ['control'] + operations_admin_users }}"
 
     - role: geerlingguy.github-users
       tags: system
 
-- hosts: ash_host
+- name: "Configure Hosting: DDEV"
+  hosts: operations_host_ddev
   vars_files: playbook.vars.yml
 
   roles:
@@ -29,13 +31,13 @@
     - role: geerlingguy.docker
       tags: system
 
-    - role: ash.users
-      tags: ash
+    - role: operations.users
+      tags: operations
 
-    - role: ash.ddev
-      tags: ash, ddev
+    - role: operations.ddev
+      tags: operations, ddev
 
-    - role: ash.runner
+    - role: operations.runner
       tags:
-      - ash
+      - operations
       - runner

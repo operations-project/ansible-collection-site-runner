@@ -1,0 +1,7 @@
+# Place in /etc/ansible/hosts
+# This defines your local system.
+# Replace "localhost" with the FQDN of this server.
+# Install the desired hosting engine by adding it to the right group, as defined in "hosts" in playbook.yml "Configure Hosting: DDEV".
+
+[operations_host_ddev]
+localhost ansible_connection=local

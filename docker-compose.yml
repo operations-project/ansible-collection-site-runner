@@ -2,16 +2,16 @@
 
 ---
 services:
-  ash:
+  operations:
     image: geerlingguy/docker-${MOLECULE_DISTRO:-rockylinux8}-ansible:latest
-    hostname: ${DOCKER_HOSTNAME:-ash.local.computer}
+    hostname: ${DOCKER_HOSTNAME:-operations.local.computer}
     cgroup: host
     cgroup_parent: docker.slice
     privileged: true
     volumes:
-      - ./:/usr/share/ash
+      - ./:/usr/share/operations
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
       - ./ansible:/etc/ansible
     environment:
-      - ASH_OPS=yes
+      - OPERATIONS_PLATFORM=yes
     build: ./
