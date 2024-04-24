@@ -21,15 +21,6 @@
   become: true
 
   roles:
-    - role: geerlingguy.php
-      tags: system
-      vars:
-        php_packages_extra:
-          - php-json
-
-    - role: geerlingguy.composer
-      tags: system
-
     - role: geerlingguy.docker
       tags: system
 
