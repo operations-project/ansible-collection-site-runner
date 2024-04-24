@@ -14,16 +14,10 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    env:
-
-      PHP_EXTENSIONS: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter
-
     steps:
       - uses: actions/checkout@v3
         with:
           show-progress: false
-
-      - uses: php-actions/composer@v6
 
       - name: Install docker-compose
         uses: KengoTODA/actions-setup-docker-compose@v1
@@ -68,8 +62,11 @@ jobs:
           " > ./ansible/host_vars/${{ env.OPERATIONS_ENVIRONMENT_NAME }}.yml
           cat ./ansible/host_vars/${{ env.OPERATIONS_ENVIRONMENT_NAME }}.yml
 
+      - name: Install task CLI
+        run: ./scripts/install-task.sh
+
       - name: Build Platform
-        run: composer dev:start
+        run: bin/task start
 
       - name: Test Platform
         run: |
