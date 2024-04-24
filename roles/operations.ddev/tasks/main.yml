@@ -2,6 +2,7 @@
 - name: Install ddev
   shell: "curl -fsSL https://ddev.com/install.sh | bash"
   become: true
+  become_user: "{{ operations_control_user }}"
 
 - command: pwd
   args:
