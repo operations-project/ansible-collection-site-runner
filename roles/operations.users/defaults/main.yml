@@ -1,0 +1,7 @@
+operations_admin_users: []
+
+operations_control_user: control
+operations_control_home: /var/control
+
+operations_platform_user: platform
+operations_platform_home: /var/platform
