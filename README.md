@@ -141,10 +141,10 @@ Once the repo is cloned, ansible will set up the rest.
         # Copy default ansible files.
         cp -rf ansible/* /etc/ansible
 
-        # Set your hostname in /etc/ansible/hosts and set variables in host_vars.
+        # Set your hostname to in /etc/ansible/hosts and set variables in host_vars.
         cd /etc/ansible
-        sed 's/localhost/{$SERVER_HOSTNAME}/g' hosts.example > hosts
-        cp host_vars/host.example.yml host_vars/{$SERVER_HOSTNAME}.yml
+        sed 's/localhost/$SERVER_HOSTNAME/g' hosts.example > hosts
+        cp host_vars/host.example.yml host_vars/$SERVER_HOSTNAME.yml
 
     Edit `host_vars/{$SERVER_HOSTNAME}.yml` to match your github repo's information. Insert the API key there.
 
