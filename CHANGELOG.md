@@ -8,6 +8,7 @@
 * Added role to install GitHub Actions Runner.
 * Much improved README.md.
 * Finalized passing tests.
+* Added `Taskfile.yml` for developer tooling.
 
 @TODO:
 
