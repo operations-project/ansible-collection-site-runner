@@ -1,4 +1,4 @@
-# Operations Platform Git Runners
+# Operations Platform Site Server
 
 ## Simple self-hosted git-powered web app automation.
 
@@ -13,7 +13,7 @@ There are two choices for LICENSE badges:
 [![License](https://poser.pugx.org/operations-platform/git-runners)](https://github.com/operations-platform/git-runners//main/LICENSE)
 -->
 
-This code sets up a server for launching websites using GitOps tools like GitHub Actions and hosting tools like DDEV.
+This code sets up a server for launching and testing websites using GitOps tools like GitHub Actions and hosting tools like DDEV.
 
 The goal is to quickly launch running environments on any server for automated and manual testing, integrated directly with GitOps APIs.
 
