@@ -1,9 +1,10 @@
 operations_github_runner_path: /usr/share/github-runner
-
-# Replace with your repo information. Get the runner token under Settings > Actions > Runners > New Runner
+operations_github_api_token: DefaultApiToken
 operations_github_runners:
-  - repo_url: https://github.com/jonpugh/operations-ops
-    runner_token: CopyFromAddRunnerPage
+  - repo_name: jonpugh/operations
+    repo_host: https://github.com
     runner_name: "{{ inventory_hostname }}"
-    runner_labels: local,operations
+    # Set a runner-specific api_token, if desired.
+    # api_token: "{{ operations_github_api_token }}"
+    runner_labels: example,local,operations
     user: platform
