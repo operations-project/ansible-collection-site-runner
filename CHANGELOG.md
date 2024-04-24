@@ -3,8 +3,11 @@
 ### Unreleased
 
 * Renamed to `operations-platform/site-server`.
+* Improved ansible inventory setup.
 * Added server roles for security, users, docker, ddev.
 * Added role to install GitHub Actions Runner.
+* Much improved README.md.
+* Finalized passing tests.
 
 @TODO:
 
