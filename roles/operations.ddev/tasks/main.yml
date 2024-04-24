@@ -6,7 +6,7 @@
 
 # See https://ddev.readthedocs.io/en/latest/users/topics/hosting/
 - name: Configure ddev for hosting
-  command: ddev config global --router-bind-all-interfaces --omit-containers=ddev-ssh-agent --use-hardened-images --use-letsencrypt --letsencrypt-email=you@example.com`
+  command: "{{ operations_ddev_install_hosting_command }}"
   args:
     chdir:  "{{ operations_platform_home }}"
   become: true
