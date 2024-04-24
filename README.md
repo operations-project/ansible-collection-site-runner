@@ -126,23 +126,27 @@ Once the repo is cloned, ansible will set up the rest.
 
         git clone git@github.com:operations-platform/site-server.git /usr/share/operations
 
-2. Get a GitHub Runner token.
+2. Get a GitHub API token.
 
-    1. Go to your repo, "Settings" > "Actions" > "Runners" > "New Runner".
-    2. Copy the token for use later.
+    - Go to https://github.com/settings/personal-access-tokens/new
+    - Ensure `administrator:write` permission is set.
+    - Ensure the repository you want to deploy is added.
 
 3. Configure.
 
     Copy ansible inventory files in `./ansible` to `/etc/ansible`, then update the values.
 
         cd /usr/share/operations
+
+        # Copy default ansible files.
         cp -rf ansible/* /etc/ansible
-        cp /etc/ansible/hosts.default /etc/ansible/host_vars/$SERVER_HOSTNAME.yml
-        cp /etc/ansible/host_vars/operations.host.example.yml /etc/ansible/host_vars/$SERVER_HOSTNAME.yml
 
-    Edit `/etc/ansible/hosts`, replace `localhost` with your `$SERVER_HOSTNAME`.
+        # Set your hostname in /etc/ansible/hosts and set variables in host_vars.
+        cd /etc/ansible
+        sed 's/localhost/{$SERVER_HOSTNAME}/g' hosts.example > hosts
+        cp host_vars/host.example.yml host_vars/{$SERVER_HOSTNAME}.yml
 
-    Edit `/etc/ansible/host_vars/$SERVER_HOSTNAME.yml` to your own project settings.
+    Edit `host_vars/{$SERVER_HOSTNAME}.yml` to match your github repo's information. Insert the API key there.
 
 4. Install.
 
