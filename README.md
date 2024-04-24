@@ -1,6 +1,6 @@
-# Operations Platform Host
+# Operations Platform Git Runners
 
-## Simple self-hosted web app automation.
+## Simple self-hosted git-powered web app automation.
 
 [![License](https://img.shields.io/badge/license-MIT-408677.svg)](LICENSE)
 
@@ -10,7 +10,7 @@ There are two choices for LICENSE badges:
 1. License using shields.io (above): Can contain any text you want, and has no prerequisites, but must be manually updated if you change the license.
 2. License using poser.pugx.org (below): shows the license that Packagist.org read from your composer.json file. Must register with Packagist to use Poser.
 
-[![License](https://poser.pugx.org/operations-platform/platform)](https://github.com/operations-platform/platform//main/LICENSE)
+[![License](https://poser.pugx.org/operations-platform/git-runners)](https://github.com/operations-platform/git-runners//main/LICENSE)
 -->
 
 This code sets up a server for launching websites using GitOps tools like GitHub Actions and hosting tools like DDEV.
@@ -104,7 +104,7 @@ This is a very young project still in the proof of concept phase. More informati
 
 ### Links
 
-- [GitHub issue templates](https://github.com/operations-platform/platform/issues/templates/edit)
+- [GitHub issue templates](https://github.com/operations-platform/git-runners/issues/templates/edit)
 - [GitHub pull request template](/.github/pull_request_template.md)
 - [Contributing guide](/CONTRIBUTING) (Decide about your code of conduct)
 
@@ -127,7 +127,7 @@ Once the repo is cloned, ansible will set up the rest.
 
 1. Clone.
 
-        git clone git@github.com:operations-platform/platform.git /usr/share/operations
+        git clone git@github.com:operations-platform/git-runners.git /usr/share/operations
 
 2. Get a GitHub Runner token.
 
@@ -164,13 +164,13 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on the process for su
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [releases](https://github.com/operations-platform/platform/releases) page.
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [releases](https://github.com/operations-platform/git-runners/releases) page.
 
 ## Authors
 
 * **Jon Pugh** - created project from template.
 
-See also the list of [contributors](https://github.com/operations-platform/platform/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/operations-platform/git-runners/contributors) who participated in this project.
 
 ## License
 
