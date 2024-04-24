@@ -52,7 +52,7 @@ jobs:
         run: |
           echo "DOCKER_HOSTNAME=${{ env.OPERATIONS_ENVIRONMENT_NAME }}" > .env
           echo "# CI variables set!
-          operations_github_api_token: ${{ secrets.GITHUB_ADMIN_API_TOKEN }}
+          operations_github_api_token: ${{ secrets.OPERATIONS_GITHUB_API_TOKEN }}
           operations_admin_users:
           - jonpugh
           operations_github_runners:
