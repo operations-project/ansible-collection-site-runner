@@ -1,7 +1,6 @@
-# Operations Platform
-## Self-hosted web app automation.
+# Operations Hosting Platform
+## Simple self-hosted web app automation.
 
-Installation scripts for creating an automation platform for websites using GitOps tools like GitHub Workflows and BitBucket Pipelines.
 
 [![License](https://img.shields.io/badge/license-MIT-408677.svg)](LICENSE)
 
@@ -13,6 +12,51 @@ There are two choices for LICENSE badges:
 
 [![License](https://poser.pugx.org/operations-platform/platform)](https://github.com/operations-platform/platform//main/LICENSE)
 -->
+
+This code sets up a server for launching websites using GitOps tools like GitHub Actions and hosting tools like DDEV.
+
+The goal is to quickly launch running environments on any server for automated and manual testing.
+
+It uses GitHub Actions and Workflows with self-hosted runners, providing persistent, accessible environments that can be automatically and manually tested.
+
+### What this does
+
+This Ansible playbook prepares a bare linux server for running websites:
+
+1. Creates users for administrators and grants SSH access using GitHub user SSH keys.
+2. Installs Docker, Composer, & DDEV.
+3. Creates a `platform` user for storing site code and running tasks.
+4. Installs GitHub Self-hosted Runner as a service, running as `platform` user.
+5. Listens for new jobs remotely. No need to grant GitHub access to post webhooks.
+6. Runs the GitHub Actions as defined in the project's `.github/workflows` config.
+
+Then, the project's codebase takes over using GitHub Actions config.
+
+### GitHub Actions
+
+With a self-hosted runner, all activity on the servers is run with GitHub's Actions system.
+
+Through the GitHub interface you can track every deployment, test run, and cron job for pull request and live environments.
+
+#### Deployment Logic
+
+For now, all deployment logic is stored in the GitHub workflow config:
+
+- Where to clone code.
+- Command to launch sites.
+- Command to run updates.
+- Command to sync data.
+
+See examples folder for working config.
+
+With the right GitHub Actions config, the server will:
+
+1. Clone code to `/var/platform/example.com/pr#`.
+2. Write special DDEV config to set unique URLs for each DDEV site.
+3. Launch the site. (`ddev start`)
+4. If a test site, sync data and run tests.
+
+For now, you must copy these templates into your workflows. As the project progresses, we will release shared tooling.
 
 ## Documentation
 
