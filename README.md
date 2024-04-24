@@ -97,10 +97,7 @@ This is a very young project still in the proof of concept phase. More informati
 3. **Git Runner config**
     - Each project must contain workflow/pipeline configuration files specifically for that git host that works with the private runners.
     - Example config files are located in the (Templates)[./templates] folder (Coming soon).
-4. **Operations Dashboard / Site Manager**
-   - With this system, the git host is the only interface that is needed.
-   - The [Site Manager module](https://www.drupal.org/project/site_manager) can be used to create an "Operations Dashboard" for keeping track of all the created sites in a CMS-like experience.
-   - [Site.module](https://www.drupal.org/project/site) can be deployed to hosted sites and configured to post updates back to the Operations Dashboard.
+
 
 ### Links
 
