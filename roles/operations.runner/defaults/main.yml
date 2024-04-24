@@ -1,7 +1,7 @@
 operations_github_runner_path: /usr/share/github-runner
 operations_github_api_token: DefaultApiToken
 operations_github_runners:
-  - repo_name: jonpugh/operations
+  - repo_name: operations-platform/git-runners
     # Set repo_host if using enterprise github.
     # repo_host: https://github.com
     runner_name: "{{ inventory_hostname }}"
