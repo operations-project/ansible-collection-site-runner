@@ -1,2 +1,2 @@
 operations_ddev_letsencrypt_email: you@example.com
-operations_ddev_install_hosting_command: ddev config global --router-bind-all-interfaces --omit-containers=ddev-ssh-agent --use-hardened-images --use-letsencrypt --letsencrypt-email={{ operations_ddev_letsencrypt_email }}
+operations_ddev_config_hosting_command: ddev config global --router-bind-all-interfaces --omit-containers=ddev-ssh-agent --use-hardened-images --use-letsencrypt --letsencrypt-email={{ operations_ddev_letsencrypt_email }}
