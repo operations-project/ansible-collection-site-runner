@@ -15,6 +15,9 @@
 - set_fact:
     github_runner_registration_token:  "{{ result.stdout | from_json }}"
 
+- debug:
+    msg: "API response: {{ github_runner_registration_token }}"
+
 - name: "{{ item.repo_name }} | Setup GitHub Runner"
   shell:
     cmd: "cd {{ operations_github_runner_path }} && ./config.sh remove --token {{ github_runner_registration_token.token }} && ./config.sh --replace --unattended --url {{ item.repo_host | default('https://github.com') }}/{{ item.repo_name }} --token {{ github_runner_registration_token.token }} --name {{ item.runner_name }} --labels {{ item.runner_labels }}"
