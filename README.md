@@ -126,31 +126,104 @@ Once the repo is cloned, ansible will set up the rest.
 
         git clone git@github.com:operations-platform/site-server.git /usr/share/operations
 
-2. Get a GitHub API token.
+2. Prepare.
 
-    - Go to https://github.com/settings/personal-access-tokens/new
-    - Ensure `administrator:write` permission is set.
-    - Ensure the repository you want to deploy is added.
+    This playbook creates GitHub runners automatically using a GitHub Token.
 
-3. Configure.
+    This token is only used to create a runner. No other API interaction is needed because it is all handled by the GitHub Runners. Runner tasks get a unique `GITHUB_TOKEN` for every job, so users can interact with the GitHub API that way.
 
-    Copy ansible inventory files in `./ansible` to `/etc/ansible`, then update the values.
+   *NOTE:* If your project is not a personal repo, you need to enable "Personal Access Tokens" in your organization.
 
-        cd /usr/share/operations
+    #### To enable Personal Access Tokens for organizations:
 
-        # Copy default ansible files.
-        cp -rf ansible/* /etc/ansible
+    1. Open your organization's page. For example: https://github.com/organizations/operations-platform/
+    2. Click *Settings*.
+    3. Click *Personal Access Tokens* in the left sidebar.
+    4. Go through the wizard to configure how tokens work in your organization.
 
-        # Set your hostname to in /etc/ansible/hosts and set variables in host_vars.
-        cd /etc/ansible
-        sed 's/localhost/$SERVER_HOSTNAME/g' hosts.example > hosts
-        cp host_vars/host.example.yml host_vars/$SERVER_HOSTNAME.yml
+    Once complete, your organization will be available when you create your own "Personal Access Token".
 
-    Edit `host_vars/{$SERVER_HOSTNAME}.yml` to match your github repo's information. Insert the API key there.
+    #### To create Personal Access Tokens:
+
+    1. Go to the Create Token Page: https://github.com/settings/personal-access-tokens/new
+    2. Under *Resource owner*, select your organization.
+    3. Under *Repository Permissions*, for *Administration*, select *Read/Write*.
+    4. Click *Generate Token*. Save the token for the **Configure** step, below.
+
+3. Configure Ansible Inventory.
+
+    Ansible inventory is very powerful and flexible. There are many ways to manage your inventory.
+
+    This playbook comes with example inventory and variable files that you can use to manually place in `/etc/ansible/hosts` and `/etc/ansible/host_vars/sites.myhost.com.yml`
+
+    See example files in [`./ansible/hosts.example`](./ansible/hosts.example) and [`./ansible/host_vars/host.example.yml`](./ansible/host_vars/host.example.yml)
+
+    The result should look something like this:
+
+    * `/etc/ansible/hosts`
+
+          [operations_host_ddev]
+          sites.myhost.com ansible_connection=local
+
+    * `/etc/ansible/host_vars/sites.myhost.com.yml`
+
+          # Add a list of github usernames to grant access to. They will get sudo users and SSH access.
+          operations_admin_users:
+          - YOUR_GITHUB_USERNAME
+
+          operations_github_api_token: YOUR_API_TOKEN
+          operations_github_runners:
+          - repo_name: YOUR_ORG/YOUR_REPO
+
+    For details on additional options, see [`./ansible/host_vars/host.example.yml`](./ansible/host_vars/host.example.yml).
+
+    You are free to build up your ansible inventory as you see fit. These are the essential options.
 
 4. Install.
 
+    To install, run `ansible-playbook` as your user (not with `sudo`). Ansible knows how to run `sudo` for the steps that require it.
+
+    As long as your active user *can* sudo, you can run `ansible-playbook` as your personal user account.
+
         ansible-playbook /usr/share/operations/playbook.yml
+
+   Once the playbook completes successfully, you will have a new runner present in GitHub. To confirm:
+
+    * Visit your repository's *Settings* page.
+    * Click *Actions*, then *Runners*.
+    * You should see a runner that matches the hostname and labels you set in your ansible inventory
+
+    > *NOTE:* The playbook will create users from your `operations_admin_users` variables, and will grant them passwordless `SUDO` access. After running it the first time, you can run `ansible-playbook` as your personal user.
+
+5. Implement.
+
+    To use it, you need to add a GitHub workflow config file that has `runs-on` set to a label that your runner has.
+
+    An example to confirm the runner:
+
+    ```yaml
+    # .github/workflows/demo.yml
+    name: Verify Self-Hosted Runner
+
+    # Run on all pushes and manual triggering with "workflow_dispatch"
+    on:
+        workflow_dispatch:
+        push:
+
+    jobs:
+      verify:
+        # Match a label or use the hostname label.
+        runs-on: sites.myhost.com
+
+        steps:
+          - name: Environment
+            run: |
+              hostname -f
+              whoami
+              env
+    ```
+
+    More workflow samples coming soon.
 
 ## Built With
 

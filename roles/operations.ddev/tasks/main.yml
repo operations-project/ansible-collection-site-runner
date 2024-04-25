@@ -4,14 +4,19 @@
   become: true
   become_user: "{{ operations_control_user }}"
 
-- command: pwd
+- name: Ensure bin is in all paths.
+  shell: ln -sf /usr/local/bin/ddev /usr/bin/ddev
+
+- name: Confirm ddev install
+  command: ddev version
   args:
     chdir:  "{{ operations_platform_home }}"
   become: true
   become_user: "{{ operations_platform_user }}"
 
-- name: Confirm ddev install
-  command: /usr/local/bin/ddev version
+# See https://ddev.readthedocs.io/en/latest/users/topics/hosting/
+- name: Configure ddev for hosting
+  command: "{{ operations_ddev_config_hosting_command }}"
   args:
     chdir:  "{{ operations_platform_home }}"
   become: true
