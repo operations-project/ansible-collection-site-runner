@@ -16,7 +16,10 @@
     github_runner_registration_token:  "{{ result.stdout | from_json }}"
 
 - debug:
-    msg: "API response: {{ github_runner_registration_token }}"
+    msg: |
+      Curl Result: {{ result }}"
+      API response: {{ github_runner_registration_token }}"
+
   failed_when:
     - "'token' not in github_runner_registration_token"
 
