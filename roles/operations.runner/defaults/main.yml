@@ -8,4 +8,4 @@ operations_github_runners:
     # Set a runner-specific api_token, if desired.
     # api_token: "{{ operations_github_api_token }}"
     runner_labels: "example,local,operations,{{ inventory_hostname }}"
-    user: platform
+    runner_user: platform
