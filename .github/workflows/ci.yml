@@ -57,7 +57,7 @@ jobs:
           operations_github_runners:
           - repo_name: ${{ github.repository }}
             runner_name:  ${{ env.OPERATIONS_ENVIRONMENT_NAME }}
-            runner_labels: ci
+            runner_labels: github-ci
             user: platform
           " > ./ansible/host_vars/${{ env.OPERATIONS_ENVIRONMENT_NAME }}.yml
           cat ./ansible/host_vars/${{ env.OPERATIONS_ENVIRONMENT_NAME }}.yml

@@ -18,5 +18,5 @@ operations_github_runners:
     runner_name: "{{ inventory_hostname }}"
     # Set a runner-specific api_token, if desired.
     api_token: "{{ operations_github_api_token }}"
-    runner_labels: local,operations
+    runner_labels: "example,local,operations,{{ inventory_hostname }}"
     user: platform
