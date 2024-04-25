@@ -17,6 +17,8 @@
 
 - debug:
     msg: "API response: {{ github_runner_registration_token }}"
+  failed_when:
+    - "'token' not in github_runner_registration_token"
 
 - name: "{{ item.repo_name }} | Setup GitHub Runner"
   shell:
