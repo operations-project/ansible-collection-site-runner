@@ -14,9 +14,19 @@ operations_admin_users:
 operations_github_api_token: DefaultApiToken
 operations_github_runners:
   - repo_name: jonpugh/operations
-    repo_host: https://github.com
-    runner_name: "{{ inventory_hostname }}"
-    # Set a runner-specific api_token, if desired.
-    api_token: "{{ operations_github_api_token }}"
-    runner_labels: "example,local,operations,{{ inventory_hostname }}"
-    user: platform
+
+    # Default base URL is github.com. Change if using enterprise GitHub.
+    # repo_host: https://github.com
+
+    # Default user to install the runner on is "platform". Rename if desired. You are responsible for creating any additional users.
+    # runner_user: platform
+
+    # Default runner name is ansible inventory hostname. Rename if desired.
+    # runner_name: "{{ inventory_hostname }}"
+
+    # Default token to create the runner is operations_github_api_token variable. Set a runner-specific api_token, if desired.
+    # api_token: "{{ operations_github_api_token }}"
+
+    # Default runner_labels are inventory_hostname,operations-platform/site-server. Change here, if desired.
+    # runner_labels: "example,local,dev,operations,{{ inventory_hostname }}"
+
