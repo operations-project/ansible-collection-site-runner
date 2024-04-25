@@ -9,6 +9,8 @@
 * Much improved README.md.
 * Finalized passing tests.
 * Added `Taskfile.yml` for developer tooling.
+* Ensure playbook runs without custom variables.
+* Add a runner's hostname as a label.
 
 @TODO:
 
