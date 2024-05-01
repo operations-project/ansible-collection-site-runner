@@ -1,0 +1,102 @@
+name: 'Start a site'
+description: 'Launches a new site using DDEV.'
+inputs:
+  ddev-project-name:
+    description: "The DDEV project name to use for this environment."
+    required: false
+    default: "${{ github.event.repository.name }}.pr${{ github.event.number }}"
+
+  ddev-project-tld:
+    description: "The DDEV project's project_tld."
+    required: false
+
+  git-reference:
+    description: "The git reference to checkout."
+    required: false
+    default: ${{ github.head_ref }}
+
+  path:
+    description: "Path to clone this environment's code to, relative to the runner's home directory."
+    required: false
+    default: "Sites/${{ github.repository }}/pr${{ github.event.number }}"
+
+  sync-command:
+    description: "The command to run to sync the sites data. Override if source is not the @live drush alias or sql:sync command does not work for you."
+    required: false
+    default: "ddev drush sql:sync @live @self"
+
+  update-command:
+    description: "The command to run to update the sites data."
+    required: false
+    default: "ddev drush updatedb"
+
+  ssh-known-hosts:
+    description: "SSH Known Hosts"
+    required: false
+
+  ssh-private-key:
+    description: "SSH private key to use to access remote servers."
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+
+    - name: Set environment
+      run: |
+        echo "DDEV_PROJECT_PATH_FULL=$HOME/${{ inputs.project-path }}" >> "$GITHUB_ENV"
+
+    - name: Prepare Code
+      # Must exist. If not yet cloned,  ${{env.DDEV_PROJECT_PATH}} directory will not exist.
+      working-directory: "/"
+      run: |
+        if [[ ! -d ${{ env.DDEV_PROJECT_PATH_FULL }} ]]; then
+          git clone git@github.com:${{ github.repository }} ${{env.DDEV_PROJECT_PATH_FULL}}
+        else
+          echo "Git clone exists at ${{env.DDEV_PROJECT_PATH_FULL}}"
+        fi
+        cd ${{env.DDEV_PROJECT_PATH_FULL}}
+        echo "Current Directory: $(pwd)"
+        echo "Pre-deployment git status: $(git status)"
+        git fetch
+        git checkout ${{ inputs.git-reference }}
+        git reset --hard origin/${{env.DDEV_PROJECT_GIT_REFERENCE}}
+        echo "Post deployment git status: $(git status)"
+        echo "name: ${{ env.DDEV_PROJECT_NAME }}" > .ddev/config.z.yml
+        echo "project_tld: ${{ env.DDEV_PROJECT_TLD }}" >> .ddev/config.z.yml
+
+    # Secrets: https://github.com/thinkdrop/thinkdrop.net/settings/secrets/actions
+    # To retrieve SSH_KNOWN_HOSTS string:
+    #       ssh-keyscan -H liveserver.com -H github.com -H otherserver.com
+
+    # Removing DDEV is needed if the database changes.
+    - name: Start DDEV
+      working-directory: ${{ env.DDEV_PROJECT_PATH_FULL }}
+      run: |
+        ddev rm -OR
+        ddev start
+
+    - name: Grant DDEV SSH Access
+      working-directory: ${{ env.DDEV_PROJECT_PATH_FULL }}
+      run: |
+        echo "${{ inputs.ssh-private-key }}" > ddev_id_rsa
+        ddev exec 'cat ddev_id_rsa > ~/.ssh/id_rsa'
+        ddev exec 'chmod 600 ~/.ssh/id_rsa'
+        if [ "${{ inputs.ssh-known-hosts }}" != "" ]; then
+          ddev exec 'echo "${{ inputs.ssh-known-hosts }}" > ~/.ssh/known_hosts'
+        fi
+    - name: Composer Install
+      working-directory: ${{ env.DDEV_PROJECT_PATH_FULL }}
+      run: |
+        ddev composer install --ansi
+
+    - name: Sync
+      working-directory: ${{ env.DDEV_PROJECT_PATH_FULL }}
+      run: |
+        ${{ inputs.sync_command }}
+
+    - name: Drupal Database Updates
+      working-directory: ${{ env.DDEV_PROJECT_PATH_FULL }}
+      run: |
+        ${{ inputs.update_command }}
+
