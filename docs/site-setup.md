@@ -27,9 +27,9 @@ Follow these instructions for preparing your site to run on OSS.
     ### DDEV Domains
 
     - DDEV automatically decides what URLs to host sites at based on the `project_tld` and `name` properties in your DDEV config.
-    - When running CI environments, you will have multiple git clones on a single server, so you need to make sure the DDEV domains are unique.
+    - When running CI environments, you will have multiple git clones on a single server. The `name` property of each project using `ddev` must be unique.
     - Setup wildcard DNS to point `*.dev.yourhost.com` or similar to your server.
-    - To override the `project_tld` for individual code checkouts, you can do this:
+    - To override the `project_tld` and `name` for individual code checkouts, you can do this:
         1.  To set domains dynamically: Write an additional `config.z.yaml` file to the DDEV folder using your GitOps scripts, that includes a modified `project_tld`:
 
                 # File: .github/workflows/pull-request.yml
@@ -37,8 +37,8 @@ Follow these instructions for preparing your site to run on OSS.
                 # Results in domain "myproject.pr123.ci.myserver.com"
                 - name: Prepare ddev.
                 run: |
-                    echo "name: myproject" > config.z.yaml
-                    echo "project_tld: pr${{ github.event.number }}.ci.myserver.com" >> config.z.yaml
+                    echo "name: myproject.pr${{ github.event.number }}" > config.z.yaml
+                    echo "project_tld: ci.myserver.com" >> config.z.yaml
         2. To set custom domains, you must add `additional_fqds` to ddev config only in the desired environment. To do this, you can either:
             1. Write directly to the custom `config.z.yaml` file (requires storing domains in GitOps config).
             2. Create a separate config file to store domains that will only be loaded in one environment.
@@ -55,6 +55,9 @@ Follow these instructions for preparing your site to run on OSS.
     We'd love to make this simpler. If you have any ideas, please let us know!
 
 2. **GitHub Workflows**
+
+
+    - pull-request.yml
 
 
 
