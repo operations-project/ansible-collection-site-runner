@@ -45,7 +45,7 @@ runs:
     - name: Set environment
       shell: bash
       run: |
-        echo "DDEV_PROJECT_PATH_FULL=$HOME/${{ inputs.project-path }}" >> "$GITHUB_ENV"
+        echo "DDEV_PROJECT_PATH_FULL=$HOME/${{ inputs.path }}" >> "$GITHUB_ENV"
 
     - name: Prepare Code
       shell: bash
