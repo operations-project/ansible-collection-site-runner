@@ -43,10 +43,12 @@ runs:
   steps:
 
     - name: Set environment
+      shell: bash
       run: |
         echo "DDEV_PROJECT_PATH_FULL=$HOME/${{ inputs.project-path }}" >> "$GITHUB_ENV"
 
     - name: Prepare Code
+      shell: bash
       # Must exist. If not yet cloned,  ${{env.DDEV_PROJECT_PATH}} directory will not exist.
       working-directory: "/"
       run: |
@@ -71,12 +73,14 @@ runs:
 
     # Removing DDEV is needed if the database changes.
     - name: Start DDEV
+      shell: bash
       working-directory: ${{ env.DDEV_PROJECT_PATH_FULL }}
       run: |
         ddev rm -OR
         ddev start
 
     - name: Grant DDEV SSH Access
+      shell: bash
       working-directory: ${{ env.DDEV_PROJECT_PATH_FULL }}
       run: |
         echo "${{ inputs.ssh-private-key }}" > ddev_id_rsa
@@ -86,16 +90,19 @@ runs:
           ddev exec 'echo "${{ inputs.ssh-known-hosts }}" > ~/.ssh/known_hosts'
         fi
     - name: Composer Install
+      shell: bash
       working-directory: ${{ env.DDEV_PROJECT_PATH_FULL }}
       run: |
         ddev composer install --ansi
 
     - name: Sync
+      shell: bash
       working-directory: ${{ env.DDEV_PROJECT_PATH_FULL }}
       run: |
         ${{ inputs.sync_command }}
 
     - name: Drupal Database Updates
+      shell: bash
       working-directory: ${{ env.DDEV_PROJECT_PATH_FULL }}
       run: |
         ${{ inputs.update_command }}
