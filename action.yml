@@ -67,10 +67,10 @@ runs:
         echo "Pre-deployment git status: $(git status)"
         git fetch
         git checkout ${{ inputs.git-reference }}
-        git reset --hard origin/${{env.DDEV_PROJECT_GIT_REFERENCE}}
+        git reset --hard origin/${{ inputs.git-reference }}
         echo "Post deployment git status: $(git status)"
-        echo "name: ${{ env.DDEV_PROJECT_NAME }}" > .ddev/config.z.yml
-        echo "project_tld: ${{ env.DDEV_PROJECT_TLD }}" >> .ddev/config.z.yml
+        echo "name: ${{ inputs.ddev-project-name }}" > .ddev/config.z.yml
+        echo "project_tld: ${{ inputs.ddev-project-tld }}" >> .ddev/config.z.yml
 
     # Secrets: https://github.com/thinkdrop/thinkdrop.net/settings/secrets/actions
     # To retrieve SSH_KNOWN_HOSTS string:
