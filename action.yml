@@ -25,6 +25,11 @@ inputs:
     required: false
     default: "no"
 
+  composer-install-command:
+    description: "The command to run to prepare the codebase"
+    required: false
+    default: "ddev composer install --ansi"
+
   sync-command:
     description: "The command to run to sync the sites data. Override if source is not the @live drush alias or sql:sync command does not work for you."
     required: false
@@ -94,11 +99,12 @@ runs:
         if [ "${{ inputs.ssh-known-hosts }}" != "" ]; then
           ddev exec 'echo "${{ inputs.ssh-known-hosts }}" > ~/.ssh/known_hosts'
         fi
+
     - name: Composer Install
       shell: bash
       working-directory: ${{ env.DDEV_PROJECT_PATH_FULL }}
       run: |
-        ddev composer install --ansi
+        ${{ inputs.composer-install-command }}
 
     - name: Sync
       if: ${{ inputs.sync == 'yes' }}
