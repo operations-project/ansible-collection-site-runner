@@ -20,6 +20,11 @@ inputs:
     required: false
     default: "Sites/${{ github.repository }}/pr${{ github.event.number }}"
 
+  sync:
+    description: "If set to 'yes'', the environment will be destroyed and replaced with data using the 'sync-command' input."
+    required: false
+    default: "no"
+
   sync-command:
     description: "The command to run to sync the sites data. Override if source is not the @live drush alias or sql:sync command does not work for you."
     required: false
@@ -96,14 +101,15 @@ runs:
         ddev composer install --ansi
 
     - name: Sync
+      if: ${{ inputs.sync == 'yes' }}
       shell: bash
       working-directory: ${{ env.DDEV_PROJECT_PATH_FULL }}
       run: |
-        ${{ inputs.sync_command }}
+        ${{ inputs.sync-command }}
 
     - name: Drupal Database Updates
       shell: bash
       working-directory: ${{ env.DDEV_PROJECT_PATH_FULL }}
       run: |
-        ${{ inputs.update_command }}
+        ${{ inputs.update-command }}
 
