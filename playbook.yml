@@ -4,6 +4,9 @@
   hosts: all
   become: true
 
+  tasks:
+    - hostname: "{{ inventory_hostname }}"
+
   roles:
     - role: geerlingguy.security
       tags: system
