@@ -1,4 +1,4 @@
-# Operations Platform Site Server
+# Operations Site Runner
 
 ## Simple self-hosted git-powered web app automation.
 
