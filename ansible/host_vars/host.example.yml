@@ -27,6 +27,6 @@ operations_github_runners:
     # Default token to create the runner is operations_github_api_token variable. Set a runner-specific api_token, if desired.
     # api_token: "{{ operations_github_api_token }}"
 
-    # Default runner_labels are inventory_hostname,operations-platform/site-server. Change here, if desired.
+    # Default runner_labels are inventory_hostname,operations-project/site-runner. Change here, if desired.
     # runner_labels: "example,local,dev,operations,{{ inventory_hostname }}"
 
