@@ -25,7 +25,7 @@
 
 - name: "{{ item.repo_name }} | Setup GitHub Runner"
   shell:
-    cmd: "cd {{ operations_github_runner_path }} && ./config.sh remove --token {{ github_runner_registration_token.token }} && ./config.sh --replace --unattended --url {{ item.repo_host | default('https://github.com') }}/{{ item.repo_name }} --token {{ github_runner_registration_token.token }} --name {{ item.runner_name|default(inventory_hostname) }} --labels {{ item.runner_labels | default('{{ inventory_hostname }},operations-platform/site-server') }}"
+    cmd: "cd {{ operations_github_runner_path }} && ./config.sh remove --token {{ github_runner_registration_token.token }} && ./config.sh --replace --unattended --url {{ item.repo_host | default('https://github.com') }}/{{ item.repo_name }} --token {{ github_runner_registration_token.token }} --name {{ item.runner_name|default(inventory_hostname) }} --labels {{ item.runner_labels | default('{{ inventory_hostname }},operations-project/site-runner') }}"
     chdir: "{{ operations_github_runner_path }}"
   become: true
   become_user: "{{ item.runner_user | default(operations_platform_user) | default('platform')}}"
