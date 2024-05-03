@@ -19,6 +19,8 @@ The goal is to quickly launch running environments on any server for automated a
 
 It uses GitHub Actions and Workflows with self-hosted runners, providing persistent, accessible environments and logs, fully integrated with GitHub Deployments & Checks APIs for optimal developer experience.
 
+For more details see https://operations-project.gitbook.io/operations-experience-project/operations-site-server 
+
 ### What this does
 
 This Ansible playbook prepares a bare linux server for running websites:
