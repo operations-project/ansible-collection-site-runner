@@ -11,6 +11,8 @@
 operations_admin_users:
   - jonpugh
 
+# Get one at https://github.com/settings/personal-access-tokens/new
+# Grant administration:write privileges to the repo.
 operations_github_api_token: DefaultApiToken
 operations_github_runners:
   - repo_name: jonpugh/operations
