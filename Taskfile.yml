@@ -9,17 +9,17 @@ version: '3'
 tasks:
   start:
     cmds:
-      - docker-compose up -d --build
+      - docker compose up -d --build
       - task: install
 
   install:
     cmds:
-      - docker-compose exec operations ansible-playbook /usr/share/operations/playbook.yml
+      - docker compose exec operations ansible-playbook /usr/share/operations/playbook.yml
 
   destroy:
     cmds:
-      - docker-compose kill && docker-compose rm -fv
+      - docker compose kill && docker compose rm -fv
 
   shell:
     cmds:
-      - docker-compose exec operations bash
+      - docker compose exec operations bash
