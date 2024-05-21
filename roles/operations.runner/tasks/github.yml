@@ -19,7 +19,7 @@
 
 # Retry because it will fail if a job is running.
 - name: Copy GitHub Runner
-  until: "{{ result.rc == 0 }}"
+  until: rc in result && result.rc == 0
   register: result
   retries: 4
   copy:
