@@ -19,6 +19,7 @@
 
 # Retry because it will fail if a job is running.
 - name: Copy GitHub Runner
+  creates: "{{ operations_github_runner_path }}"
   until: result is succeeded
   register: result
   retries: 4
