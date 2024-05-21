@@ -17,7 +17,11 @@
     item_runner_labels: "{{ item.runner_user | default(operations_platform_user) }}@{{ item.runner_name | default(inventory_hostname) }},user/{{  item.runner_user | default(operations_platform_user) | default('platform') }},{{ item.runner_labels | default('') }}"
     item_runner_api_token: "{{ item.api_token | default(operations_github_api_token) }}"
 
+# Retry because it will fail if a job is running.
 - name: Copy GitHub Runner
+  until: "{{ result.rc == 0 }}"
+  register: result
+  retries: 4
   copy:
     src: "{{ operations_github_runner_path }}/"
     dest: "{{ item_runner_path }}"
