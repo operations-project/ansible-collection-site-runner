@@ -1,14 +1,39 @@
 ---
+- name: Prepare runner
+  user:
+    name: "{{ item.runner_user | default(operations_platform_user) | default('platform')}}"
+    state: present
+  register: user_facts
+
+- name: Prepare variables
+  become: true
+  become_user: "{{ item.runner_user | default(operations_platform_user) | default('platform')}}"
+  set_fact:
+    # @TODO: Is there a better way to set defaults in a list of maps?
+    item_runner_path: "{{ user_facts.home }}/{{ item.runner_path | default('runner')}}"
+    item_runner_user: "{{ item.runner_user | default(operations_platform_user) | default('platform')}}"
+    item_runner_name: "{{ item.runner_user | default(operations_platform_user) }}@{{ item.runner_name | default(inventory_hostname) }}"
+    item_runner_repo: "{{ item.runner_repo | default(operations_runner_repo_default) }}"
+    item_runner_labels: "{{ inventory_hostname }},user/{{  item.runner_user | default(operations_platform_user) | default('platform') }},{{ item.runner_labels | default('') }}"
+    item_runner_api_token: "{{ item.api_token | default(operations_github_api_token) }}"
+
+- name: Copy GitHub Runner
+  copy:
+    src: "{{ operations_github_runner_path }}/"
+    dest: "{{ item_runner_path }}"
+    owner: "{{ item_runner_user }}"
+    group: "{{ item_runner_user }}"
+    remote_src: yes
 
 # See https://docs.github.com/en/rest/actions/self-hosted-runners?apiVersion=2022-11-28#create-configuration-for-a-just-in-time-runner-for-an-organization--fine-grained-access-tokens
-- name: "{{ item.repo_name }} | Get GitHub Runner Token"
+- name: "{{ item_runner_repo }} | Get GitHub Runner Token"
   shell: |
     curl -L \
       -X POST \
       -H "Accept: application/vnd.github+json" \
-      -H "Authorization: Bearer {{ item.api_token | default(operations_github_api_token) }}" \
+      -H "Authorization: Bearer {{ item_runner_api_token }}" \
       -H "X-GitHub-Api-Version: 2022-11-28" \
-      https://api.github.com/repos/{{item.repo_name}}/actions/runners/registration-token \
+      https://api.github.com/repos/{{ item_runner_repo }}/actions/runners/registration-token \
   register: result
   failed_when:
     - "'token' not in result.stdout"
@@ -23,29 +48,25 @@
   failed_when:
     - "'token' not in github_runner_registration_token"
 
-- name: "{{ item.repo_name }} | Remove existing GitHub Runner"
+- name: "{{ item_runner_repo }} | Remove existing GitHub Runner"
   shell:
     cmd: "./svc.sh uninstall"
-    chdir: "{{ operations_github_runner_path }}"
+    chdir: "{{ item_runner_path }}"
   become: true
+  ignore_errors: true
 
-- name: "{{ item.repo_name }} | Setup GitHub Runner"
+- name: "{{ item_runner_repo }} | Setup GitHub Runner"
   shell:
-    cmd: "cd {{ operations_github_runner_path }} && ./config.sh remove --token {{ github_runner_registration_token.token }} && ./config.sh --replace --unattended --url {{ item.repo_host | default('https://github.com') }}/{{ item.repo_name }} --token {{ github_runner_registration_token.token }} --name {{ item.runner_name|default(inventory_hostname) }} --labels {{ item.runner_labels | default('{{ inventory_hostname }},operations-project/site-runner') }}"
-    chdir: "{{ operations_github_runner_path }}"
+    cmd: "./config.sh remove --token {{ github_runner_registration_token.token }} && ./config.sh --replace --unattended --url {{ item.repo_host | default('https://github.com') }}/{{ item_runner_repo }} --token {{ github_runner_registration_token.token }} --name {{ item_runner_name }} --labels {{ item_runner_labels }}"
+    chdir: "{{ item_runner_path }}"
   become: true
-  become_user: "{{ item.runner_user | default(operations_platform_user) | default('platform')}}"
+  become_user: "{{ item_runner_user }}"
 
-- name: "{{ item.repo_name }} | Setup GitHub Runner Service"
+- name: "Setup GitHub Runner Service"
   shell:
-    cmd: "./svc.sh install && ./svc start"
-    chdir: "{{ operations_github_runner_path }}"
+    cmd: |
+      whoami
+      ./svc.sh install {{ item_runner_user }} 
+      ./svc.sh start
+    chdir: "{{ item_runner_path }}"
   become: true
-
-#- name: Add GitHub Runner Service
-#  shell:
-#    cmd: "cd {{ operations_github_runner_path }} && ./config.sh remove --token {{ item.runner_token }} && ./config.sh --unattended --url {{ item.repo_url }} --token {{ item.runner_token }} --name {{ item.runner_name }} --labels {{ item.runner_labels }}"
-#    chdir: "{{ operations_github_runner_path }}"
-#  become: true
-#  become_user: "{{ item.user }}"
-#  with_items: "{{ operations_github_runners }}"
