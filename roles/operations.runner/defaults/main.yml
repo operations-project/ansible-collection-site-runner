@@ -1,14 +1,16 @@
 
 # Global runner path. github.yml will copy this dir instead of downloading.
 operations_github_runner_path: /usr/share/github-runner
+
+# Set here to apply to all runners.
+operations_runner_repo_default: operations-project/site-runner
+
 operations_github_api_token: DefaultApiToken
 operations_github_runners:
-  - repo_name: operations-project/site-runner
-    # Set repo_host if using enterprise github.
+  - runner_repo: operations-project/site-runner
     # repo_host: https://github.com
-    runner_name: "{{ inventory_hostname }}"
-    runner_path: "runner"
-    # Set a runner-specific api_token, if desired.
+    # runner_name: "{{ inventory_hostname }}"
+    # runner_path: "runner"
     # api_token: "{{ operations_github_api_token }}"
-    runner_labels: "example,local,operations,{{ inventory_hostname }}"
-    runner_user: platform
+    # runner_labels: "{{ inventory_hostname }}"
+    # runner_user: platform
