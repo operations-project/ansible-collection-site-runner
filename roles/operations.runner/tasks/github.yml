@@ -14,7 +14,7 @@
     item_runner_user: "{{ item.runner_user | default(operations_platform_user) | default('platform')}}"
     item_runner_name: "{{ item.runner_user | default(operations_platform_user) }}@{{ item.runner_name | default(inventory_hostname) }}"
     item_runner_repo: "{{ item.runner_repo | default(operations_runner_repo_default) }}"
-    item_runner_labels: "{{ inventory_hostname }},user/{{  item.runner_user | default(operations_platform_user) | default('platform') }},{{ item.runner_labels | default('') }}"
+    item_runner_labels: "{{ item.runner_user | default(operations_platform_user) }}@{{ item.runner_name | default(inventory_hostname) }},user/{{  item.runner_user | default(operations_platform_user) | default('platform') }},{{ item.runner_labels | default('') }}"
     item_runner_api_token: "{{ item.api_token | default(operations_github_api_token) }}"
 
 - name: Copy GitHub Runner
