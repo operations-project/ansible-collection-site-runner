@@ -1,5 +1,5 @@
 {
-    "name": "operations/site-server",
+    "name": "operations/site-runner",
     "description": "Self-contained Continuous Delivery Site Hosting",
     "type": "library",
     "license": "MIT",
