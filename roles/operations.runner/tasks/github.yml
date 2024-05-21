@@ -41,7 +41,6 @@
     cmd: "./svc.sh install && ./svc start"
     chdir: "{{ operations_github_runner_path }}"
   become: true
-  become_user: "{{ item.runner_user | default(operations_platform_user) | default('platform')}}"
 
 #- name: Add GitHub Runner Service
 #  shell:
