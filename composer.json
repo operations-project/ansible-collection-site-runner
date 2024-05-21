@@ -1,0 +1,13 @@
+{
+    "name": "operations/site-server",
+    "description": "Self-contained Continuous Delivery Site Hosting",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jon Pugh"
+        }
+    ],
+    "homepage": "https://github.com/operations-project/site-runner",
+    "require": {}
+}
