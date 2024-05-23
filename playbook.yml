@@ -48,3 +48,6 @@
   become: true
   roles:
     - role: operations.runner
+      when:
+      - lookup('ansible.builtin.env', 'HOSTNAME') == github_runner_host | default(true)
+      - github_runner_host in hostvars
