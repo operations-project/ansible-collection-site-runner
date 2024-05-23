@@ -2,14 +2,18 @@
 # A location to download the runner software to
 github_runner_download_version: "2.314.1"
 github_runner_download_filename: "actions-runner-linux-x64-{{ github_runner_download_version }}.tar.gz"
+github_runner_download_url: "https://github.com/actions/runner/releases/download/v{{ github_runner_download_version }}/{{ github_runner_download_filename }}"
 
 github_runner_repo: operations-project/operations-dashboard
 github_runner_user: "platform"
-github_runner_path: "/var/{{ github_runner_user }}/Runners/{{ github_runner_repo }}"
+github_runner_path: "/var/{{ github_runner_user }}/Runners/{{ github_runner_repo }}/{{ inventory_hostname }}"
 github_runner_site_symlink_directory: "/var/{{ github_runner_user }}/Sites/{{ github_runner_repo }}"
 github_runner_site_symlink_file: "{{ github_runner_site_symlink_directory }}/{{ inventory_hostname }}"
 
-github_runner_api_token:
+# To create runners, you need an API token with "admin" permissions.
+# Don't set this variable in yaml files. Set it in CI using --extra-vars.
+#   ansible-playbook --extra-vars github_runner_api_token=${{ secrets.OPERATIONS_GITHUB_RUNNER_TOKEN }}
+github_runner_api_token: "{{ lookup('ansible.builtin.env', 'OPERATIONS_GITHUB_RUNNER_TOKEN') }}"
 
 #
 #

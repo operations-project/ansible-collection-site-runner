@@ -10,22 +10,22 @@
   become_user: "{{ item.runner_user | default(operations_platform_user) | default('platform')}}"
   set_fact:
     # @TODO: Is there a better way to set defaults in a list of maps?
-    item_runner_path: "{{ user_facts.home }}/{{ item.runner_path | default('runner')}}"
+    item_runner_path: "{{ item.runner_path }}"
     item_runner_user: "{{ item.runner_user | default(operations_platform_user) | default('platform')}}"
     item_runner_name: "{{ item.runner_user | default(operations_platform_user) }}@{{ item.runner_name | default(inventory_hostname) }}"
     item_runner_repo: "{{ item.runner_repo | default(operations_runner_repo_default) }}"
     item_runner_labels: "{{ item.runner_user | default(operations_platform_user) }}@{{ item.runner_name | default(inventory_hostname) }},user/{{  item.runner_user | default(operations_platform_user) | default('platform') }},{{ item.runner_labels | default('') }}"
     item_runner_api_token: "{{ item.api_token | default(operations_github_api_token) }}"
-
-- name: Copy GitHub Runner
-  # It will fail if a job is running.
-  ignore_errors: true
-  copy:
-    src: "{{ operations_github_runner_path }}/"
-    dest: "{{ item_runner_path }}"
-    owner: "{{ item_runner_user }}"
-    group: "{{ item_runner_user }}"
-    remote_src: yes
+#
+#- name: Copy GitHub Runner
+#  # It will fail if a job is running.
+#  ignore_errors: true
+#  copy:
+#    src: "{{ operations_github_runner_path }}/"
+#    dest: "{{ item_runner_path }}"
+#    owner: "{{ item_runner_user }}"
+#    group: "{{ item_runner_user }}"
+#    remote_src: yes
 
 # See https://docs.github.com/en/rest/actions/self-hosted-runners?apiVersion=2022-11-28#create-configuration-for-a-just-in-time-runner-for-an-organization--fine-grained-access-tokens
 - name: "{{ item_runner_repo }} | Get GitHub Runner Token"
