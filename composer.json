@@ -9,5 +9,8 @@
         }
     ],
     "homepage": "https://github.com/operations-project/site-runner",
-    "require": {}
+    "require": {},
+    "bin": [
+        "scripts/verify"
+    ]
 }
