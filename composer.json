@@ -11,6 +11,6 @@
     "homepage": "https://github.com/operations-project/site-runner",
     "require": {},
     "bin": [
-        "scripts/verify"
+        "scripts/server-verify-self"
     ]
 }
