@@ -36,6 +36,11 @@
         - users
         - operations
 
+    - role: geerlingguy.composer
+      tags:
+        - system
+        - composer
+
     - role: operations.ddev
       tags:
         - system
