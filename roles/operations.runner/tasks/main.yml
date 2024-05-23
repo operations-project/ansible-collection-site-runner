@@ -26,15 +26,15 @@
     force: yes
     owner: "{{ github_runner_user }}"
     group: "{{ github_runner_user }}"
-
-- name: Create site symlink
-  file:
-    state: link
-    dest: "{{ github_runner_site_symlink_directory }}"
-    src: "{{ github_runner_path }}/_work/{{ github_runner_repo | split('/') | last }}/{{ github_runner_repo | split('/') | last }}"
-    force: yes
-    owner: "{{ github_runner_user }}"
-    group: "{{ github_runner_user }}"
+#
+#- name: Create site symlink
+#  file:
+#    state: link
+#    dest: "{{ github_runner_site_symlink_directory }}"
+#    src: "{{ github_runner_path }}/_work/{{ github_runner_repo | split('/') | last }}/{{ github_runner_repo | split('/') | last }}"
+#    force: yes
+#    owner: "{{ github_runner_user }}"
+#    group: "{{ github_runner_user }}"
 
 - name: Configure GitHub Runner
   include_tasks: github.yml
