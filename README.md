@@ -1,6 +1,6 @@
-# Operations Site Runner
+# Operations Site Runner Ansible Collection
 
-## Simple self-hosted git-powered web app automation.
+## Server config for launching site runners from your codebase.
 
 [![License](https://img.shields.io/badge/license-MIT-408677.svg)](LICENSE)
 
