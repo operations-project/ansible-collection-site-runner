@@ -1,0 +1,12 @@
+[submodule "roles/geerlingguy.docker"]
+	path = roles/geerlingguy.docker
+	url = https://github.com/geerlingguy/ansible-role-docker.git
+[submodule "roles/geerlingguy.git"]
+	path = roles/geerlingguy.git
+	url = https://github.com/geerlingguy/ansible-role-git.git
+[submodule "roles/geerlingguy.github-users"]
+	path = roles/geerlingguy.github-users
+	url = https://github.com/geerlingguy/ansible-role-github-users.git
+[submodule "roles/geerlingguy.security"]
+	path = roles/geerlingguy.security
+	url = https://github.com/geerlingguy/ansible-role-security.git
