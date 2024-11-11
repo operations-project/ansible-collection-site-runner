@@ -4,3 +4,4 @@ build
 tools
 vendor/
 .phpunit.result.cache
+bin
