@@ -14,7 +14,7 @@ tasks:
 
   install:
     cmds:
-      - docker compose exec operations ansible-playbook /usr/share/operations/playbook.yml
+      - docker compose exec operations ansible-playbook /usr/share/operations/playbook.yml {{ .CLI_ARGS }}
 
   destroy:
     cmds:
