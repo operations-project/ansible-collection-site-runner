@@ -68,7 +68,7 @@
   shell:
     cmd: |
       whoami
-      ./svc.sh install {{ item_runner_user }} 
+      ./svc.sh install {{ item_runner_user }}
       ./svc.sh start
     chdir: "{{ item_runner_path }}"
   become: true
