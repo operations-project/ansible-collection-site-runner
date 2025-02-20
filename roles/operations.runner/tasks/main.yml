@@ -6,11 +6,12 @@
     cmd: |
       cd {{ operations_github_runner_path }}
       mkdir {{ operations_github_runner_path }} -p
-      curl -o {{ operations_github_runner_path }}/actions-runner-linux-x64-2.314.1.tar.gz -L https://github.com/actions/runner/releases/download/v2.314.1/actions-runner-linux-x64-2.314.1.tar.gz
-      tar xzf {{ operations_github_runner_path }}/actions-runner-linux-x64-2.314.1.tar.gz
+      curl -o {{ operations_github_runner_path }}/actions-runner-linux-x64-{{ operations_github_runner_version }}.tar.gz -L https://github.com/actions/runner/releases/download/v{{ operations_github_runner_version }}/actions-runner-linux-x64-{{ operations_github_runner_version }}.tar.gz
+      tar xzf {{ operations_github_runner_path }}/actions-runner-linux-x64-{{ operations_github_runner_version }}.tar.gz
       ./bin/installdependencies.sh
     creates: "{{ operations_github_runner_path }}/config.sh"
 
 - name: Configure GitHub Runners
   include_tasks: github.yml
   with_items: "{{ operations_github_runners }}"
+

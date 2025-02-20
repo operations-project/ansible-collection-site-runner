@@ -1,6 +1,7 @@
 
 # Global runner path. github.yml will copy this dir instead of downloading.
 operations_github_runner_path: /usr/share/github-runner
+operations_github_runner_version: 2.322.0
 
 # Set here to apply to all runners.
 operations_runner_repo_default: operations-project/site-runner
