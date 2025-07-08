@@ -1,8 +1,6 @@
 ---
 - name: Install ddev
   shell: "curl -fsSL https://ddev.com/install.sh | bash"
-  become: true
-  become_user: "{{ operations_control_user }}"
 
 - name: Ensure bin is in all paths.
   shell: ln -sf /usr/local/bin/ddev /usr/bin/ddev
