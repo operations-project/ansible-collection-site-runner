@@ -5,7 +5,6 @@
   get_url:
     url: https://raw.githubusercontent.com/jonpugh/github-runner/refs/heads/main/github-runner
     dest: /usr/local/bin/github-runner
-    creates: /usr/local/bin/github-runner
     mode: 0755
 
 - name: Configure GitHub Runners

@@ -6,7 +6,7 @@ operations_github_runner_version: 2.322.0
 # Set here to apply to all runners.
 operations_runner_repo_default: operations-project/site-runner
 
-operations_github_api_token: DefaultApiToken
+operations_github_api_token: "{{ lookup('env', 'GITHUB_TOKEN')  }}"
 operations_github_runners:
   - runner_repo: operations-project/site-runner
     # repo_host: https://github.com
