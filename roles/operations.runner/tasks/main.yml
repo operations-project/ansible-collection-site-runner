@@ -1,15 +1,12 @@
 ---
 
 # See Your repo > Settings > Actions > Runner > New Runner
-- name: Download the Runner
-  shell:
-    cmd: |
-      cd {{ operations_github_runner_path }}
-      mkdir {{ operations_github_runner_path }} -p
-      curl -o {{ operations_github_runner_path }}/actions-runner-linux-x64-{{ operations_github_runner_version }}.tar.gz -L https://github.com/actions/runner/releases/download/v{{ operations_github_runner_version }}/actions-runner-linux-x64-{{ operations_github_runner_version }}.tar.gz
-      tar xzf {{ operations_github_runner_path }}/actions-runner-linux-x64-{{ operations_github_runner_version }}.tar.gz
-      ./bin/installdependencies.sh
-    creates: "{{ operations_github_runner_path }}/config.sh"
+- name: Download the Runner Installer
+  get_url:
+    url: https://raw.githubusercontent.com/jonpugh/github-runner/refs/heads/main/github-runner
+    dest: /usr/local/bin/github-runner
+    creates: /usr/local/bin/github-runner
+    mode: 0755
 
 - name: Configure GitHub Runners
   include_tasks: github.yml
