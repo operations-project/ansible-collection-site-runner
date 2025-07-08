@@ -49,7 +49,7 @@
 
 - name: "{{ item_runner_repo }} | Setup GitHub Runner"
   shell:
-    cmd: "github-runner --repo={{ item_runner_repo }} --name {{ item_runner_name }} --labels {{ item_runner_labels }} --token={{ github_runner_registration_token.token }} --runner-path={{ item_runner_path }} --no-run"
+    cmd: "github-runner --repo={{ item_runner_repo }} --name={{ item_runner_name }} --labels={{ item_runner_labels }} --token={{ github_runner_registration_token.token }} --runner-path={{ item_runner_path }} --no-run"
   become: true
   become_user: "{{ item_runner_user }}"
 
