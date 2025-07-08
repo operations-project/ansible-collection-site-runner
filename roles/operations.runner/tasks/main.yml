@@ -1,10 +1,10 @@
 ---
 
 # See Your repo > Settings > Actions > Runner > New Runner
-- name: Download the Runner Installer
-  get_url:
-    url: https://raw.githubusercontent.com/jonpugh/github-runner/refs/heads/main/github-runner
-    dest: /usr/local/bin/github-runner
+- name: Install the github-runner-installer script.
+  copy:
+    src: scripts/github-runner-installer
+    dest: /usr/local/bin/github-runner-installer
     mode: 0755
 
 - name: Download the dependency Installer
