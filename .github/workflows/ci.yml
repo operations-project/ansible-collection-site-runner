@@ -69,11 +69,14 @@ jobs:
       - name: Install task CLI
         run: ./scripts/install-task.sh
 
-      - name: Build Platform
+      - name: Build Containers
         run: bin/task build -- --verbose
 
       - name: Inventory
         run: bin/task playbook -- --list-hosts
+
+      - name: Run Playbook
+        run: bin/task playbook -- --verbose
 
       - name: Test Platform
         run: |

@@ -10,14 +10,13 @@ tasks:
   up:
     desc: Start containers and run playbook.
     cmds:
-      - docker compose up -d
+      - docker compose up -d --build
       - task: playbook
 
   build:
-    desc: Build & start new containers, then run playbook.  Pass options to ansible-playbook after "--".
+    desc: Rebuild & restart containers
     cmds:
       - docker compose up -d --build
-      - task: playbook
     aliases:
       - b
 
@@ -25,7 +24,6 @@ tasks:
     desc: Run ansible-playbook. Pass options after "--".
     aliases: [p]
     cmds:
-      - docker compose up -d
       - docker compose exec operations ansible-playbook /usr/share/operations/playbook.yml {{ .CLI_ARGS }}
 
   destroy:
