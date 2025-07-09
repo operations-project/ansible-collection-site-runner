@@ -42,4 +42,4 @@ tasks:
     desc: "Execute any command. Example: task exec -- command-to-run"
     aliases: [e]
     cmds:
-      - docker compose exec -u platform operations {{ .CLI_ARGS }}
+      - docker compose exec operations {{ .CLI_ARGS }}
