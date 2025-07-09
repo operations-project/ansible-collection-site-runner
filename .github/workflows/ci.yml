@@ -89,5 +89,9 @@ jobs:
           docker-compose exec -u platform operations ddev
 
       - name: Test Site
+        env:
+          SITES_PATH: /var/platform/Sites/dashboard/live
         run: |
-          bin/task exec git clone
+          bin/task exec-platform -- git clone https://github.com/operations-project/operations-dashboard $SITE_PATH
+          bin/task exec-platform -- ddev start
+

@@ -47,5 +47,7 @@ tasks:
   exec-platform:
     desc: "Execute any command as platform user. Example: task exec-platform -- command-to-run"
     aliases: [e]
+    env:
+      SITES_PATH: "/var/platform/"
     cmds:
-      - docker compose exec -u platform operations {{ .CLI_ARGS }}
+      - docker compose exec -u platform -w $SITES_PATH operations {{ .CLI_ARGS }}
