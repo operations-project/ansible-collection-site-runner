@@ -12,7 +12,6 @@ services:
       - ./:/usr/share/operations
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
       - ./ansible:/etc/ansible
-      - ./scripts/github-runner-installer:/usr/local/bin/github-runner-installer
     environment:
       - OPERATIONS_PLATFORM=yes
     env_file:
