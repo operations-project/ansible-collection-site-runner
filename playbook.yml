@@ -24,7 +24,7 @@
   roles:
 
     - role: geerlingguy.docker
-      tags: system
+      tags: docker
 
     - role: operations.users
       tags: users
