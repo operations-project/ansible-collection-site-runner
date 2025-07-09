@@ -68,8 +68,8 @@ jobs:
       - name: Install task CLI
         run: ./scripts/install-task.sh
 
-      - name: Build Containers
-        run: bin/task build -- --verbose
+      - name: Start Containers
+        run: docker compose up -d
 
       - name: Debug
         run: |
