@@ -3,34 +3,33 @@
 - name: Configure Server
   hosts: all
   become: true
+  tags: system
 
   roles:
+
+    - role: geerlingguy.github-users
+      vars:
+        github_users: "{{ operations_admin_users | default([]) }}"
+
     - role: geerlingguy.security
-      tags: system
       vars:
         security_sudoers_passwordless: "{{ [operations_control_user|default('control')] + operations_admin_users|default([]) }}"
         security_ssh_allowed_users: "{{ [operations_control_user|default('control')] + [operations_platform_user|default('platform')] + operations_admin_users|default([]) }}"
 
-    - role: geerlingguy.github-users
-      tags: system
-      vars:
-        github_users: "{{ operations_admin_users | default([]) }}"
+    - role: geerlingguy.docker
 
 - name: "Configure Hosting: DDEV"
   hosts: operations_host_ddev
   become: true
+  tags: hosting
 
   roles:
-    - role: geerlingguy.docker
-      tags: system
 
     - role: operations.users
-      tags: operations, users
-
-    - role: operations.ddev
-      tags: operations, ddev
+      tags: users
 
     - role: operations.runner
-      tags:
-      - operations
-      - runner
+      tags: runner
+
+    - role: operations.ddev
+      tags: ddev
