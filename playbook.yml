@@ -1,19 +1,26 @@
 
 ---
-- name: "Configure Hosting: DDEV"
+- name: Configure Server
   hosts: all
   become: true
 
   roles:
     - role: geerlingguy.security
+      tags: system
       vars:
         security_sudoers_passwordless: "{{ [operations_control_user|default('control')] + operations_admin_users|default([]) }}"
         security_ssh_allowed_users: "{{ [operations_control_user|default('control')] + [operations_platform_user|default('platform')] + operations_admin_users|default([]) }}"
 
     - role: geerlingguy.github-users
+      tags: system
       vars:
         github_users: "{{ operations_admin_users | default([]) }}"
 
+- name: "Configure Hosting: DDEV"
+  hosts: operations_host_ddev
+  become: true
+
+  roles:
     - role: geerlingguy.docker
       tags: system
 
