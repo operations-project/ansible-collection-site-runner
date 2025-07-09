@@ -1,7 +1,9 @@
 
 ---
 - name: Configure Server
-  hosts: all
+  hosts: operations_host_ddev
+  # @TODO: "all" used to work! what's up?
+  # hosts: all
   become: true
 
   roles:
