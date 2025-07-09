@@ -21,7 +21,7 @@ tasks:
     aliases:
       - b
 
-  play:
+  playbook:
     desc: Run ansible-playbook. Pass options after "--".
     aliases: [p]
     cmds:
