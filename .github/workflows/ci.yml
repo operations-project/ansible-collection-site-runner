@@ -104,5 +104,5 @@ jobs:
         env:
           SITES_PATH: /var/platform/Sites/dashboard/live
         run: |
-          SITES_PATH=$GIT_PATH bin/task exec-platform -- docker logs ddev-operations-dashboard-web
+          bin/task exec-platform -- docker logs ddev-operations-dashboard-web
 
