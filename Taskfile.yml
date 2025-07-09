@@ -36,7 +36,7 @@ tasks:
     desc: Launch a shell inside the container.
     aliases: [sh]
     cmds:
-      - docker compose exec -u platform operations bash
+      - docker compose exec operations bash
 
   exec:
     desc: "Execute any command. Example: task exec -- command-to-run"
