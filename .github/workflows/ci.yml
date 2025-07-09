@@ -53,7 +53,8 @@ jobs:
           echo "DOCKER_HOSTNAME=${{ env.OPERATIONS_ENVIRONMENT_NAME }}" > .env
           echo "# CI variables set!
           operations_github_api_token: overridden_by_operations_github_runners
-          operations_platform_user: $HOME
+          operations_platform_user: $USER
+          operations_platform_home: $HOME
           operations_admin_users:
           - jonpugh
           operations_github_runners:
@@ -98,7 +99,9 @@ jobs:
           GIT_PATH: /var/platform/Sites/dashboard/live
         run: |
           bin/task exec-platform -- git clone https://github.com/operations-project/operations-dashboard $GIT_PATH
-          SITES_PATH=$GIT_PATH bin/task exec-platform -- ddev start
+          SITES_PATH=$GIT_PATH bin/task exec-platform -- ddev start || \
+            (echo "ddev start failed. Logs:"
+            )
 
       - name: Show Docker Logs
         if: always()
