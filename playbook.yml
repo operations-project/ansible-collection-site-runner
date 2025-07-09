@@ -1,37 +1,34 @@
 
 ---
 - name: Configure Server
-  hosts: operations_host_ddev
-  # @TODO: "all" used to work! what's up?
-  # hosts: all
+  hosts: all
   become: true
 
   roles:
-
-    - role: geerlingguy.github-users
-      vars:
-        github_users: "{{ operations_admin_users | default([]) }}"
-      tags: system
-
     - role: geerlingguy.security
+      tags: system
       vars:
         security_sudoers_passwordless: "{{ [operations_control_user|default('control')] + operations_admin_users|default([]) }}"
         security_ssh_allowed_users: "{{ [operations_control_user|default('control')] + [operations_platform_user|default('platform')] + operations_admin_users|default([]) }}"
+
+    - role: geerlingguy.github-users
+      tags: system
+      vars:
+        github_users: "{{ operations_admin_users | default([]) }}"
 
 - name: "Configure Hosting: DDEV"
   hosts: operations_host_ddev
   become: true
 
   roles:
-
     - role: geerlingguy.docker
-      tags: docker
+      tags: system
 
     - role: operations.users
-      tags: users
+      tags: operations
 
     - role: operations.ddev
-      tags: ddev
+      tags: operations, ddev
 
     - role: operations.runner
-      tags: runner
+      tags: operations, runner
