@@ -69,6 +69,11 @@ jobs:
       - name: Build Containers
         run: bin/task build -- --verbose
 
+      - name: Debug
+        run: |
+          bin/task exec -- ls -la /etc/ansible
+          bin/task exec -- cat /etc/ansible/hosts
+
       - name: Inventory
         run: bin/task playbook -- --list-hosts
 
