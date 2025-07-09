@@ -14,9 +14,9 @@ tasks:
     aliases:
       - st
 
-  play:
+  install:
     aliases:
-      - p
+      - in
     cmds:
       - docker compose exec operations ansible-playbook /usr/share/operations/playbook.yml {{ .CLI_ARGS }}
 
