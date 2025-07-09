@@ -80,7 +80,7 @@ jobs:
         run: bin/task playbook -- --list-hosts
 
       - name: Run Playbook
-        run: bin/task playbook -- -vvvv
+        run: bin/task playbook -- --verbose
 
       - name: Test Platform
         run: |
