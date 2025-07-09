@@ -43,3 +43,9 @@ tasks:
     aliases: [e]
     cmds:
       - docker compose exec operations {{ .CLI_ARGS }}
+
+  exec-platform:
+    desc: "Execute any command as platform user. Example: task exec-platform -- command-to-run"
+    aliases: [e]
+    cmds:
+      - docker compose exec -u platform operations {{ .CLI_ARGS }}

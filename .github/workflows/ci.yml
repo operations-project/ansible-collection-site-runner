@@ -87,3 +87,7 @@ jobs:
           docker-compose exec -u platform operations whoami
           docker-compose exec -u platform operations hostname
           docker-compose exec -u platform operations ddev
+
+      - name: Test Site
+        run: |
+          bin/task exec git clone
