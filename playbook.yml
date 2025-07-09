@@ -23,14 +23,14 @@
 
   roles:
 
-    - role: operations.users
-      tags: operations, users
-
-    - role: operations.ddev
-      tags: operations, ddev
-
-    - role: operations.runner
-      tags: operations, runner
-
     - role: geerlingguy.docker
       tags: system
+
+    - role: operations.users
+      tags: users
+
+    - role: operations.ddev
+      tags: ddev
+
+    - role: operations.runner
+      tags: runner
