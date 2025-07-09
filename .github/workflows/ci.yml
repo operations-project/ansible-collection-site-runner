@@ -53,7 +53,7 @@ jobs:
           echo "DOCKER_HOSTNAME=${{ env.OPERATIONS_ENVIRONMENT_NAME }}" > .env
           echo "# CI variables set!
           operations_github_api_token: overridden_by_operations_github_runners
-          operations_platform_user: $USER
+          operations_platform_user: $HOME
           operations_admin_users:
           - jonpugh
           operations_github_runners:
