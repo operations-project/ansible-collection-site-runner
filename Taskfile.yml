@@ -11,8 +11,12 @@ tasks:
     cmds:
       - docker compose up -d --build
       - task: install
+    aliases:
+      - st
 
-  install:
+  play:
+    aliases:
+      - p
     cmds:
       - docker compose exec operations ansible-playbook /usr/share/operations/playbook.yml {{ .CLI_ARGS }}
 
@@ -21,5 +25,13 @@ tasks:
       - docker compose kill && docker compose rm -fv
 
   shell:
+    aliases:
+      - sh
     cmds:
-      - docker compose exec operations bash
+      - docker compose exec -u platform operations bash
+
+  exec:
+    aliases:
+      - e
+    cmds:
+      - docker compose exec -u platform operations {{ .CLI_ARGS }}
