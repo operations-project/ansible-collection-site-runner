@@ -73,7 +73,7 @@ jobs:
         run: bin/task playbook -- --list-hosts
 
       - name: Run Playbook
-        run: bin/task playbook -- --vv
+        run: bin/task playbook -- -vv
 
       - name: Test Platform
         run: |
