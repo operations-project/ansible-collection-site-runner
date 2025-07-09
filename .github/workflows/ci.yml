@@ -53,7 +53,7 @@ jobs:
           operations_admin_users:
           - jonpugh
           operations_github_runners:
-          - repo_name: ${{ github.repository }}
+          - runner_repo: ${{ github.repository }}
             runner_name:  ${{ env.OPERATIONS_ENVIRONMENT_NAME }}
             runner_labels: github-ci,delete-me,${{ env.OPERATIONS_ENVIRONMENT_NAME }}
           " > ./ansible/host_vars/${{ env.OPERATIONS_ENVIRONMENT_NAME }}.yml
