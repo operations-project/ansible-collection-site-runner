@@ -90,8 +90,8 @@ jobs:
 
       - name: Test Site
         env:
-          SITES_PATH: /var/platform/Sites/dashboard/live
+          GIT_PATH: /var/platform/Sites/dashboard/live
         run: |
-          bin/task exec-platform -- git clone https://github.com/operations-project/operations-dashboard $SITE_PATH
-          bin/task exec-platform -- ddev start
+          bin/task exec-platform -- git clone https://github.com/operations-project/operations-dashboard $GIT_PATH
+          SITES_PATH=$GIT_PATH bin/task exec-platform -- ddev start
 
