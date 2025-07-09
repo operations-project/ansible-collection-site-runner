@@ -7,3 +7,6 @@ RUN yum install \
   git \
   gpg \
     -y
+
+# https://github.com/geerlingguy/docker-rockylinux9-ansible/issues/6#issuecomment-2676248714
+RUN chmod 0400 /etc/shadow
