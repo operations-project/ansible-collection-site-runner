@@ -4,5 +4,6 @@
 FROM --platform=linux/amd64 geerlingguy/docker-${MOLECULE_DISTRO:-ubuntu2404}-ansible:latest
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
+        curl \
         git \
         openssh-server

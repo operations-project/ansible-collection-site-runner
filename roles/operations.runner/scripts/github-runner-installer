@@ -283,8 +283,10 @@ configure() {
   # Remove
   # @TODO: If runner has a job, wait for it to complete.
   cd $RUNNER_FOLDER
+  echo ./config.sh remove --token ${RUNNER_CONFIG_TOKEN}
   ./config.sh remove --token ${RUNNER_CONFIG_TOKEN} || say "config remove didn't work."
 
+  rm -rf .credentials .runner
   line
   say Configuring new runner...
 
