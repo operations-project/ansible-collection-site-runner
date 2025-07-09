@@ -69,7 +69,9 @@ jobs:
         run: ./scripts/install-task.sh
 
       - name: Start Containers
-        run: docker compose up -d
+        run: |
+          docker compose up -d
+          docker exec operations chmod 0400 /etc/shadow
 
       - name: Debug
         run: |
