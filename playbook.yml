@@ -1,6 +1,6 @@
 
 ---
-- name: Configure Server
+- name: "Configure Hosting: DDEV"
   hosts: all
   become: true
 
@@ -14,19 +14,14 @@
       vars:
         github_users: "{{ operations_admin_users | default([]) }}"
 
-#- name: "Configure Hosting: DDEV"
-#  hosts: all
-#  become: true
-#
-#  roles:
-#    - role: geerlingguy.docker
-#      tags: system
-#
-#    - role: operations.users
-#      tags: operations
-#
-#    - role: operations.ddev
-#      tags: operations, ddev
-#
-#    - role: operations.runner
-#      tags: operations, runner
+    - role: geerlingguy.docker
+      tags: system
+
+    - role: operations.users
+      tags: operations
+
+    - role: operations.ddev
+      tags: operations, ddev
+
+    - role: operations.runner
+      tags: operations, runner
