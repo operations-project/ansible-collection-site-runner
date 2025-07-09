@@ -15,7 +15,7 @@
         github_users: "{{ operations_admin_users | default([]) }}"
 
 - name: "Configure Hosting: DDEV"
-  hosts: operations_host_ddev
+  hosts: all
   become: true
 
   roles:
