@@ -16,8 +16,6 @@
         security_sudoers_passwordless: "{{ [operations_control_user|default('control')] + operations_admin_users|default([]) }}"
         security_ssh_allowed_users: "{{ [operations_control_user|default('control')] + [operations_platform_user|default('platform')] + operations_admin_users|default([]) }}"
 
-    - role: geerlingguy.docker
-
 - name: "Configure Hosting: DDEV"
   hosts: operations_host_ddev
   become: true
@@ -26,10 +24,13 @@
   roles:
 
     - role: operations.users
-      tags: users
-
-    - role: operations.runner
-      tags: runner
+      tags: operations, users
 
     - role: operations.ddev
-      tags: ddev
+      tags: operations, ddev
+
+    - role: operations.runner
+      tags: operations, runner
+
+    - role: geerlingguy.docker
+      tags: system
