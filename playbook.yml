@@ -18,7 +18,7 @@
 
 - name: "Configure Hosting: DDEV"
   hosts: operations_host_ddev
-  become: true
+  # become: true
 
   roles:
     - role: geerlingguy.docker
