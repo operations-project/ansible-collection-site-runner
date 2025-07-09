@@ -4,6 +4,14 @@
   hosts: all
   become: true
 
+  pre_tasks:
+    - name: Prerequisite Packages
+      package:
+        name:
+          - openssh-server
+          - git
+          - gpg
+
   roles:
     - role: geerlingguy.security
       tags: system
@@ -31,6 +39,4 @@
       tags: operations, ddev
 
     - role: operations.runner
-      tags:
-      - operations
-      - runner
+      tags: operations, runner

@@ -17,57 +17,9 @@
     item_runner_labels: "{{ item.runner_user | default(operations_platform_user) }}@{{ item.runner_name | default(inventory_hostname) }},user/{{  item.runner_user | default(operations_platform_user) | default('platform') }},{{ item.runner_labels | default('') }}"
     item_runner_api_token: "{{ item.api_token | default(operations_github_api_token) }}"
 
-- name: Prepare runner directory
-  file:
-    state: directory
-    dest: "{{ item_runner_path | dirname }}"
-    owner: "{{ item_runner_user }}"
-    group: "{{ item_runner_user }}"
-
-- name: Copy GitHub Runner
-  # It will fail if a job is running.
-  ignore_errors: true
-  copy:
-    src: "{{ operations_github_runner_path }}/"
-    dest: "{{ item_runner_path }}"
-    owner: "{{ item_runner_user }}"
-    group: "{{ item_runner_user }}"
-    remote_src: yes
-
-# See https://docs.github.com/en/rest/actions/self-hosted-runners?apiVersion=2022-11-28#create-configuration-for-a-just-in-time-runner-for-an-organization--fine-grained-access-tokens
-- name: "{{ item_runner_repo }} | Get GitHub Runner Token"
-  shell: |
-    curl -L \
-      -X POST \
-      -H "Accept: application/vnd.github+json" \
-      -H "Authorization: Bearer {{ item_runner_api_token }}" \
-      -H "X-GitHub-Api-Version: 2022-11-28" \
-      https://api.github.com/repos/{{ item_runner_repo }}/actions/runners/registration-token \
-  register: result
-  failed_when:
-    - "'token' not in result.stdout"
-- set_fact:
-    github_runner_registration_token:  "{{ result.stdout | from_json }}"
-
-- debug:
-    msg: |
-      Curl Result: {{ result }}"
-      API response: {{ github_runner_registration_token }}"
-
-  failed_when:
-    - "'token' not in github_runner_registration_token"
-
-- name: "{{ item_runner_repo }} | Remove existing GitHub Runner"
-  shell:
-    cmd: "./svc.sh uninstall"
-    chdir: "{{ item_runner_path }}"
-  become: true
-  ignore_errors: true
-
 - name: "{{ item_runner_repo }} | Setup GitHub Runner"
   shell:
-    cmd: "./config.sh remove --token {{ github_runner_registration_token.token }} && ./config.sh --replace --unattended --url {{ item.repo_host | default('https://github.com') }}/{{ item_runner_repo }} --token {{ github_runner_registration_token.token }} --name {{ item_runner_name }} --labels {{ item_runner_labels }}"
-    chdir: "{{ item_runner_path }}"
+    cmd: "/usr/local/bin/github-runner-installer --repo={{ item_runner_repo }} --name={{ item_runner_name }} --labels={{ item_runner_labels }} --token={{ item_runner_api_token }} --runner-path={{ item_runner_path }} --no-run"
   become: true
   become_user: "{{ item_runner_user }}"
 

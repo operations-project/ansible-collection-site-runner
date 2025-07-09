@@ -16,6 +16,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: true
 
       - name: Install docker-compose
         uses: KengoTODA/actions-setup-docker-compose@v1
@@ -44,29 +46,65 @@ jobs:
         run: |
           echo "[operations_host_ddev]
           ${{ env.OPERATIONS_ENVIRONMENT_NAME }} ansible_connection=local" > ./ansible/hosts
+          cat ./ansible/hosts
 
       - name: Set variables
         run: |
           echo "DOCKER_HOSTNAME=${{ env.OPERATIONS_ENVIRONMENT_NAME }}" > .env
           echo "# CI variables set!
-          operations_github_api_token: ${{ secrets.OPERATIONS_GITHUB_API_TOKEN }}
+          operations_github_api_token: overridden_by_operations_github_runners
           operations_admin_users:
           - jonpugh
           operations_github_runners:
-          - repo_name: ${{ github.repository }}
+          - runner_repo: ${{ github.repository }}
             runner_name:  ${{ env.OPERATIONS_ENVIRONMENT_NAME }}
             runner_labels: github-ci,delete-me,${{ env.OPERATIONS_ENVIRONMENT_NAME }}
+            runner_path: test-runner-path
+            api_token: ${{ secrets.OPERATIONS_GITHUB_API_TOKEN }}
+            runner_user: platform
           " > ./ansible/host_vars/${{ env.OPERATIONS_ENVIRONMENT_NAME }}.yml
           cat ./ansible/host_vars/${{ env.OPERATIONS_ENVIRONMENT_NAME }}.yml
 
       - name: Install task CLI
         run: ./scripts/install-task.sh
 
-      - name: Build Platform
-        run: bin/task start
+      - name: Start Containers
+        run: |
+          docker compose up -d
+          docker-compose exec operations chmod 0400 /etc/shadow
+
+      - name: Debug
+        run: |
+          bin/task exec -- ls -la /etc/ansible
+          bin/task exec -- cat /etc/ansible/hosts
+
+      - name: Inventory
+        run: bin/task playbook -- --list-hosts
+
+      - name: Run Playbook
+        run: bin/task playbook -- --verbose
 
       - name: Test Platform
         run: |
+          bin/task exec-platform -- ls -la /var/platform
+          bin/task exec-platform -- ddev config global --instrumentation-opt-in=false
           docker-compose exec -u platform operations whoami
           docker-compose exec -u platform operations hostname
           docker-compose exec -u platform operations ddev
+
+      - name: Test Site
+        env:
+          GIT_PATH: /var/platform/Sites/dashboard/live
+        run: |
+          bin/task exec-platform -- git clone https://github.com/operations-project/operations-dashboard $GIT_PATH
+          SITES_PATH=$GIT_PATH bin/task exec-platform -- ddev start || \
+            (echo "ddev start failed. Logs:"
+            )
+
+      - name: Show Docker Logs
+        if: always()
+        env:
+          SITES_PATH: /var/platform/Sites/dashboard/live
+        run: |
+          bin/task exec-platform -- docker logs ddev-operations-dashboard-web
+
