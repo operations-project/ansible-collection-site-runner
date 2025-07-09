@@ -25,7 +25,7 @@
       tags: system
 
     - role: operations.users
-      tags: operations
+      tags: operations, users
 
     - role: operations.ddev
       tags: operations, ddev
