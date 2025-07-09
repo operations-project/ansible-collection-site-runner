@@ -9,7 +9,7 @@ start() {
 
 
   if [[ -n $RUNNER_CONFIG ]]; then
-    say Launching runner with run.sh ...
+    say Configuring runner with config.sh ...
     line
     configure
   else
@@ -18,7 +18,7 @@ start() {
 
   line
 
-  if [[ "$RUNNER_RUN"=="yes" ]]; then
+  if [[ -n $RUNNER_RUN ]]; then
     say Launching runner with run.sh ...
     line
     cd $RUNNER_FOLDER
@@ -136,7 +136,7 @@ verify() {
              ;;
 
           --no-run)
-              RUNNER_RUN="no"
+              RUNNER_RUN=""
               ;;
 
           --no-config)
