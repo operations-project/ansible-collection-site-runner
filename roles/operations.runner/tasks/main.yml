@@ -1,20 +1,24 @@
 ---
 
 # See Your repo > Settings > Actions > Runner > New Runner
-- name: Install the github-runner-installer script.
+- name: Download the github-runner-installer script.
   copy:
     src: scripts/github-runner-installer
+    dest: /usr/local/bin/github-runner-installer
+    mode: 0755
+  get_url:
+    url: "{{ operations_github_runner_install_script}}"
     dest: /usr/local/bin/github-runner-installer
     mode: 0755
 
 - name: Download the dependency Installer
   get_url:
-    url: https://raw.githubusercontent.com/actions/runner/refs/tags/v2.326.0/src/Misc/layoutbin/installdependencies.sh
-    dest: /usr/local/bin/install-github-runner-dependencies
+    url: "{{ operations_github_runner_dependencies_script}}"
+    dest: /tmp/install-github-runner-dependencies
     mode: 0755
 
 - name: Install dependencies
-  command: /usr/local/bin/install-github-runner-dependencies
+  command: /tmp/install-github-runner-dependencies
 
 - name: Update apt cache (Debian).
   apt: update_cache=true cache_valid_time=86400
