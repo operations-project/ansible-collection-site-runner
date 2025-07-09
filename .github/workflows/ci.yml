@@ -97,7 +97,7 @@ jobs:
         run: |
           bin/task exec-platform -- git clone https://github.com/operations-project/operations-dashboard $GIT_PATH
           SITES_PATH=$GIT_PATH bin/task exec-platform -- ddev start || \
-            (echo "ddev start failed. Logs:" \
+            (echo "ddev start failed. Logs:"
             SITES_PATH=$GIT_PATH bin/task exec-platform -- ddev logs -s web)
 
 
