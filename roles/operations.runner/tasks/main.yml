@@ -2,10 +2,6 @@
 
 # See Your repo > Settings > Actions > Runner > New Runner
 - name: Download the github-runner-installer script.
-  copy:
-    src: scripts/github-runner-installer
-    dest: /usr/local/bin/github-runner-installer
-    mode: 0755
   get_url:
     url: "{{ operations_github_runner_install_script}}"
     dest: /usr/local/bin/github-runner-installer
