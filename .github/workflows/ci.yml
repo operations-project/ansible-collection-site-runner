@@ -86,6 +86,7 @@ jobs:
 
       - name: Test Platform
         run: |
+          bin/task exec-platform -- ls -la /var/platform
           bin/task exec-platform -- ddev config global --instrumentation-opt-in=false
           docker-compose exec -u platform operations whoami
           docker-compose exec -u platform operations hostname
