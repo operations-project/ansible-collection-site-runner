@@ -62,6 +62,10 @@ jobs:
           " > ./ansible/host_vars/${{ env.OPERATIONS_ENVIRONMENT_NAME }}.yml
           cat ./ansible/host_vars/${{ env.OPERATIONS_ENVIRONMENT_NAME }}.yml
 
+          echo "[operations_host_ddev]
+          ${{ env.OPERATIONS_ENVIRONMENT_NAME }} ansible_connection=local
+          " > ./ansible/hosts
+
       - name: Install task CLI
         run: ./scripts/install-task.sh
 
