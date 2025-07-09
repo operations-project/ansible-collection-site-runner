@@ -3,7 +3,7 @@
 ---
 services:
   operations:
-    image: geerlingguy/docker-${MOLECULE_DISTRO:-rockylinux8}-ansible:latest
+    image: geerlingguy/docker-${MOLECULE_DISTRO:-ubuntu2404}-ansible:latest
     hostname: ${DOCKER_HOSTNAME:-operations.local.computer}
     cgroup: host
     cgroup_parent: docker.slice
