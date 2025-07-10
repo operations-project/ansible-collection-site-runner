@@ -5,6 +5,17 @@
   become: true
 
   pre_tasks:
+
+    # Set server hostnames to inventory hostname.
+    - name: "Set hostname for {{ ansible_nodename }} to {{ inventory_hostname }}."
+      hostname:
+        name: "{{ inventory_hostname }}"
+      when: inventory_hostname != ansible_nodename
+      register: result
+      until: result.failed != true
+      retries: 5
+      delay: 2
+
     - name: Prerequisite Packages
       package:
         name:

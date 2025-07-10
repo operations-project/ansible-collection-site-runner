@@ -28,4 +28,3 @@
 - name: Configure GitHub Runners
   include_tasks: github.yml
   with_items: "{{ operations_github_runners }}"
-

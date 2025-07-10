@@ -1,9 +1,7 @@
 # Place in /etc/ansible/hosts
 # This defines your local system.
-# Replace "localhost" with the FQDN of this server.
-# Install the desired hosting engine by adding it to the right group, as defined in "hosts" in playbook.yml "Configure Hosting: DDEV".
+# Replace "sites.mydomain.com" with the FQDN of this server.
+# The group operations_host_ddev is used in playbook.yml to identify servers that should have DDEV installed.
 
 [operations_host_ddev]
-localhost ansible_connection=local
-
-# If running docker in docker, set platform user to match host user. operations_platform_user=jonpugh operations_platform_home=/home/jonpugh
+sites.mydomain.com ansible_connection=local
