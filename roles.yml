@@ -1,9 +1,0 @@
----
-
-- name: geerlingguy.composer
-- name: geerlingguy.docker
-- name: geerlingguy.git
-- name: geerlingguy.github-users
-- name: geerlingguy.php
-- name: geerlingguy.security
-

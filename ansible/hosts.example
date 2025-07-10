@@ -5,4 +5,5 @@
 
 [operations_host_ddev]
 localhost ansible_connection=local
- 
+
+# If running docker in docker, set platform user to match host user. operations_platform_user=jonpugh operations_platform_home=/home/jonpugh

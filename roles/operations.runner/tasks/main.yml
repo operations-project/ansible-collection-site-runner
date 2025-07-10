@@ -1,53 +1,30 @@
 ---
 
 # See Your repo > Settings > Actions > Runner > New Runner
-- name: Download the Runner
-  shell:
-    cmd: |
-      mkdir {{ github_runner_path }} -p
-      cd {{ github_runner_path }}
-      curl --fail -o {{ github_runner_path }}/{{ github_runner_download_filename }} -L {{ github_runner_download_url }}
-      tar xzf {{ github_runner_download_filename }}
-      ./bin/installdependencies.sh
-      chown {{ github_runner_user }}:{{ github_runner_user }} . -R
-    creates: "{{ github_runner_path }}/config.sh"
+- name: Download the github-runner-installer script.
+  get_url:
+    url: "{{ operations_github_runner_install_script}}"
+    dest: /usr/local/bin/github-runner-installer
+    mode: 0755
 
-- name: Verify runner
-  file:
-    path: "{{ github_runner_path }}"
-    state: directory
-    owner: "{{ github_runner_user }}"
-    group: "{{ github_runner_user }}"
+- name: Download the dependency Installer
+  get_url:
+    url: "{{ operations_github_runner_dependencies_script}}"
+    dest: /tmp/install-github-runner-dependencies
+    mode: 0755
 
-- name: Create Sites directory
-  file:
-    state: directory
-    dest: "{{ github_runner_site_symlink_directory }}"
-    force: yes
-    owner: "{{ github_runner_user }}"
-    group: "{{ github_runner_user }}"
-#
-#- name: Create site symlink
-#  file:
-#    state: link
-#    dest: "{{ github_runner_site_symlink_directory }}"
-#    src: "{{ github_runner_path }}/_work/{{ github_runner_repo | split('/') | last }}/{{ github_runner_repo | split('/') | last }}"
-#    force: yes
-#    owner: "{{ github_runner_user }}"
-#    group: "{{ github_runner_user }}"
+- name: Install dependencies
+  command: /tmp/install-github-runner-dependencies
 
-- name: Configure GitHub Runner
+- name: Update apt cache (Debian).
+  apt: update_cache=true cache_valid_time=86400
+  when: ansible_os_family == 'Debian'
+
+- name: Ensure jq is installed.
+  package:
+    name: "{{ operations_runner_extra_packages }}"
+    state: present
+
+- name: Configure GitHub Runners
   include_tasks: github.yml
-  with_items:
-  - runner_repo: "{{ github_runner_repo }}"
-    runner_user: "{{ github_runner_user }}"
-    runner_name: "{{ inventory_hostname }}"
-    runner_path: "{{ github_runner_path }}"
-    api_token: "{{ github_runner_api_token }}"
-#    runner_labels: "{{ inventory_hostname }}"
-
-
-#
-#- name: Configure GitHub Runners
-#  include_tasks: github.yml
-#  with_items: "{{ operations_github_runners }}"
+  with_items: "{{ operations_github_runners }}"

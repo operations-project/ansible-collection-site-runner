@@ -1,5 +1,11 @@
 ---
 
+- name: Create Docker group
+  group:
+    name: "{{ operations_docker_group | default('docker') }}"
+    state: present
+    gid: "{{ operations_docker_gid | default(omit) }}"
+
 - name: Create Platform group
   group:
     name: "{{ operations_platform_user }}"
@@ -15,7 +21,7 @@
     shell: /bin/bash
     system: true
     generate_ssh_key: true
-    groups: docker
+    groups: "{{ operations_docker_group | default('docker') }}"
 
 - name: Create Platform home directory
   file:

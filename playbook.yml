@@ -1,58 +1,42 @@
 
 ---
 - name: Configure Server
-  hosts: servers
+  hosts: all
   become: true
+
+  pre_tasks:
+    - name: Prerequisite Packages
+      package:
+        name:
+          - openssh-server
+          - git
+          - gpg
 
   roles:
     - role: geerlingguy.security
-      tags:
-        - system
-        - security
+      tags: system
       vars:
         security_sudoers_passwordless: "{{ [operations_control_user|default('control')] + operations_admin_users|default([]) }}"
         security_ssh_allowed_users: "{{ [operations_control_user|default('control')] + [operations_platform_user|default('platform')] + operations_admin_users|default([]) }}"
 
     - role: geerlingguy.github-users
-      tags:
-        - system
-        - security
+      tags: system
       vars:
         github_users: "{{ operations_admin_users | default([]) }}"
 
-- name: Configure Runner Server
-  hosts: runners
+- name: "Configure Hosting: DDEV"
+  hosts: operations_host_ddev
   become: true
 
   roles:
     - role: geerlingguy.docker
-      tags:
-        - system
-        - docker
+      tags: system
 
     - role: operations.users
-      tags:
-        - system
-        - users
-        - operations
-
-    - role: geerlingguy.composer
-      tags:
-        - system
-        - composer
+      tags: operations
 
     - role: operations.ddev
-      tags:
-        - system
-        - ddev
-        - operations
+      tags: operations, ddev
 
-
-- name: Setup Sites
-  hosts: sites
-  become: true
-  roles:
     - role: operations.runner
-      when:
-      - lookup('ansible.builtin.env', 'HOSTNAME') == github_runner_host | default(true)
-      - github_runner_host in hostvars
+      tags: operations, runner

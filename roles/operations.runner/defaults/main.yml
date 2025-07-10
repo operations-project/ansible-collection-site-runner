@@ -1,34 +1,23 @@
 
-# A location to download the runner software to
-github_runner_download_version: "2.314.1"
-github_runner_download_filename: "actions-runner-linux-x64-{{ github_runner_download_version }}.tar.gz"
-github_runner_download_url: "https://github.com/actions/runner/releases/download/v{{ github_runner_download_version }}/{{ github_runner_download_filename }}"
+# Global runner path. github.yml will copy this dir instead of downloading.
+operations_github_runner_path: /usr/share/github-runner
+operations_github_runner_version: 2.322.0
 
-github_runner_repo: operations-project/operations-dashboard
-github_runner_user: "platform"
-github_runner_path: "/var/{{ github_runner_user }}/Runners/{{ github_runner_repo }}/{{ inventory_hostname }}"
-github_runner_site_symlink_directory: "/var/{{ github_runner_user }}/Sites/{{ github_runner_repo }}"
-github_runner_site_symlink_file: "{{ github_runner_site_symlink_directory }}/{{ inventory_hostname }}"
+# Set here to apply to all runners.
+operations_runner_repo_default: operations-project/ansible-collection-site-runner
 
-# To create runners, you need an API token with "admin" permissions.
-# Don't set this variable in yaml files. Set it in CI using --extra-vars.
-#   ansible-playbook --extra-vars github_runner_api_token=${{ secrets.OPERATIONS_GITHUB_RUNNER_TOKEN }}
-github_runner_api_token: "{{ lookup('ansible.builtin.env', 'OPERATIONS_GITHUB_RUNNER_TOKEN') }}"
+operations_github_api_token: "{{ lookup('env', 'GITHUB_TOKEN')  }}"
+operations_github_runners:
+  - runner_repo: operations-project/ansible-collection-site-runner
+    # repo_host: https://github.com
+    # runner_name: "{{ inventory_hostname }}"
+    # runner_path: "runner"
+    # api_token: "{{ operations_github_api_token }}"
+    # runner_labels: "{{ inventory_hostname }}"
+    # runner_user: platform
 
-#
-#
-## Global runner path. github.yml will copy this dir instead of downloading.
-#operations_github_runner_path: /usr/share/github-runner
-#
-## Set here to apply to all runners.
-#operations_runner_repo_default: operations-project/site-runner
-#
-#operations_github_api_token: DefaultApiToken
-#operations_github_runners:
-#  - runner_repo: operations-project/site-runner
-#    # repo_host: https://github.com
-#    # runner_name: "{{ inventory_hostname }}"
-#    # runner_path: "runner"
-#    # api_token: "{{ operations_github_api_token }}"
-#    # runner_labels: "{{ inventory_hostname }}"
-#    # runner_user: platform
+operations_runner_extra_packages:
+  - jq
+
+operations_github_runner_install_script: https://raw.githubusercontent.com/operations-project/github-runner-installer/40f9a7c881e2719bf904a11cfd7e1fcd7b6e045b/github-runner-installer
+operations_github_runner_dependencies_script: https://raw.githubusercontent.com/actions/runner/refs/tags/v2.326.0/src/Misc/layoutbin/installdependencies.sh

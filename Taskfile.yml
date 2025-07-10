@@ -7,19 +7,47 @@
 version: '3'
 
 tasks:
-  start:
+  up:
+    desc: Start containers and run playbook.
+    cmds:
+      - docker compose up -d
+      - task: playbook
+
+  build:
+    desc: Rebuild & restart containers
     cmds:
       - docker compose up -d --build
-      - task: install
+    aliases:
+      - b
 
-  install:
+  playbook:
+    desc: Run ansible-playbook. Pass options after "--".
+    aliases: [p]
     cmds:
-      - docker compose exec operations ansible-playbook /usr/share/operations/playbook.yml
+      - docker compose exec operations ansible-playbook /usr/share/operations/playbook.yml {{ .CLI_ARGS }}
 
   destroy:
+    desc: Destroy the containers and data.
+    aliases: [d]
     cmds:
       - docker compose kill && docker compose rm -fv
 
   shell:
+    desc: Launch a shell inside the container.
+    aliases: [sh]
     cmds:
       - docker compose exec operations bash
+
+  exec:
+    desc: "Execute any command. Example: task exec -- command-to-run"
+    aliases: [e]
+    cmds:
+      - docker compose exec operations {{ .CLI_ARGS }}
+
+  exec-platform:
+    desc: "Execute any command as platform user. Example: task exec-platform -- command-to-run"
+    aliases: [e]
+    env:
+      SITES_PATH: "/var/platform/"
+    cmds:
+      - docker compose exec -u platform -w $SITES_PATH operations {{ .CLI_ARGS }}
