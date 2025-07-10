@@ -24,7 +24,7 @@
 
 - name: Install DDEV service unit file
   template:
-    src: "ddev.service"
+    src: "ddev.service.j2"
     dest: "{{ operations_ddev_service_file_path }}"
     owner: root
     group: root
