@@ -4,7 +4,6 @@
 services:
   operations:
     image: geerlingguy/docker-${MOLECULE_DISTRO:-rockylinux8}-ansible:latest
-    hostname: ${DOCKER_HOSTNAME:-operations.local.computer}
     cgroup: host
     cgroup_parent: docker.slice
     privileged: true
