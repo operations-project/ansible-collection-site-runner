@@ -21,3 +21,14 @@
     chdir:  "{{ operations_platform_home }}"
   become: true
   become_user: "{{ operations_platform_user }}"
+
+- name: Install DDEV service unit file
+  template:
+    src: "ddev.service"
+    dest: "{{ operations_ddev_service_file_path }}"
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - Reload systemd
+    - Reload ddev service
