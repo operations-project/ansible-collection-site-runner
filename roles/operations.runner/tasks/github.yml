@@ -10,7 +10,7 @@
   become_user: "{{ item.runner_user | default(operations_platform_user) | default('platform')}}"
   set_fact:
     # @TODO: Is there a better way to set defaults in a list of maps?
-    item_runner_path: "{{ item.runner_path }}"
+    item_runner_path: "{{ user_facts.home }}/{{ item.runner_path | default('runner')}}"
     item_runner_user: "{{ item.runner_user | default(operations_platform_user) | default('platform')}}"
     item_runner_name: "{{ item.runner_user | default(operations_platform_user) }}@{{ item.runner_name | default(inventory_hostname) }}"
     item_runner_repo: "{{ item.runner_repo | default(operations_runner_repo_default) }}"
