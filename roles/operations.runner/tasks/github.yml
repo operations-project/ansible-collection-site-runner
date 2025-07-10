@@ -1,11 +1,14 @@
 ---
-- name: Prepare runner
+- set_fact:
+    runner_name: '{{ item.runner_user | default(operations_platform_user) }}@{{ item.runner_name | default(inventory_hostname) }}'
+
+- name: "{{ runner_name }} | Prepare runner"
   user:
     name: "{{ item.runner_user | default(operations_platform_user) | default('platform')}}"
     state: present
   register: user_facts
 
-- name: Prepare variables
+- name: "{{ runner_name }} | Prepare variables"
   become: true
   become_user: "{{ item.runner_user | default(operations_platform_user) | default('platform')}}"
   set_fact:
@@ -17,13 +20,13 @@
     item_runner_labels: "{{ item.runner_user | default(operations_platform_user) }}@{{ item.runner_name | default(inventory_hostname) }},user/{{  item.runner_user | default(operations_platform_user) | default('platform') }},{{ item.runner_labels | default('') }}"
     item_runner_api_token: "{{ item.api_token | default(operations_github_api_token) }}"
 
-- name: "{{ item_runner_repo }} | Setup GitHub Runner"
+- name: "{{ runner_name }} | Setup GitHub Runner"
   shell:
     cmd: "/usr/local/bin/github-runner-installer --repo={{ item_runner_repo }} --name={{ item_runner_name }} --labels={{ item_runner_labels }} --token={{ item_runner_api_token }} --runner-path={{ item_runner_path }} --no-run"
   become: true
   become_user: "{{ item_runner_user }}"
 
-- name: "Setup GitHub Runner Service"
+- name: "{{ runner_name }} | Setup GitHub Runner Service"
   shell:
     cmd: |
       whoami
