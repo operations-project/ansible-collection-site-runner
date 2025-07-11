@@ -10,13 +10,14 @@ tasks:
   up:
     desc: Start containers and run playbook.
     cmds:
-      - docker compose up -d
+      - docker-compose up -d --build
       - task: playbook
 
-  build:
-    desc: Rebuild & restart containers
+  rebuild:
+    desc: Destroy & restart containers
     cmds:
-      - docker compose up -d --build
+      - task: destroy
+      - task: up
     aliases:
       - b
 

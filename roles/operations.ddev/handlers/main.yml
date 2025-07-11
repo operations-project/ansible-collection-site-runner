@@ -1,0 +1,10 @@
+---
+- name: Reload systemd
+  systemd:
+    daemon_reload: true
+
+- name: Reload ddev service
+  service:
+    name: ddev
+    state: started
+    enabled: true
