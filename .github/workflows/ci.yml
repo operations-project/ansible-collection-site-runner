@@ -20,6 +20,17 @@ jobs:
         with:
           submodules: true
 
+      - uses: actions/checkout@v3
+        with:
+          repository: jonpugh/goatscripts
+          ref: v1.1.0
+          path: scripts
+      
+      - name: Set path
+        run: |
+          echo "PATH=scripts/src:$PATH" >> $GITHUB_ENV
+          run-with-summary echo "Path Set: $PATH"
+
       - name: Install docker-compose
         uses: KengoTODA/actions-setup-docker-compose@v1
         with:
