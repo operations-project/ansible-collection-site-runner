@@ -28,8 +28,7 @@ jobs:
       
       - name: Set path
         run: |
-          ./goatscripts/src/run-with-summary ls -la scripts/src
-          ./goatscripts/src/run-with-summary ls -la scripts/src
+          ./goatscripts/src/run-with-summary ls -la 
           PATH=./goatscripts/src:$PATH
           echo "PATH=$PATH" >> $GITHUB_ENV
           run-with-summary echo "Path Set: $PATH"
