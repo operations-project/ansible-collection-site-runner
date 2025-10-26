@@ -124,5 +124,4 @@ jobs:
         env:
           SITES_PATH: /var/platform/Sites/dashboard/live
         run: |
-          bin/task exec-platform -- docker logs ddev-operations-dashboard-web
-
+          run-with-summary bin/task exec-platform -- docker logs
