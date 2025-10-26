@@ -118,10 +118,3 @@ jobs:
           SITES_PATH=$GIT_PATH bin/task exec-platform -- ddev start || \
             (echo "ddev start failed. Logs:"
             )
-
-      - name: Show Docker Logs
-        if: always()
-        env:
-          SITES_PATH: /var/platform/Sites/dashboard/live
-        run: |
-          run-with-summary bin/task exec-platform -- docker compose logs
