@@ -28,7 +28,8 @@ jobs:
       
       - name: Set path
         run: |
-          echo "PATH=scripts/src:$PATH" >> $GITHUB_ENV
+          ./scripts/src/run-with-summary ls -la scripts/src
+          echo "PATH=./scripts/src:$PATH" >> $GITHUB_ENV
           run-with-summary echo "Path Set: $PATH"
 
       - name: Install docker-compose
