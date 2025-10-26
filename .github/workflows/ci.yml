@@ -93,10 +93,14 @@ jobs:
           bin/task exec -- cat /etc/ansible/hosts
 
       - name: Inventory
-        run: bin/task playbook -- --list-hosts
+        run: run-with-summary bin/task playbook -- --list-hosts
+        env: 
+          SUCCESS: "Ansible inventory"
 
       - name: Run Playbook
-        run: bin/task playbook -- --verbose
+        run: run-with-summary bin/task playbook
+        env: 
+          SUCCESS: "Ansible playbook has completed."
 
       - name: Test Platform
         run: |
