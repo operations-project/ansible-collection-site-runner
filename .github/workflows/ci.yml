@@ -124,4 +124,4 @@ jobs:
         env:
           SITES_PATH: /var/platform/Sites/dashboard/live
         run: |
-          run-with-summary bin/task exec-platform -- docker-compose logs
+          run-with-summary bin/task exec-platform -- docker compose logs
