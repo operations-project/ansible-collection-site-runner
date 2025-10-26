@@ -24,13 +24,13 @@ jobs:
         with:
           repository: jonpugh/goatscripts
           ref: main
-          path: scripts
+          path: goatscripts
       
       - name: Set path
         run: |
-          ./scripts/src/run-with-summary ls -la scripts/src
-          ./scripts/src/run-with-summary ls -la scripts/src
-          PATH=./scripts/src:$PATH
+          ./goatscripts/src/run-with-summary ls -la scripts/src
+          ./goatscripts/src/run-with-summary ls -la scripts/src
+          PATH=./goatscripts/src:$PATH
           echo "PATH=$PATH" >> $GITHUB_ENV
           run-with-summary echo "Path Set: $PATH"
 
