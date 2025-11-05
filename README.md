@@ -16,7 +16,7 @@ There are two choices for LICENSE badges:
 ## How To
 
 0. Get a server and a domain. Name it something like `server.mydomain.com`. Add DNS records to point `server.mydomain.com` to your server IP.
-1. Add the site runner roles to your repo:
+1. Add the site runner roles to your repo (you can use your app codebase or create one just for server config):
     ```
     git submodule add https://github.com/operations-project/ansible-collection-site-runner.git site-runner
     ```
