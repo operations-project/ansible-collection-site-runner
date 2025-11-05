@@ -40,8 +40,9 @@
   become: true
 
   roles:
-    - role: geerlingguy.docker
-      tags: system
+    # Testing if docker is needed. The ddev install script installs docker, I believe.
+    # - role: geerlingguy.docker
+    #   tags: system
 
     - role: operations.users
       tags: operations
