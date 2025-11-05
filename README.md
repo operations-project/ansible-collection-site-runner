@@ -13,6 +13,69 @@ There are two choices for LICENSE badges:
 [![License](https://poser.pugx.org/operations-project/site-runner)](https://github.com/operations-project/site-runner//main/LICENSE)
 -->
 
+## How To
+
+0. Get a server and a domain. Name it something like `server.mydomain.com`. Add DNS records to point `server.mydomain.com` to your server IP.
+1. Add the site runner roles to your repo:
+    ```
+    git submodule add https://github.com/operations-project/ansible-collection-site-runner.git site-runner
+    ```
+4. Add `ansible.cfg` to point to the roles 
+    ```
+    [defaults]
+    roles_path = ./site-runner/roles
+    ```
+3. Add host inventory file to your repo for your server:
+    ```yml
+    # host_vars/server.mydomain.com.yml
+    # See example https://github.com/operations-project/ansible-collection-site-runner/blob/main/ansible/host_vars/host.example.yml
+    operations_admin_users:
+      - jonpugh
+    operations_github_api_token: lookup('ansible.builtin.env', 'GITHUB_TOKEN_RUNNER_ADMIN') }}
+    operations_github_runners:
+      - runner_repo: jonpugh/repo
+    ```
+4. Set `/etc/ansible/hosts` to tell ansible what server it is.
+    ```yml
+    [operations_host_ddev]
+    server.mydomain.com ansible_connection=local
+    ```
+    Servers in the `operations_host_ddev` group will get `ddev` and GitHub runners installed.
+
+    See [host_vars/example.serverfqdn.com.yml](https://github.com/operations-project/ansible-collection-site-runner/blob/main/ansible/host_vars/host.example.yml)
+
+5. Bootstrap the server.
+
+   The site runner roles sets up a `control` user that is allowed to configure the server.
+
+   Once the `control` user is setup and the "control" github runner is up, the server will configure itself when changes to your inventory are pushed to the git repo.
+
+   Therefore, the first `ansible-playbook` run must happen manually or from an external server.
+
+   To bootstrap the server, as the initial system user (For example, `ubuntu`):
+   ```
+   # Install ansible: https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html
+   # Or see geerlingguy's ansible containers for examples: [https://github.com/geerlingguy?tab=repositories&q=docker-*-ansible&type=&language=&sort=](https://github.com/geerlingguy/docker-rockylinux10-ansible/blob/master/Dockerfile#L36C1-L37C1)
+   pip3 install ansible
+   
+   # clone your repo
+   git clone git@github.com:you/servers.git
+   cd servers
+
+   # Run ansible-playbook
+   ansible-playbook --extra-vars operations_github_api_token=$GITHUB_TOKEN_WITH_ADMIN site-runner/playbook.yml
+
+   # Confirm users exist
+   sudo su - GITHUB_USERNAME
+
+At this point, you should have admin users with your SSH keys, and 2 github runners. 
+
+Check your Repo > settings > Actions > Runners.
+
+For example: https://github.com/operations-project/ansible-collection-site-runner/settings/actions/runners
+
+
+## About
 This code sets up a server for launching and testing websites using GitOps tools like GitHub Actions and hosting tools like DDEV.
 
 The goal is to quickly launch running environments on any server for automated and manual testing, integrated directly with GitOps APIs.
