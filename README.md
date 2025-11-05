@@ -25,9 +25,8 @@ There are two choices for LICENSE badges:
     [defaults]
     roles_path = ./site-runner/roles
     ```
-3. Add host inventory file to your repo for your server:
+3. Add host inventory file such as `host_vars/server.mydomain.com.yml` to your repo for your server:
     ```yml
-    # host_vars/server.mydomain.com.yml
     # See example https://github.com/operations-project/ansible-collection-site-runner/blob/main/ansible/host_vars/host.example.yml
     operations_admin_users:
       - jonpugh
