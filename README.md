@@ -20,21 +20,44 @@ There are two choices for LICENSE badges:
     ```
     git submodule add https://github.com/operations-project/ansible-collection-site-runner.git site-runner
     ```
-4. Add `ansible.cfg` to point to the roles 
-    ```
-    [defaults]
-    roles_path = ./site-runner/roles
-    ```
-3. Add host inventory file such as `host_vars/server.mydomain.com.yml` to your repo for your server:
+3. Add a simple inventory file such as `inventory.yml` to your repo. Store variables that apply to all servers here:
     ```yml
     # See example https://github.com/operations-project/ansible-collection-site-runner/blob/main/ansible/host_vars/host.example.yml
-    operations_admin_users:
-      - jonpugh
+    all:
+      vars:
+        operations_admin_users:
+        - jonpugh
+    ```
+3. Add host inventory file such as `host_vars/server.mydomain.com.yml` to your repo for your server. Store variables just for that server here:
+    ```yml
+    # See example https://github.com/operations-project/ansible-collection-site-runner/blob/main/ansible/host_vars/host.example.yml
+
     operations_github_api_token: lookup('ansible.builtin.env', 'GITHUB_TOKEN_RUNNER_ADMIN') }}
     operations_github_runners:
       - runner_repo: jonpugh/repo
     ```
-4. Set `/etc/ansible/hosts` to tell ansible what server it is.
+
+4. Add `ansible.cfg` to point to the roles and inventory:
+    ```
+    [defaults]
+    roles_path = ./site-runner/roles
+    inventory = inventory.yml
+    ```
+5. Add GitHub workflow such as `.github/workflows/servers.yml` for running the playbook.
+    ```
+    jobs:
+      playbook:
+        runs-on: "control@server.mydomain.com"
+    
+        steps:
+          - name: Checkout codebase
+            uses: actions/checkout@v4
+    
+          - name: Run playbook
+            run: |
+              ansible-playbook --connection local --limit control@server.mydomain.com --extra-vars operations_github_api_token=${{ secrets.GITHUB_TOKEN_RUNNER_ADMIN }} site-runner/playbook.yml
+    ```
+4. On the server, set `/etc/ansible/hosts` to tell ansible what server it is.
     ```yml
     [operations_host_ddev]
     server.mydomain.com ansible_connection=local
@@ -42,6 +65,9 @@ There are two choices for LICENSE badges:
     Servers in the `operations_host_ddev` group will get `ddev` and GitHub runners installed.
 
     See [host_vars/example.serverfqdn.com.yml](https://github.com/operations-project/ansible-collection-site-runner/blob/main/ansible/host_vars/host.example.yml)
+
+6. Get a GitHub Token with admin privileges on the repository. This is used to create the runner.
+    1. Save the token to a secret in your repo, such as GITHUB_TOKEN_RUNNER_ADMIN
 
 5. Bootstrap the server.
 
@@ -58,7 +84,7 @@ There are two choices for LICENSE badges:
    pip3 install ansible
    
    # clone your repo
-   git clone git@github.com:you/servers.git
+   git clone git@github.com:you/servers.git --recursive
    cd servers
 
    # Run ansible-playbook
