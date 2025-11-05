@@ -40,8 +40,8 @@
   become: true
 
   roles:
-    - role: geerlingguy.docker
-      tags: system
+    # - role: geerlingguy.docker
+    #   tags: system
 
     - role: operations.users
       tags: operations
