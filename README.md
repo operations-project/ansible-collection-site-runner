@@ -26,13 +26,13 @@ There are two choices for LICENSE badges:
     all:
       vars:
         operations_admin_users:
-        - jonpugh
+        - your_github_username
     ```
 3. Add host inventory file such as `host_vars/server.mydomain.com.yml` to your repo for your server. Store variables just for that server here:
     ```yml
     # See example https://github.com/operations-project/ansible-collection-site-runner/blob/main/ansible/host_vars/host.example.yml
     operations_github_runners:
-      - runner_repo: jonpugh/repo
+      - runner_repo: operations-project/site-runner-example-app
     ```
 
 4. Add `ansible.cfg` to point to the roles and inventory:
