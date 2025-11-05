@@ -31,8 +31,6 @@ There are two choices for LICENSE badges:
 3. Add host inventory file such as `host_vars/server.mydomain.com.yml` to your repo for your server. Store variables just for that server here:
     ```yml
     # See example https://github.com/operations-project/ansible-collection-site-runner/blob/main/ansible/host_vars/host.example.yml
-
-    operations_github_api_token: lookup('ansible.builtin.env', 'GITHUB_TOKEN_RUNNER_ADMIN') }}
     operations_github_runners:
       - runner_repo: jonpugh/repo
     ```
