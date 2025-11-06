@@ -87,7 +87,7 @@ jobs:
           SUCCESS: "Ansible inventory"
 
       - name: Run Playbook
-        run: run-with-summary bin/task playbook
+        run: run-with-summary bin/task playbook -- --extra-vars operations_known_hosts=${{secrets.OPERATIONS_KNOWN_HOSTS}}
         env: 
           SUCCESS: "Ansible playbook has completed."
 
