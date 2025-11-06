@@ -66,7 +66,7 @@ jobs:
             api_token: ${{ secrets.OPERATIONS_GITHUB_API_TOKEN }}
             runner_user: platform
           
-          operations_known_hosts: "${{secrets.OPERATIONS_KNOWN_HOSTS}}"
+          operations_known_hosts: \"${{secrets.OPERATIONS_KNOWN_HOSTS}}\"
           " > ./ansible/host_vars/${{ env.OPERATIONS_ENVIRONMENT_NAME }}.yml
           cat ./ansible/host_vars/${{ env.OPERATIONS_ENVIRONMENT_NAME }}.yml
 
