@@ -75,7 +75,7 @@ jobs:
 
       - name: Start Containers
         run: |
-          docker compose up -d
+          docker compose up -d --quiet-pull
           docker-compose exec operations chmod 0400 /etc/shadow
 
       - name: Debug
