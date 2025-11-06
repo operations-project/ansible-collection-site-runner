@@ -65,6 +65,8 @@ jobs:
             runner_path: test-runner-path
             api_token: ${{ secrets.OPERATIONS_GITHUB_API_TOKEN }}
             runner_user: platform
+          
+          operations_known_hosts: \"${{secrets.OPERATIONS_KNOWN_HOSTS}}\"
           " > ./ansible/host_vars/${{ env.OPERATIONS_ENVIRONMENT_NAME }}.yml
           cat ./ansible/host_vars/${{ env.OPERATIONS_ENVIRONMENT_NAME }}.yml
 
@@ -73,7 +75,7 @@ jobs:
 
       - name: Start Containers
         run: |
-          docker compose up -d
+          docker compose up -d --quiet-pull
           docker-compose exec operations chmod 0400 /etc/shadow
 
       - name: Debug
