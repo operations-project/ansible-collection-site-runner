@@ -89,7 +89,7 @@ jobs:
       - name: Run Playbook
         run: |
           echo "operations_known_hosts: ${{secrets.OPERATIONS_KNOWN_HOSTS}}" > vars.ci.yml
-          run-with-summary bin/task playbook -- --extra-vars @vars.ci.yml
+          run-with-summary bin/task playbook -- --extra-vars @/usr/share/operations/vars.ci.yml
         env: 
           SUCCESS: "Ansible playbook has completed."
 
