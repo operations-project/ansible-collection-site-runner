@@ -90,7 +90,7 @@ jobs:
           SUCCESS: "Ansible inventory"
 
       - name: Run Playbook
-        run: run-with-summary bin/task playbook -- --extra-vars @/usr/share/operations/vars.ci.yml
+        run: run-with-summary bin/task playbook
         env: 
           SUCCESS: "Ansible playbook has completed."
 
