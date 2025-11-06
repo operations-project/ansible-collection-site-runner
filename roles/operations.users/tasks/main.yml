@@ -55,7 +55,7 @@
     owner: "{{ operations_control_user }}"
 
 - name: Set global known_hosts
-  when: "{{ operations_known_hosts | false }}"
+  when: "{{ operations_known_hosts }}"
   copy:
     content: "{{ operations_known_hosts }}"
     dest: "{{ operations_known_hosts_path | '/etc/ssh/ssh_known_hosts' }}"
