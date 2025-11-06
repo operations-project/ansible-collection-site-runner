@@ -5,3 +5,6 @@ operations_control_home: /var/control
 
 operations_platform_user: platform
 operations_platform_home: /var/platform
+
+# Use "ssh_keyscan github.com" to generate this string.
+operations_known_hosts: ""
