@@ -55,7 +55,7 @@
     owner: "{{ operations_control_user }}"
 
 - name: Set global known_hosts
-  when: "{{ operations_known_hosts | length > 0 }}"
+  when: operations_known_hosts | length > 0
   copy:
     content: "{{ operations_known_hosts }}"
     dest: "{{ operations_known_hosts_path }}"
