@@ -6,6 +6,10 @@ operations_control_home: /var/control
 operations_platform_user: platform
 operations_platform_home: /var/platform
 
+# If left empty, a new SSH key will be generated.
+operations_platform_ssh_private_key: ""
+operations_platform_ssh_private_key_path: /var/platform/.ssh/id_rsa
+
 # Use "ssh_keyscan github.com" to generate this string.
 operations_known_hosts: ""
 operations_known_hosts_path: /etc/ssh/ssh_known_hosts

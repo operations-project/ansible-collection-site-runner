@@ -20,7 +20,7 @@
     uid: "{{ operations_platform_user_uid | default(omit) }}"
     shell: /bin/bash
     system: true
-    generate_ssh_key: true
+    generate_ssh_key: operations_platform_ssh_private_key | length == 0
     groups: "{{ operations_docker_group | default('docker') }}"
 
 - name: Create Platform home directory
@@ -29,6 +29,25 @@
     path: "{{ operations_platform_home }}"
     group: "{{ operations_platform_user }}"
     owner: "{{ operations_platform_user }}"
+
+- name: Create Platform .ssh directory
+  file:
+    state: directory
+    path: "{{ operations_platform_home }}/.ssh"
+    group: "{{ operations_platform_user }}"
+    owner: "{{ operations_platform_user }}"
+    mode: 0700
+
+- name: Add Platform private SSH key
+  when:
+    - operations_platform_ssh_private_key | length > 0
+    - operations_platform_ssh_private_key_path | length > 0
+  file:
+    state: file
+    content: "{{ operations_platform_ssh_private_key }}"
+    path: "{{ operations_platform_ssh_private_key_path }}"
+    owner: "{{ operations_platform_user }}"
+    group: "{{ operations_platform_user }}"
 
 - name: Create Control group
   group:
