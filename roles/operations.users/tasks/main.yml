@@ -20,7 +20,7 @@
     uid: "{{ operations_platform_user_uid | default(omit) }}"
     shell: /bin/bash
     system: true
-    generate_ssh_key: not(operations_platform_ssh_private_key | bool)
+    generate_ssh_key: not operations_platform_ssh_private_key
     groups: "{{ operations_docker_group | default('docker') }}"
 
 - name: Create Platform home directory
