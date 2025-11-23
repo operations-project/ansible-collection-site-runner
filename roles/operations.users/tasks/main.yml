@@ -42,10 +42,9 @@
   when:
     - operations_platform_ssh_private_key | length > 0
     - operations_platform_ssh_private_key_path | length > 0
-  file:
-    state: file
+  copy:
     content: "{{ operations_platform_ssh_private_key }}"
-    path: "{{ operations_platform_ssh_private_key_path }}"
+    dest: "{{ operations_platform_ssh_private_key_path }}"
     owner: "{{ operations_platform_user }}"
     group: "{{ operations_platform_user }}"
 
