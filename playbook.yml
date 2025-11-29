@@ -18,9 +18,10 @@
 
     - name: Prerequisite Packages
       package:
+        update_cache: yes
         name:
           # @TODO: create variables for each OS.
-          # - openssh-server
+          - openssh-server
           - git
           - gpg
 
