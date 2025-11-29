@@ -92,6 +92,7 @@ jobs:
 
       - name: Debug
         run: |
+          bin/task exec -- cat /etc/os-release
           bin/task exec -- ls -la /etc/ansible
           bin/task exec -- cat /etc/ansible/hosts
 
