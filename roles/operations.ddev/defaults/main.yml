@@ -10,4 +10,4 @@ operations_ddev_config_hosting_command: ddev config global --router-bind-all-int
 
 operations_ddev_service_file_path: "/etc/systemd/system/ddev.service"
 
-operations_ddev_path: "/usr/local/bin/ddev"
+operations_ddev_path: "/usr/local/bin"
