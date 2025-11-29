@@ -14,7 +14,7 @@
 - name: Confirm ddev install
   command: ddev version
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+    PATH: "/usr/local/bin:/usr/local/sbin:{{ ansible_env.PATH }}"
   args:
     chdir:  "{{ operations_platform_home }}"
   become: true
@@ -24,7 +24,7 @@
 - name: Configure ddev for hosting
   command: "{{ operations_ddev_config_hosting_command }}"
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+    PATH: "/usr/local/bin:/usr/local/sbin:{{ ansible_env.PATH }}"
   args:
     chdir:  "{{ operations_platform_home }}"
   become: true
