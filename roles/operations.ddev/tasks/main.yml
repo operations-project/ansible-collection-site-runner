@@ -4,6 +4,13 @@
   become: true
   become_user: "{{ operations_control_user }}"
 
+# @TODO: Not sure but the PATH is sometimes not set correctly.
+- name: Add PATH to ddev.
+  copy:
+    dest: /etc/profile.d/site-runner-path.sh
+    content: 'PATH=$PATH:{{ operations_ddev_path }}'
+    mode: 0644
+
 - name: Confirm ddev install
   command: ddev version
   environment:

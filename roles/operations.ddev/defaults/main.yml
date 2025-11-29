@@ -9,3 +9,5 @@ operations_ddev_letsencrypt_email: you@example.com
 operations_ddev_config_hosting_command: ddev config global --router-bind-all-interfaces --omit-containers=ddev-ssh-agent --use-hardened-images
 
 operations_ddev_service_file_path: "/etc/systemd/system/ddev.service"
+
+operations_ddev_path: "/usr/local/bin/ddev"
