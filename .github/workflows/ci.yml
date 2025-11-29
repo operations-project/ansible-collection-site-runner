@@ -9,6 +9,10 @@ on:
 
 name: CI
 
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.event.number }}
+
 jobs:
   tests:
     name: Tests
