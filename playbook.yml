@@ -7,10 +7,10 @@
   pre_tasks:
 
     # Set server hostnames to inventory hostname.
-    - name: "Set hostname for {{ ansible_facts['nodename'] }} to {{ inventory_hostname }}."
+    - name: "Set hostname for {{ ansible_nodename }} to {{ inventory_hostname }}."
       hostname:
         name: "{{ inventory_hostname }}"
-      when: inventory_hostname != ansible_facts['nodename']
+      when: inventory_hostname != ansible_nodename
       register: result
       until: result.failed != true
       retries: 5
@@ -20,7 +20,6 @@
       package:
         update_cache: yes
         name:
-          # @TODO: create variables for each OS.
           - openssh-server
           - git
           - gpg
