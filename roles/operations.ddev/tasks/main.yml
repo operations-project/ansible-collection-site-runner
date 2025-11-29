@@ -7,7 +7,7 @@
 - name: Confirm ddev install
   command: ddev version
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+    PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:{{ ansible_env.PATH }}"
   args:
     chdir:  "{{ operations_platform_home }}"
   become: true
