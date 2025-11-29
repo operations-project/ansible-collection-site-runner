@@ -3,7 +3,7 @@
 ---
 services:
   operations:
-    image: geerlingguy/docker-${MOLECULE_DISTRO:-rockylinux8}-ansible:latest
+    image: geerlingguy/docker-${DISTRO:-rockylinux10}-ansible:latest
     cgroup: host
     cgroup_parent: docker.slice
     privileged: true

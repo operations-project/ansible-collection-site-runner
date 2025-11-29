@@ -14,12 +14,24 @@ jobs:
     name: Tests
 
     runs-on: ubuntu-latest
+    strategy:
+
+      # See geerlingguy docker containers for options: https://github.com/geerlingguy?tab=repositories&q=docker-&type=&language=&sort=
+      # Add $OS below to use the container geerlingguy/docker-$OS-ansible.
+      matrix:
+        os:
+          - ubuntu2404
+          - rockylinux10
+
+    # Set ENV var to pass to docker-compose.yml
+    env:
+      DISTRO: ${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: true
-      
+
       - uses: jonpugh/goatscripts@v1
 
       - name: Install docker-compose
@@ -65,7 +77,7 @@ jobs:
             runner_path: test-runner-path
             api_token: ${{ secrets.OPERATIONS_GITHUB_API_TOKEN }}
             runner_user: platform
-          
+
           operations_known_hosts: \"${{secrets.OPERATIONS_KNOWN_HOSTS}}\"
           " > ./ansible/host_vars/${{ env.OPERATIONS_ENVIRONMENT_NAME }}.yml
           cat ./ansible/host_vars/${{ env.OPERATIONS_ENVIRONMENT_NAME }}.yml
@@ -85,12 +97,12 @@ jobs:
 
       - name: Inventory
         run: run-with-summary bin/task playbook -- --list-hosts
-        env: 
+        env:
           SUCCESS: "Ansible inventory"
 
       - name: Run Playbook
         run: run-with-summary bin/task playbook
-        env: 
+        env:
           SUCCESS: "Ansible playbook has completed."
 
       - name: Test Platform
