@@ -18,6 +18,7 @@ jobs:
 
       # See geerlingguy docker containers for options: https://github.com/geerlingguy?tab=repositories&q=docker-&type=&language=&sort=
       # Add $OS below to use the container geerlingguy/docker-$OS-ansible.
+      fail-fast: false
       matrix:
         os:
           - ubuntu2404
