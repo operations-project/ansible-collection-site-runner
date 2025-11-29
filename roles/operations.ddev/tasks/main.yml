@@ -12,9 +12,7 @@
     mode: 0644
 
 - name: Confirm ddev install
-  command: ddev version
-  environment:
-    PATH: "/usr/local/bin:/usr/local/sbin:{{ ansible_env.PATH }}"
+  command: /usr/local/bin/ddev version
   args:
     chdir:  "{{ operations_platform_home }}"
   become: true
