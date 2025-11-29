@@ -19,7 +19,8 @@
     - name: Prerequisite Packages
       package:
         name:
-          - openssh-server
+          # @TODO: create variables for each OS.
+          # - openssh-server
           - git
           - gpg
 
