@@ -4,9 +4,10 @@
   become: true
   become_user: "{{ operations_control_user }}"
 
-# @TODO: Is this needed? Try not to mess with paths.
-#- name: Ensure bin is in all paths.
-#  shell: ln -sf /usr/local/bin/ddev /usr/bin/ddev
+- name: Make sure all bin directories are in the PATH
+  copy:
+    dest: /etc/profile.d/operations-path.sh
+    content: 'PATH=$PATH:/usr/local/bin:/usr/bin'
 
 - name: Confirm ddev install
   command: ddev version
