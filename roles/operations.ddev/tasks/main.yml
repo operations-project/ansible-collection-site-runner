@@ -11,6 +11,8 @@
 
 - name: Confirm ddev install
   command: ddev version
+  environment:
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
   args:
     chdir:  "{{ operations_platform_home }}"
   become: true
