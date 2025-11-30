@@ -1,6 +1,9 @@
 ---
 - name: Install ddev
-  shell: "curl -fsSL https://ddev.com/install.sh | bash"
+  shell: |
+    curl -fsSL https://ddev.com/install.sh | bash
+    which ddev
+    ls -la /usr/local/bin
   become: true
   become_user: "{{ operations_control_user }}"
 
