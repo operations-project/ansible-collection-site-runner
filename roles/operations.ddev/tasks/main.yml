@@ -4,15 +4,11 @@
   become: true
   become_user: "{{ operations_control_user }}"
 
-# @TODO: Not sure but the PATH is sometimes not set correctly.
-- name: Add PATH to ddev.
-  copy:
-    dest: /etc/profile.d/site-runner-path.sh
-    content: 'export PATH=$PATH:{{ operations_ddev_path }}'
-    mode: 0644
+- name: Ensure bin is in all paths.
+  shell: ln -sf /usr/local/bin/ddev /usr/bin/ddev
 
 - name: Confirm ddev install
-  shell: ddev version
+  command: ddev version
   args:
     chdir:  "{{ operations_platform_home }}"
   become: true
@@ -20,7 +16,7 @@
 
 # See https://ddev.readthedocs.io/en/latest/users/topics/hosting/
 - name: Configure ddev for hosting
-  shell: "{{ operations_ddev_config_hosting_command }}"
+  command: "{{ operations_ddev_config_hosting_command }}"
   args:
     chdir:  "{{ operations_platform_home }}"
   become: true
