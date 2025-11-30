@@ -25,3 +25,6 @@ operations_runner_extra_packages:
 
 operations_github_runner_install_script: https://raw.githubusercontent.com/operations-project/github-runner-installer/refs/tags/v1.1.1/github-runner-installer
 operations_github_runner_dependencies_script: https://raw.githubusercontent.com/actions/runner/refs/tags/v2.326.0/src/Misc/layoutbin/installdependencies.sh
+
+operations_github_runner_prerequisite_debian_packages:
+  - dotnet-runtime-80
