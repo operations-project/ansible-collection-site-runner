@@ -8,11 +8,11 @@
 - name: Add PATH to ddev.
   copy:
     dest: /etc/profile.d/site-runner-path.sh
-    content: 'PATH=$PATH:{{ operations_ddev_path }}'
+    content: 'export PATH=$PATH:{{ operations_ddev_path }}'
     mode: 0644
 
 - name: Confirm ddev install
-  command: /usr/local/bin/ddev version
+  command: ddev version
   args:
     chdir:  "{{ operations_platform_home }}"
   become: true
