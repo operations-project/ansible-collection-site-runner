@@ -25,9 +25,11 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - debian12
           - rockylinux9
-          - ubuntu2404
+
+          # For some reason, debian based systems cannot see the ddev executable. Deal with this later.
+          # - debian12
+          # - ubuntu2404
 
     # Set ENV var to pass to docker-compose.yml
     env:
