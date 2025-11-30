@@ -1,5 +1,9 @@
 ---
 
+# Debian needs extra packages. GitHub runner installer depenency installer fails.
+- ansible.builtin.include_tasks: setup-Debian.yml
+  when: ansible_facts.os_family == 'Debian'
+
 # See Your repo > Settings > Actions > Runner > New Runner
 - name: Download the github-runner-installer script.
   get_url:

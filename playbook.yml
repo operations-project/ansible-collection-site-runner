@@ -18,6 +18,7 @@
 
     - name: Prerequisite Packages
       package:
+        update_cache: yes
         name:
           - openssh-server
           - git
