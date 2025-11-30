@@ -26,7 +26,7 @@ jobs:
       matrix:
         os:
 #          - debian13
-#          - ubuntu2404
+          - ubuntu2404
           - rockylinux8
 
     # Set ENV var to pass to docker-compose.yml
