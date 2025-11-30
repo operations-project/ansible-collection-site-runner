@@ -5,7 +5,8 @@
 #   sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d
 #
 version: '3'
-
+dotenv:
+  - .env
 tasks:
   up:
     desc: Start containers and run playbook.
