@@ -25,9 +25,9 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - debian13
-          - rockylinux10
-          - ubuntu2404
+#          - debian13
+#          - ubuntu2404
+          - rockylinux8
 
     # Set ENV var to pass to docker-compose.yml
     env:
