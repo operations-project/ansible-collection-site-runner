@@ -9,17 +9,37 @@ on:
 
 name: CI
 
+#concurrency:
+#  cancel-in-progress: true
+#  group: ${{ github.workflow }}-${{ github.event.number }}
+
 jobs:
   tests:
     name: Tests
 
     runs-on: ubuntu-latest
+    strategy:
+
+      # See geerlingguy docker containers for options: https://github.com/geerlingguy?tab=repositories&q=docker-&type=&language=&sort=
+      # Add $OS below to use the container geerlingguy/docker-$OS-ansible.
+      fail-fast: false
+      matrix:
+        os:
+          - rockylinux9
+
+          # For some reason, debian based systems cannot see the ddev executable. Deal with this later.
+          # - debian12
+          # - ubuntu2404
+
+    # Set ENV var to pass to docker-compose.yml
+    env:
+      DISTRO: ${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: true
-      
+
       - uses: jonpugh/goatscripts@v1
 
       - name: Install docker-compose
@@ -37,13 +57,13 @@ jobs:
         if: github.event_name != 'pull_request'
         run: |
           echo "OPERATIONS_NAME=${{ github.ref_name }}" >> "$GITHUB_ENV"
-          echo "OPERATIONS_ENVIRONMENT_NAME=operations.${{ github.ref_name }}.local.computer" >> "$GITHUB_ENV"
+          echo "OPERATIONS_ENVIRONMENT_NAME=operations.${{ github.ref_name }}.${{ matrix.os }}.local.computer" >> "$GITHUB_ENV"
 
       - name: Set runner name
         if: github.event_name == 'pull_request'
         run: |
           echo "OPERATIONS_NAME=pr${{ github.event.number }}" >> "$GITHUB_ENV"
-          echo "OPERATIONS_ENVIRONMENT_NAME=operations.pr${{ github.event.number }}.local.computer" >> "$GITHUB_ENV"
+          echo "OPERATIONS_ENVIRONMENT_NAME=operations.pr${{ github.event.number }}.${{ matrix.os }}.local.computer" >> "$GITHUB_ENV"
 
       - name: Set ansible inventory hostname
         run: |
@@ -65,7 +85,7 @@ jobs:
             runner_path: test-runner-path
             api_token: ${{ secrets.OPERATIONS_GITHUB_API_TOKEN }}
             runner_user: platform
-          
+
           operations_known_hosts: \"${{secrets.OPERATIONS_KNOWN_HOSTS}}\"
           " > ./ansible/host_vars/${{ env.OPERATIONS_ENVIRONMENT_NAME }}.yml
           cat ./ansible/host_vars/${{ env.OPERATIONS_ENVIRONMENT_NAME }}.yml
@@ -80,17 +100,18 @@ jobs:
 
       - name: Debug
         run: |
+          bin/task exec -- cat /etc/os-release
           bin/task exec -- ls -la /etc/ansible
           bin/task exec -- cat /etc/ansible/hosts
 
       - name: Inventory
         run: run-with-summary bin/task playbook -- --list-hosts
-        env: 
+        env:
           SUCCESS: "Ansible inventory"
 
       - name: Run Playbook
         run: run-with-summary bin/task playbook
-        env: 
+        env:
           SUCCESS: "Ansible playbook has completed."
 
       - name: Test Platform
