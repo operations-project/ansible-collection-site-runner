@@ -38,6 +38,15 @@
     owner: "{{ operations_platform_user }}"
     mode: 0700
 
+# Added this because ddev setup failed, saying "unable to read global config: stat /home/runner/.config/ddev/global_config.yaml: permission denied"
+# https://github.com/operations-project/site-runner-example-app/actions/runs/20193052232
+- name: Create Platform .config directory
+  file:
+    state: directory
+    path: "{{ operations_platform_home }}/.config"
+    group: "{{ operations_platform_user }}"
+    owner: "{{ operations_platform_user }}"
+
 - name: Add Platform private SSH key
   when:
     - operations_platform_ssh_private_key | length > 0

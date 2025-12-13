@@ -8,7 +8,7 @@
   shell: ln -sf /usr/local/bin/ddev /usr/bin/ddev
 
 - name: Confirm ddev install
-  command: /usr/local/bin/ddev version
+  command: ddev version
   args:
     chdir:  "{{ operations_platform_home }}"
   become: true
