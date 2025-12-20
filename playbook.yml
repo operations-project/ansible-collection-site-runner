@@ -24,6 +24,12 @@
           - git
           - gpg
 
+    - name: Snap Packages
+      package:
+        update_cache: yes
+        name:
+          - dotnet-runtime-80
+
   roles:
     - role: geerlingguy.security
       tags: system
