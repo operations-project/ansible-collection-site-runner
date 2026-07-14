@@ -1,0 +1,16 @@
+#!/usr/bin/bash
+
+#
+# This generic script lets a server run the playbook limited to itself.
+#
+# Setup
+# 1. Run a server/container with a FQDN hostname. eg. operations.local.computer
+# 2. Add that host to the ansible inventory.
+# 3. Run this script on the server you want to configure and it will use the variables from the operations.local.computer ansible host automatically
+
+set -e
+echo ""
+echo "> Running playbook for host $(hostname -f) ..."
+
+set -x
+ansible-playbook vendor/operations/site-runner/playbook.yml --limit $(hostname -f) --connection local

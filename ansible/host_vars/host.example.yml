@@ -15,7 +15,7 @@ operations_admin_users:
 # Grant administration:write privileges to the repo.
 operations_github_api_token: DefaultApiToken
 operations_github_runners:
-  - repo_name: jonpugh/operations
+  - runner_repo: jonpugh/operations
 
     # Default base URL is github.com. Change if using enterprise GitHub.
     # repo_host: https://github.com

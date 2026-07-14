@@ -1,0 +1,5 @@
+
+- name: Ensure pre-requisite packages are installed.
+  ansible.builtin.snap:
+    name: "{{ operations_github_runner_prerequisite_debian_packages }}"
+    state: present

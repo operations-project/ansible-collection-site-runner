@@ -1,4 +1,5 @@
 on:
+  workflow_dispatch:
   pull_request:
     branches:
       - main
@@ -8,16 +9,38 @@ on:
 
 name: CI
 
+#concurrency:
+#  cancel-in-progress: true
+#  group: ${{ github.workflow }}-${{ github.event.number }}
+
 jobs:
   tests:
     name: Tests
 
     runs-on: ubuntu-latest
+    strategy:
+
+      # See geerlingguy docker containers for options: https://github.com/geerlingguy?tab=repositories&q=docker-&type=&language=&sort=
+      # Add $OS below to use the container geerlingguy/docker-$OS-ansible.
+      fail-fast: false
+      matrix:
+        os:
+          - rockylinux9
+
+          # For some reason, debian based systems cannot see the ddev executable. Deal with this later.
+          # - debian12
+          # - ubuntu2404
+
+    # Set ENV var to pass to docker-compose.yml
+    env:
+      DISTRO: ${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@v3
         with:
-          show-progress: false
+          submodules: true
+
+      - uses: jonpugh/goatscripts@v1
 
       - name: Install docker-compose
         uses: KengoTODA/actions-setup-docker-compose@v1
@@ -34,41 +57,76 @@ jobs:
         if: github.event_name != 'pull_request'
         run: |
           echo "OPERATIONS_NAME=${{ github.ref_name }}" >> "$GITHUB_ENV"
-          echo "OPERATIONS_ENVIRONMENT_NAME=operations.${{ github.ref_name }}.local.computer" >> "$GITHUB_ENV"
+          echo "OPERATIONS_ENVIRONMENT_NAME=operations.${{ github.ref_name }}.${{ matrix.os }}.local.computer" >> "$GITHUB_ENV"
 
       - name: Set runner name
         if: github.event_name == 'pull_request'
         run: |
           echo "OPERATIONS_NAME=pr${{ github.event.number }}" >> "$GITHUB_ENV"
-          echo "OPERATIONS_ENVIRONMENT_NAME=operations.pr${{ github.event.number }}.local.computer" >> "$GITHUB_ENV"
+          echo "OPERATIONS_ENVIRONMENT_NAME=operations.pr${{ github.event.number }}.${{ matrix.os }}.local.computer" >> "$GITHUB_ENV"
 
       - name: Set ansible inventory hostname
         run: |
           echo "[operations_host_ddev]
           ${{ env.OPERATIONS_ENVIRONMENT_NAME }} ansible_connection=local" > ./ansible/hosts
+          cat ./ansible/hosts
 
       - name: Set variables
         run: |
           echo "DOCKER_HOSTNAME=${{ env.OPERATIONS_ENVIRONMENT_NAME }}" > .env
           echo "# CI variables set!
-          operations_github_api_token: ${{ secrets.OPERATIONS_GITHUB_API_TOKEN }}
+          operations_github_api_token: overridden_by_operations_github_runners
           operations_admin_users:
           - jonpugh
           operations_github_runners:
-          - repo_name: ${{ github.repository }}
+          - runner_repo: ${{ github.repository }}
             runner_name:  ${{ env.OPERATIONS_ENVIRONMENT_NAME }}
             runner_labels: github-ci,delete-me,${{ env.OPERATIONS_ENVIRONMENT_NAME }}
+            runner_path: test-runner-path
+            api_token: ${{ secrets.OPERATIONS_GITHUB_API_TOKEN }}
+            runner_user: platform
+
+          operations_known_hosts: \"${{secrets.OPERATIONS_KNOWN_HOSTS}}\"
           " > ./ansible/host_vars/${{ env.OPERATIONS_ENVIRONMENT_NAME }}.yml
           cat ./ansible/host_vars/${{ env.OPERATIONS_ENVIRONMENT_NAME }}.yml
 
       - name: Install task CLI
         run: ./scripts/install-task.sh
 
-      - name: Build Platform
-        run: bin/task start
+      - name: Start Containers
+        run: |
+          docker compose up -d --quiet-pull
+          docker-compose exec operations chmod 0400 /etc/shadow
+
+      - name: Debug
+        run: |
+          bin/task exec -- cat /etc/os-release
+          bin/task exec -- ls -la /etc/ansible
+          bin/task exec -- cat /etc/ansible/hosts
+
+      - name: Inventory
+        run: run-with-summary bin/task playbook -- --list-hosts
+        env:
+          SUCCESS: "Ansible inventory"
+
+      - name: Run Playbook
+        run: run-with-summary bin/task playbook
+        env:
+          SUCCESS: "Ansible playbook has completed."
 
       - name: Test Platform
         run: |
+          bin/task exec-platform -- ls -la /var/platform
+          bin/task exec-platform -- ddev config global --instrumentation-opt-in=false
           docker-compose exec -u platform operations whoami
           docker-compose exec -u platform operations hostname
           docker-compose exec -u platform operations ddev
+
+      - name: Test Site
+        env:
+          GIT_PATH: /var/platform/Sites/dashboard/live
+        run: |
+          bin/task exec-platform -- git clone https://github.com/operations-project/operations-dashboard $GIT_PATH
+          SITES_PATH=$GIT_PATH bin/task exec-platform -- ddev start || \
+            (echo "ddev start failed. Logs:"
+            )

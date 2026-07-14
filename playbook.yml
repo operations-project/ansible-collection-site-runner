@@ -4,6 +4,26 @@
   hosts: all
   become: true
 
+  pre_tasks:
+
+    # Set server hostnames to inventory hostname.
+    - name: "Set hostname for {{ ansible_nodename }} to {{ inventory_hostname }}."
+      hostname:
+        name: "{{ inventory_hostname }}"
+      when: inventory_hostname != ansible_nodename
+      register: result
+      until: result.failed != true
+      retries: 5
+      delay: 2
+
+    - name: Prerequisite Packages
+      package:
+        update_cache: yes
+        name:
+          - openssh-server
+          - git
+          - gpg
+
   roles:
     - role: geerlingguy.security
       tags: system
@@ -31,6 +51,4 @@
       tags: operations, ddev
 
     - role: operations.runner
-      tags:
-      - operations
-      - runner
+      tags: operations, runner

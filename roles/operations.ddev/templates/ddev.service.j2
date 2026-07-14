@@ -1,0 +1,26 @@
+# 
+# DDEV Service.
+# 
+# See https://ddev.readthedocs.io/en/stable/users/topics/hosting/#additional-server-setup
+
+# Start DDEV when system starts (after Docker)
+# Stop DDEV when Docker shuts down
+# Start with `sudo systemctl start ddev`
+# Enable on boot with `sudo systemctl enable ddev`
+# Make sure to edit the User= for your user and the
+# full path to `ddev` on your system.
+# Optionally give a list of sites instead of --all
+[Unit]
+Description=DDEV Sites
+After=multi-user.target
+Requires=docker.service
+PartOf=docker.service
+[Service]
+User={{ operations_platform_user }}
+Type=oneshot
+ExecStart=/usr/local/bin/ddev start --all
+RemainAfterExit=true
+ExecStop=/usr/local/bin/ddev poweroff
+
+[Install]
+WantedBy=multi-user.target
